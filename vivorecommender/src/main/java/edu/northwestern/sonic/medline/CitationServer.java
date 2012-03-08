@@ -31,22 +31,22 @@ public class CitationServer {
 		final String remoteQueryString = 
 			"PREFIX ml: <http://research.icts.uiowa.edu/ontology/medline.rdf#> " + 
 			"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " +
-			"SELECT DISTINCT ?citation " +
+			"SELECT DISTINCT ?X " +
 			"WHERE { " +
 				"?a ml:article_pmid '" + pmid + "'^^xsd:int . " +
 				"?cc ml:comments_corrections_pmid ?a . " +
 				"?cc ml:comments_corrections_ref_type 'Cites' . " +
-				"?cc ml:comments_corrections_ref_pmid ?citation } " +
-			"ORDER BY ?citation";
+				"?cc ml:comments_corrections_ref_pmid ?X } " +
+			"ORDER BY ?X";
 		final String service = "http://research.icts.uiowa.edu/MedlineEndpoint/sparql";
-		Query query = QueryFactory.create(remoteQueryString) ;
+		Query query = QueryFactory.create(remoteQueryString);
 		QueryExecution  queryExecution = QueryExecutionFactory.sparqlService(service, query);
 		ResultSet resultSet = queryExecution.execSelect();
 		List<Integer> returnValue = new ArrayList<Integer>();
 		while(resultSet.hasNext()) {
-	      QuerySolution querySolution = resultSet.nextSolution();
-	      Literal literal = querySolution.getLiteral("citation");
-	      returnValue.add(new Integer(literal.getInt()));
+			QuerySolution querySolution = resultSet.nextSolution();
+			Literal literal = querySolution.getLiteral("X");
+			returnValue.add(new Integer(literal.getInt()));
 	    }
 		return returnValue;
 	}
