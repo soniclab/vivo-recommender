@@ -1,7 +1,7 @@
 /**
- * 
+ * Tests for string handling utilities
  */
-package edu.northwestern.sonic.util.test;
+package edu.northwestern.sonic.util.unit;
 
 import static org.junit.Assert.*;
 

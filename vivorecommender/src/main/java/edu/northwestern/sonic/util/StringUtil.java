@@ -1,11 +1,11 @@
-/**
- * String utility functions
- */
 package edu.northwestern.sonic.util;
 
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
+ * String utility functions
+ *
  * @author Hugh
  * 
  */
