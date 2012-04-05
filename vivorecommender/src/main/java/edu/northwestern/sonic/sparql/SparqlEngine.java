@@ -1,8 +1,6 @@
 package edu.northwestern.sonic.sparql;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 
 import edu.northwestern.sonic.bean.User;
