@@ -122,5 +122,11 @@ public class ReasonerEngine {
 		return new ArrayList<String[]>(results);
 	}
 	
+	public boolean ask(String query){
+		Query q = getQuery(query);
+		QueryExecution qe = getQueryExecution(q);
+		return qe.execAsk();
+	}
+	
 	
 }

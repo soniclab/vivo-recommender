@@ -1,0 +1,21 @@
+/* css stylesheet for gyanpit */
+
+/* Import Bootstrap styles and Responsive styles */
+@import url('bootstrap.css');
+
+/* Add top padding for navbar-top-fixed */
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.navbar-inner {
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 0;
+}
+
+.row {
+	padding: 20px 0px;
+}
+

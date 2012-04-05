@@ -1,0 +1,46 @@
+package edu.northwestern.sonic.model.test;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import edu.northwestern.sonic.bean.User;
+import edu.northwestern.sonic.model.Recommend;
+import edu.northwestern.sonic.sparql.SparqlEngine;
+import static org.junit.Assert.*;
+
+public class RecommendTest {
+	static SparqlEngine sparqlEngine;
+	private final int fofListSize = 4;
+	private final int affListSize = 1;
+	private List<String> experts = null;
+	private User seeker = null;
+	private Recommend recommend = null;
+	
+	@Before
+	public void setUp() throws Exception {
+		sparqlEngine = new SparqlEngine();
+		experts = sparqlEngine.identifyExpertsByResearchArea("Entomology");
+		seeker = sparqlEngine.getUser("mahoy@ifas.ufl.edu");
+		recommend = new Recommend();
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testFriendOfFriend() {
+		List<String> fOFList = recommend.friendOfFriend(experts, seeker);
+		assertEquals("List size : ", fofListSize, fOFList.size());
+	}
+	
+	@Test
+	public void testAffiliation(){
+		List<String> affList = recommend.affiliation(experts, seeker);
+		assertEquals("List size : ", affListSize, affList.size());
+	}
+}

@@ -29,6 +29,6 @@ public class PropertyBeanTest {
 
 	@Test
 	public void testGetService() {
-		assertEquals("service check","http://localhost:2020/sparql",propertyBean.getService());
+		assertEquals("service check","http://ciknow1.northwestern.edu:3030/UF-VIVO/query",propertyBean.getService());
 	}
 }
