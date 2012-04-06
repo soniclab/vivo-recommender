@@ -1,18 +1,20 @@
 package edu.northwestern.sonic.model;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
+import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.Network;
 
 public class Recommend {
 	
-	private SparqlEngine sparqlEngine = new SparqlEngine();
+	private Researcher researcher = new Researcher();
 	public static Network coauthorshipNet = null;
 	
 	/*
@@ -26,7 +28,7 @@ public class Recommend {
 		while(itr.hasNext()){
 			affiliationList = new ArrayList<String>();
 			expertURI = itr.next();
-			if(sparqlEngine.shouldAffiliate(seeker.getUri(), expertURI, seeker.getDepartmentURI())){
+			if(researcher.shouldAffiliate(seeker.getUri(), expertURI, seeker.getDepartmentURI())){
 				affiliationList.add(expertURI);
 			}
 		}
@@ -39,22 +41,22 @@ public class Recommend {
 	 */
 	public List<String> friendOfFriend(List<String> experts, User seeker){
 		
-		String expertURI = null;
+		URI expertURI = null;
 		List<String> fOFList = new ArrayList<String>();
 		List<String[]> edges = new ArrayList<String[]>();
-		List<String[]> coauthors = null;
+		Set<URI> coauthors = null;
 		Iterator<String> itr = experts.iterator();
 		while(itr.hasNext()){ // for all experts
-			coauthors = new ArrayList<String[]>();
+			// coauthors = new ArrayList<String[]>();
 			expertURI = itr.next();
-			coauthors = sparqlEngine.getCoAuthors(expertURI);
+			coauthors = researcher.getCoAuthors(new URI(expertURI));
 			if(coauthors != null && coauthors.size() > 0){ // for all coauthors of expert
-				Iterator<String[]> coItr = coauthors.iterator();
+				Iterator<URI> coItr = coauthors.iterator();
 				while(coItr.hasNext()){
-					String[] details = coItr.next();
-					String uri = details[0];
-					edges.add(new String[]{expertURI,uri});
-					edges.add(new String[]{uri,expertURI});	
+					// String[] details = coItr.next();
+					URI uri = coItr.next();
+					edges.add(new String[]{expertURI.toString(),uri.toString()});
+					edges.add(new String[]{uri.toString(),expertURI.toString()});	
 				}
 			}	
 		}

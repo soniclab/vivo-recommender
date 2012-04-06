@@ -3,7 +3,6 @@ package edu.northwestern.sonic.dataaccess.medline;
 import java.util.Set;
 import java.util.TreeSet;
 
-import edu.northwestern.sonic.dataaccess.SparqlService;
 import edu.northwestern.sonic.util.ArraysUtil;
 /**
  * Wrapper for citation data;
@@ -15,7 +14,7 @@ import edu.northwestern.sonic.util.ArraysUtil;
  * @author Hugh
  *
  */
-public class ArticleArticleCitation {
+public class ArticleArticleCitation extends MedlineSparqlService {
 		
 	// Citation
 
@@ -25,7 +24,7 @@ public class ArticleArticleCitation {
 	 * @return sorted set of pubmed ids
 	 */
 	private Set<Integer> getArticleArticleCitation(String queryString) {
-		return SparqlService.MEDLINE.getDistinctSortedIntegers(queryString);
+		return getDistinctSortedIntegers(queryString);
 	}
 	
 	// FROM citation

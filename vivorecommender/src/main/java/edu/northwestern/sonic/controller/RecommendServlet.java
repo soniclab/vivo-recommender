@@ -1,6 +1,7 @@
 package edu.northwestern.sonic.controller;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
+import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
 
@@ -37,35 +38,35 @@ public class RecommendServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String researchTopic = req.getParameter("search");
-		SparqlEngine sparqlEngine = new SparqlEngine();
-		User seeker = sparqlEngine.getUser("eabuss@ufl.edu");
-		String imageUrl = sparqlEngine.getImage(seeker.getUri());
-		Map<String,String[]> experts = getRecommendations(researchTopic,seeker,sparqlEngine);
+		Researcher researcher = new Researcher();
+		User seeker = researcher.getUser("eabuss@ufl.edu");
+		String imageUrl = researcher.getImage(seeker.getUri());
+		Map<String,String[]> experts = getRecommendations(researchTopic,seeker,researcher);
 		logger.debug("Forwarding to recommend.jsp");
-		String[] egoDetails = new String[]{seeker.getUri(),seeker.getName(),imageUrl};
+		String[] egoDetails = new String[]{seeker.getUri().toString(),seeker.getName(),imageUrl};
 		req.setAttribute("egoDetails", egoDetails);
 		req.setAttribute("experts", experts);
 		req.setAttribute("researchTopic",researchTopic);
 		recommendJsp.forward(req, resp);
 	}
 	
-	private Map<String,String[]> getRecommendations(String researchTopic, User seeker, SparqlEngine sparqlEngine){
-		List<String> identifiedExperts = sparqlEngine.identifyExpertsByResearchArea(researchTopic);
+	private Map<String,String[]> getRecommendations(String researchTopic, User seeker, Researcher researcher){
+		List<String> identifiedExperts = researcher.identifyExpertsByResearchArea(researchTopic);
 		Recommend recommend = new Recommend();
 		List<String> combinedList = new ArrayList<String>();
 		combinedList.addAll(recommend.affiliation(identifiedExperts, seeker));
 		combinedList.addAll(recommend.friendOfFriend(identifiedExperts, seeker));
-		return makeUsers(combinedList,sparqlEngine);
+		return makeUsers(combinedList,researcher);
 	}
 	
-	private Map<String,String[]> makeUsers(List<String> combinedList, SparqlEngine sparqlEngine){
+	private Map<String,String[]> makeUsers(List<String> combinedList, Researcher researcher){
 		Map<String,String[]> experts = Collections.synchronizedMap(new HashMap<String,String[]>());
 		String uri = null;
 		Iterator<String> combinedItr = combinedList.iterator();
 		while(combinedItr.hasNext()){
 			uri = combinedItr.next();
-			experts.put(uri, new String[]{sparqlEngine.getLabel(uri),
-					sparqlEngine.getImage(uri)});
+			experts.put(uri, new String[]{researcher.getLabel(uri),
+					researcher.getImage(uri)});
 		}
 		return experts;
 	}

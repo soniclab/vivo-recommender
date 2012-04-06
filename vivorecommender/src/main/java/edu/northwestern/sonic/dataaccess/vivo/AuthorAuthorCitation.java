@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import edu.northwestern.sonic.dataaccess.SparqlService;
 import edu.northwestern.sonic.dataaccess.medline.ArticleArticleCitation;
 import edu.northwestern.sonic.util.ArraysUtil;
 import edu.northwestern.sonic.util.StringUtil;
@@ -16,9 +15,9 @@ import edu.northwestern.sonic.util.StringUtil;
  * @author Hugh
  * 
  */
-public class AuthorAuthorCitation {
+public class AuthorAuthorCitation extends VivoSparqlService {
 
-	private final static ArticleArticleCitation medline = new ArticleArticleCitation();
+	private final ArticleArticleCitation medline = new ArticleArticleCitation();
 
 	/**
 	 * authorship;
@@ -31,7 +30,7 @@ public class AuthorAuthorCitation {
 			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
 			"?pub bibo:pmid ?X .";
-		return ArraysUtil.toArrayInt(SparqlService.UFLVIVO.getDistinctSortedIntegers(whereClause));
+		return ArraysUtil.toArrayInt(getDistinctSortedIntegers(whereClause));
 	}
 	
 	/**
@@ -46,7 +45,7 @@ public class AuthorAuthorCitation {
 			"?X vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
 			"?pub bibo:pmid '" + pubMedId + "' .";
-		return SparqlService.UFLVIVO.getDistinctSortedURIs(whereClause);
+		return getDistinctSortedURIs(whereClause);
 	}
 	
 	/**

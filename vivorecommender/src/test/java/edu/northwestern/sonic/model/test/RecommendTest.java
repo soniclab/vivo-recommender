@@ -7,13 +7,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
+import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
 import static org.junit.Assert.*;
 
 public class RecommendTest {
-	static SparqlEngine sparqlEngine;
+	static Researcher researcher;
 	private final int fofListSize = 4;
 	private final int affListSize = 1;
 	private List<String> experts = null;
@@ -22,9 +22,9 @@ public class RecommendTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		sparqlEngine = new SparqlEngine();
-		experts = sparqlEngine.identifyExpertsByResearchArea("Entomology");
-		seeker = sparqlEngine.getUser("mahoy@ifas.ufl.edu");
+		researcher = new Researcher();
+		experts = researcher.identifyExpertsByResearchArea("Entomology");
+		seeker = researcher.getUser("mahoy@ifas.ufl.edu");
 		recommend = new Recommend();
 	}
 
