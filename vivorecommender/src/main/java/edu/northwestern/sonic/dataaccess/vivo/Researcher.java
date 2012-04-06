@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import edu.northwestern.sonic.model.User;
 
@@ -92,7 +93,7 @@ public class Researcher extends VivoSparqlService {
 	    
 	}
 	
-	public Set<URI> getCoAuthors(URI expertURI) throws URISyntaxException{
+	public Set<URI> getCoAuthors(URI expertURI) throws URISyntaxException {
 		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .");
@@ -100,4 +101,12 @@ public class Researcher extends VivoSparqlService {
 		whereClause.append("FILTER (<" + expertURI.toString() + "> != ?X)");
 		return getDistinctSortedURIs(whereClause.toString());
 	}
+	
+	public Set<URI> getCoAuthors(Set<URI> uris) throws URISyntaxException {
+		TreeSet<URI> returnValue = new TreeSet<URI>();
+		for(URI uri : uris)
+			returnValue.addAll(getCoAuthors(uri));
+		return returnValue;	
+	}
+	
 }
