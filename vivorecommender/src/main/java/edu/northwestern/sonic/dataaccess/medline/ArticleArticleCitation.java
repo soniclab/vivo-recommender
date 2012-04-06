@@ -3,11 +3,6 @@ package edu.northwestern.sonic.dataaccess.medline;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-
 import edu.northwestern.sonic.dataaccess.SparqlService;
 import edu.northwestern.sonic.util.ArraysUtil;
 /**
@@ -21,13 +16,7 @@ import edu.northwestern.sonic.util.ArraysUtil;
  *
  */
 public class ArticleArticleCitation {
-	
-	private SparqlService sparqlService = new SparqlService(
-		"http://research.icts.uiowa.edu/MedlineEndpoint/sparql",
-		"PREFIX ml: <http://research.icts.uiowa.edu/ontology/medline.rdf#> " + "\n" +
-		"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#> " + "\n"
-		);
-	
+		
 	// Citation
 
 	/**
@@ -36,20 +25,7 @@ public class ArticleArticleCitation {
 	 * @return sorted set of pubmed ids
 	 */
 	private Set<Integer> getArticleArticleCitation(String queryString) {
-		StringBuffer queryStringBuffer = new StringBuffer(
-			"SELECT DISTINCT ?X " +  "\n" +
-			"WHERE { " +  "\n");
-		queryStringBuffer.append(queryString);
-		queryStringBuffer.append("}");
-		QueryExecution  queryExecution = sparqlService.getQueryExecution(queryStringBuffer.toString());
-		ResultSet resultSet = queryExecution.execSelect();
-		TreeSet<Integer> returnValue = new TreeSet<Integer>();
-		while(resultSet.hasNext()) {
-			QuerySolution querySolution = resultSet.nextSolution();
-			Literal literal = querySolution.getLiteral("X");
-			returnValue.add(new Integer(literal.getInt()));
-	    }
-		return returnValue;
+		return SparqlService.MEDLINE.getDistinctSortedIntegers(queryString);
 	}
 	
 	// FROM citation

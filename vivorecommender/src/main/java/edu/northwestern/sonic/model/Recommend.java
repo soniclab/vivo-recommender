@@ -7,9 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import edu.northwestern.sonic.bean.User;
+import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
 import edu.northwestern.sonic.network.Network;
-import edu.northwestern.sonic.sparql.SparqlEngine;
 
 public class Recommend {
 	

@@ -6,8 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.northwestern.sonic.bean.User;
-import edu.northwestern.sonic.sparql.SparqlEngine;
+import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
+import edu.northwestern.sonic.model.User;
 
 /*
  * author: Anup

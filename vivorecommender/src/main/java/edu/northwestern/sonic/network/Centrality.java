@@ -1,14 +1,13 @@
 package edu.northwestern.sonic.network;
 
-/**
- * 
- */
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * Wrappers for JUNG centrality methods
+ *
  * @author Hugh
  *
  */

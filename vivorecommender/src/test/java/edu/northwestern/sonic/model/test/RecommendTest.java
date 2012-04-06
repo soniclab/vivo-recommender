@@ -7,9 +7,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.northwestern.sonic.bean.User;
+import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
 import edu.northwestern.sonic.model.Recommend;
-import edu.northwestern.sonic.sparql.SparqlEngine;
+import edu.northwestern.sonic.model.User;
 import static org.junit.Assert.*;
 
 public class RecommendTest {

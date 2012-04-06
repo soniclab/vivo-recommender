@@ -5,12 +5,6 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Resource;
-
 import edu.northwestern.sonic.dataaccess.SparqlService;
 import edu.northwestern.sonic.dataaccess.medline.ArticleArticleCitation;
 import edu.northwestern.sonic.util.ArraysUtil;
@@ -24,15 +18,6 @@ import edu.northwestern.sonic.util.StringUtil;
  */
 public class AuthorAuthorCitation {
 
-	private SparqlService sparqlService = new SparqlService(
-		"http://ciknow1.northwestern.edu:3030/UF-VIVO/query",
-		"PREFIX bibo: <http://purl.org/ontology/bibo/>" + "\n" +
-		"PREFIX vivo: <http://vivoweb.org/ontology/core#>" + "\n");
-	
-	private final static String queryPrefix =
-		"SELECT DISTINCT ?X" +  "\n" +
-		"WHERE {";
-	
 	private final static ArticleArticleCitation medline = new ArticleArticleCitation();
 
 	/**
@@ -42,20 +27,11 @@ public class AuthorAuthorCitation {
 	 * @return list of pubmed ids of papers by a particular author
 	 */
 	public int[] getArticles(URI author) {
-		final String queryString = queryPrefix + "\n" +
+		final String whereClause = 
 			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid ?X ." + "\n" +
-			"}";
-		QueryExecution  queryExecution = sparqlService.getQueryExecution(queryString);
-		ResultSet resultSet = queryExecution.execSelect();
-		TreeSet<Integer> returnValue = new TreeSet<Integer>();
-		while(resultSet.hasNext()) {
-			QuerySolution querySolution = resultSet.nextSolution();
-			Literal literal = querySolution.getLiteral("X");
-			returnValue.add(new Integer(literal.getInt()));
-	    }
-		return ArraysUtil.toArrayInt(returnValue);	
+			"?pub bibo:pmid ?X .";
+		return ArraysUtil.toArrayInt(SparqlService.UFLVIVO.getDistinctSortedIntegers(whereClause));
 	}
 	
 	/**
@@ -66,20 +42,11 @@ public class AuthorAuthorCitation {
 	 * @throws URISyntaxException 
 	 */
 	private Set<URI> getAuthorsSet(int pubMedId) throws URISyntaxException { 
-		final String queryString = queryPrefix + "\n" +
+		final String whereClause =
 			"?X vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid '" + pubMedId + "' ." + "\n" +
-			"}";
-		QueryExecution  queryExecution = sparqlService.getQueryExecution(queryString);
-		ResultSet resultSet = queryExecution.execSelect();
-		TreeSet<URI> returnValue = new TreeSet<URI>();
-		while(resultSet.hasNext()) {
-			QuerySolution querySolution = resultSet.nextSolution();
-			Resource resource = querySolution.getResource("X");
-			returnValue.add(new URI(resource.getURI()));
-	    }
-		return returnValue;
+			"?pub bibo:pmid '" + pubMedId + "' .";
+		return SparqlService.UFLVIVO.getDistinctSortedURIs(whereClause);
 	}
 	
 	/**

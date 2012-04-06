@@ -1,9 +1,5 @@
 package edu.northwestern.sonic.network;
 
-/**
- * Represent networks using jung Graoh
- */
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +18,10 @@ import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 
 /**
+ * Represent networks using JUNG Graph
+ * nodes are unique strings, typically URIs
+ * edges are named after their vertices, concatenated using DEL
+ *
  * @author Hugh
  * 
  */
@@ -106,6 +106,8 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 
 	/**
 	 * constructor
+	 *
+	 * @param edges a list of pairs of strings, each pair the vertices of an edge
 	 */
 	public Network(List<String[]> edges) {
 		for (String[] edge : edges) {
@@ -118,11 +120,8 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		betweenness = new DoubleMetric(new BetweennessCentrality<String, String>(this));
 	}
 	
-	public Network() {
-		super();
-	}
-
 	/**
+	 * get the in-degree of a vertex
 	 * @param vertex
 	 * @return inDegree, 0 if not found
 	 */
@@ -141,8 +140,9 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	}
 
 	/**
+	 * get the in-degree density of a vertex
 	 * @param vertex
-	 * @return unit interval, inDegree as proportion of maximum possible (the
+	 * @return real value in the unit interval, inDegree as proportion of maximum possible in-degree (the
 	 *         number of other vertices), 0.0 if not found
 	 */
 	public double getInDegreeDensity(String vertex) {
@@ -160,6 +160,7 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	}
 
 	/**
+	 * get out-degree density for a vertex
 	 * @param vertex
 	 * @return outDegree, 0 if not found
 	 */
@@ -177,9 +178,10 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	}
 
 	/**
+	 * the out-degree density of a vertex
 	 * @param vertex
-	 * @return unit interval, outDegree as proportion of maximum possible (the
-	 *         number of other vertices), 0 if not found
+	 * @return a real value from the unit interval, out-degree as proportion of maximum possible out-degree (the
+	 *         number of other vertices), 0.0 if not found
 	 */
 	public double getOutDegreeDensity(String vertex) {
 		return outDegree.getDensity(vertex);
@@ -195,6 +197,11 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		return outDegree.getDensity(vertices);
 	}
 	
+	/**
+	 * get the betweenness centrality
+	 * @param vertex
+	 * @return betweenness centrality
+	 */
 	public double getBetweennessCentrality(String vertex) {
 		return betweenness.get(vertex);
 	}
@@ -206,7 +213,7 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	 */
 	public double getNormalizedBetweennessCentrality(String vertex) {
 		int n = getVertexCount();
-		if(n<3)
+		if(n < 3)
 			return 0.0; // prevent division by zero
 		return 2.0 * getBetweennessCentrality(vertex) / ((n - 1) * (n - 2));
 	}
@@ -224,6 +231,11 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		return result;
 	}
 
+	/**
+	 * get the closeness centrality of a vertex
+	 * @param vertex
+	 * @return
+	 */
 	public double getClosenessCentrality(String vertex) {
 		return closeness.get(vertex);
 	}
@@ -238,6 +250,12 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		return closeness.get(vertices);
 	}
 
+	/**
+	 * the length of the shortest path between two vertices
+	 * @param source a vertex
+	 * @param destination a vertex
+	 * @return the length of the shortest path between source and destination
+	 */
 	public int getShortestPathLength(String source, String destination) {
 		// 0 = no path, 1 = adjacent, etc.
 		// not found throws an exception in getPath
@@ -248,6 +266,12 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		return shortestPath.getPath(source, destination).size();
 	}
 
+	/**
+	 * calls shortest path length for each vertex in a list
+	 * @param source a vertex
+	 * @param destinations a list of vertices
+	 * @return an array of shortest path lengths
+	 */
 	public int[] getShortestPathLength(String source, List<String> destinations) {
 		int[] result = new int[destinations.size()];
 		for (int i = 0; i < destinations.size(); i++)
@@ -255,6 +279,13 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		return result;
 	}
 
+	/**
+	 * the number of distinct paths of shortest length between a vertex and each vertex on a list
+	 * @param source a vertex
+	 * @param destinations  a list of vertices
+	 * @param arrray of shortestPathLengths
+	 * @return an array of counts of distinct shortest paths
+	 */
 	public long[] getNumGeodesics(String source, List<String> destinations, int[] shortestPathLengths) {
 		// shortest path lengths: 0 = no path, 1 = adjacent, etc.
 		// not found throws an exception in getPath
@@ -287,18 +318,30 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		return result;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.uci.ics.jung.graph.DirectedSparseMultigraph#getEdges()
+	 */
 	public Collection<String> getEdges() {
 		return super.getEdges();
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.uci.ics.jung.graph.DirectedSparseMultigraph#getVertices()
+	 */
 	public Collection<String> getVertices() {
 		return super.getVertices();
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.uci.ics.jung.graph.DirectedSparseMultigraph#getIncidentEdges(java.lang.Object)
+	 */
 	public Collection<String> getIncidentEdges(String vertex) {
 		return super.getIncidentEdges(vertex);
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.uci.ics.jung.graph.DirectedSparseMultigraph#getNeighbors(java.lang.Object)
+	 */
 	public Collection<String> getNeighbors(String vertex) {
 		return super.getNeighbors(vertex);
 	}

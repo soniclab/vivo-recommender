@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import edu.northwestern.sonic.bean.User;
+import edu.northwestern.sonic.dataaccess.vivo.SparqlEngine;
 import edu.northwestern.sonic.model.Recommend;
-import edu.northwestern.sonic.sparql.SparqlEngine;
+import edu.northwestern.sonic.model.User;
 
 public class RecommendServlet extends HttpServlet {
 
