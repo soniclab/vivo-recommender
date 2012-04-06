@@ -16,7 +16,7 @@ public class IdentificationTest {
 	static Identification identification = new Identification();
 	
 	private final int expectedCount = 18;
-	private final int expectedCountByKeyword = 2247;
+	private final int expectedCountByKeyword = 1796;
 	private final int expectedCountBySubjectArea = 0;
 	
 	@Test

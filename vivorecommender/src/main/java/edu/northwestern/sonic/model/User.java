@@ -10,7 +10,7 @@ public class User {
 	private String name;
 	private URI uri;
 	private String department;
-	private String departmentURI;
+	private URI departmentURI;
 	
 	public String getEmail() {
 		return email;
@@ -36,10 +36,10 @@ public class User {
 	public void setDepartment(String department){
 		this.department = department;
 	}
-	public String getDepartmentURI(){
+	public URI getDepartmentURI(){
 		return departmentURI;
 	}
-	public void setDepartmentURI(String departmentURI){
+	public void setDepartmentURI(URI departmentURI){
 		this.departmentURI = departmentURI;
 	}
 }
