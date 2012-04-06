@@ -1,6 +1,7 @@
 package edu.northwestern.sonic.controller;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import edu.northwestern.sonic.dataaccess.vivo.Identification;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
@@ -39,33 +42,42 @@ public class RecommendServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String researchTopic = req.getParameter("search");
 		Researcher researcher = new Researcher();
-		User seeker = researcher.getUser("eabuss@ufl.edu");
-		String imageUrl = researcher.getImage(seeker.getUri());
-		Map<String,String[]> experts = getRecommendations(researchTopic,seeker,researcher);
-		logger.debug("Forwarding to recommend.jsp");
-		String[] egoDetails = new String[]{seeker.getUri().toString(),seeker.getName(),imageUrl};
-		req.setAttribute("egoDetails", egoDetails);
-		req.setAttribute("experts", experts);
-		req.setAttribute("researchTopic",researchTopic);
+		User seeker;
+		try {
+			seeker = researcher.getUser("eabuss@ufl.edu");
+			String imageUrl = researcher.getImage(seeker.getUri());
+			Map<String,String[]> experts = getRecommendations(researchTopic,seeker);
+			logger.debug("Forwarding to recommend.jsp");
+			String[] egoDetails = new String[]{seeker.getUri().toString(),seeker.getName(),imageUrl};
+			req.setAttribute("egoDetails", egoDetails);
+			req.setAttribute("experts", experts);
+			req.setAttribute("researchTopic",researchTopic);
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			logger.error(e, e);
+		}
 		recommendJsp.forward(req, resp);
 	}
 	
-	private Map<String,String[]> getRecommendations(String researchTopic, User seeker, Researcher researcher){
-		List<String> identifiedExperts = researcher.identifyExpertsByResearchArea(researchTopic);
+	private Map<String,String[]> getRecommendations(String researchTopic, User seeker) throws URISyntaxException{
+		Identification identification = new Identification();
+		Set<URI> identifiedExperts;
 		Recommend recommend = new Recommend();
-		List<String> combinedList = new ArrayList<String>();
+		List<URI> combinedList = new ArrayList<URI>();
+		identifiedExperts = identification.identifyExpertsByResearchArea(researchTopic);
 		combinedList.addAll(recommend.affiliation(identifiedExperts, seeker));
 		combinedList.addAll(recommend.friendOfFriend(identifiedExperts, seeker));
-		return makeUsers(combinedList,researcher);
+		return makeUsers(combinedList);
 	}
 	
-	private Map<String,String[]> makeUsers(List<String> combinedList, Researcher researcher){
+	private Map<String,String[]> makeUsers(List<URI> combinedList) throws URISyntaxException{
 		Map<String,String[]> experts = Collections.synchronizedMap(new HashMap<String,String[]>());
-		String uri = null;
-		Iterator<String> combinedItr = combinedList.iterator();
+		Researcher researcher = new Researcher();
+		URI uri = null;
+		Iterator<URI> combinedItr = combinedList.iterator();
 		while(combinedItr.hasNext()){
 			uri = combinedItr.next();
-			experts.put(uri, new String[]{researcher.getLabel(uri),
+			experts.put(uri.toString(), new String[]{researcher.getLabel(uri),
 					researcher.getImage(uri)});
 		}
 		return experts;

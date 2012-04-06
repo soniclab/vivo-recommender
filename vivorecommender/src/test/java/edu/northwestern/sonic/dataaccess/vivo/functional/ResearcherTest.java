@@ -1,6 +1,7 @@
 package edu.northwestern.sonic.dataaccess.vivo.functional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.net.URISyntaxException;
 
@@ -8,7 +9,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.northwestern.sonic.dataaccess.vivo.Identification;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
+import edu.northwestern.sonic.dataaccess.vivo.VivoSparqlService;
 import edu.northwestern.sonic.model.User;
 
 /*
@@ -17,7 +20,7 @@ import edu.northwestern.sonic.model.User;
 
 public class ResearcherTest {
 
-	static Researcher researcher;
+	static Researcher researcher = new Researcher();
 	private final int expectedCoauthors = 20;
 	private final String emailid = "mconlon@ufl.edu";
 	private final String uri = "http://vivo.ufl.edu/individual/n25562";
@@ -27,7 +30,7 @@ public class ResearcherTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		researcher = new Researcher();
+		
 	}
 
 	@After
@@ -38,14 +41,14 @@ public class ResearcherTest {
 	public void testGetUser() throws URISyntaxException {
 		User user = researcher.getUser("mconlon@ufl.edu");
 		assertEquals("Email id", emailid,user.getEmail());
-		assertEquals("URI", uri, user.getUri());
+		assertEquals("URI", uri, user.getUri().toString());
 		assertEquals("Name", name, user.getName());
 		assertEquals("Department", department, user.getDepartment());
-		assertEquals("DepartmentURI",departmentURI,user.getDepartmentURI());
+		assertEquals("DepartmentURI",departmentURI,user.getDepartmentURI().toString());
 	}
 
 	@Test
-	public void testShouldAffiliate(){
+	public void testShouldAffiliate() throws URISyntaxException{
 		User user = researcher.getUser("menden@shands.ufl.edu");
 		User expert = researcher.getUser("bhoppe@floridaproton.org");
 		assertEquals("Should Affiliate", true, researcher.shouldAffiliate(user.getUri(),expert.getUri(), user.getDepartmentURI()));
