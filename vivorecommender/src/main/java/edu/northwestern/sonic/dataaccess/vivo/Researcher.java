@@ -103,6 +103,7 @@ public class Researcher extends VivoSparqlService {
 	}
 	
 	// not used anywhere yet
+	// HJD 04-06-2012
 	public Set<URI> getCoAuthors(Set<URI> uris) throws URISyntaxException {
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(URI uri : uris)
