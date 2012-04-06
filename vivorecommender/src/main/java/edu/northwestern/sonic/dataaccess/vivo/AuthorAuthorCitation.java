@@ -108,15 +108,4 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 		return getAuthors(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
-	/**
-	 * author-author cocitation;
-	 * get the authors of a list of articles
-	 * @param uri of an author as a String 
-	 * @return list of URIs of authors cocited with author
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthorAuthorCoCitation(String author) throws URISyntaxException {
-		return getAuthorAuthorCoCitation(new URI(author));
-	}
-		
 }

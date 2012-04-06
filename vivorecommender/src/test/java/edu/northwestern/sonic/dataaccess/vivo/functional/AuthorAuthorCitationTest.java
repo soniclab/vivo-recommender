@@ -114,11 +114,8 @@ public class AuthorAuthorCitationTest {
 		};
 		URI[] authors;
 		authors = authorAuthorCitation.getAuthorAuthorCoCitation(KATRITSKY_URI);
-		assertEquals("number of authors (from URI)", expected.length, authors.length);
-		assertArrayEquals("authors (from URI)", expected, authors);
-		authors = authorAuthorCitation.getAuthorAuthorCoCitation(Katritsky.URI_STRING);
-		assertEquals("number of authors (from String)", expected.length, authors.length);
-		assertArrayEquals("authors (from String)", expected, authors);
+		assertEquals("number of authors", expected.length, authors.length);
+		assertArrayEquals("authors", expected, authors);
 	}
 
 }
