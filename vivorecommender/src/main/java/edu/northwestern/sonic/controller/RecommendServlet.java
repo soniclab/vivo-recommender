@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -41,10 +42,18 @@ public class RecommendServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String researchTopic = req.getParameter("search");
+		if(researchTopic == null || researchTopic == ""){
+			researchTopic = (String)req.getSession().getAttribute("researchTopic");
+			if(researchTopic == null || researchTopic == ""){
+				req.setAttribute("message", "Please enter a valid 'Research Topic'.");
+				recommendJsp.forward(req, resp);
+				return;
+			}
+		}
 		Researcher researcher = new Researcher();
 		User seeker;
 		try {
-			seeker = researcher.getUser("eabuss@ufl.edu");
+			seeker = researcher.getUser((String)req.getSession().getAttribute("userEmail"));
 			String imageUrl = researcher.getImage(seeker.getUri());
 			Map<String,String[]> experts = getRecommendations(researchTopic,seeker);
 			logger.debug("Forwarding to recommend.jsp");

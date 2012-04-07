@@ -52,10 +52,10 @@
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="preference.html"><i class="icon-cog icon-black"></i> Preferences</a></li>
+              <li><a href="preference"><i class="icon-cog icon-black"></i> Preferences</a></li>
 
               <li class="divider"></li>
-              <li><a href="#"><i class="icon-off icon-black"></i> Logout</a></li>
+              <li><a href="logout"><i class="icon-off icon-black"></i> Logout</a></li>
             </ul>
           </li>
           </ul>
