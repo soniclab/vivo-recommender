@@ -46,15 +46,17 @@ body {
 					<ul class="nav">
 						<li class="active"><a href="#"><i
 								class="icon-home icon-white"></i> Home</a></li>
+						<li><a href="about"><i
+								class="icon-star-empty icon-white"></i> About</a></li>
 					</ul>
 					<ul class="nav pull-right">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
 							data-toggle="dropdown">My Account <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="preference.jsp"><i
+								<li><a href="preference"><i
 										class="icon-cog icon-black"></i> Preferences</a></li>
 								<li class="divider"></li>
-								<li><a href="#"><i class="icon-off icon-black"></i>
+								<li><a href="logout"><i class="icon-off icon-black"></i>
 										Logout</a></li>
 							</ul></li>
 					</ul>
