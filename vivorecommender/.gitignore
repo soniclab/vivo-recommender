@@ -41,8 +41,8 @@ Thumbs.db
 
 # Eclipse generated files #
 ###########################
-.classpath
-.settings/
+#.classpath
+#.settings/
 logs/
 
 # Maven artifacts #
