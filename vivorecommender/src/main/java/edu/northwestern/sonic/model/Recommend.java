@@ -3,13 +3,12 @@ package edu.northwestern.sonic.model;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
+import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.Network;
 
@@ -36,6 +35,22 @@ public class Recommend {
 		return affiliationList;
 	}
 	
+	/**
+	 * use co-citation as an indicator of possible future collaboration
+	 * @param experts set of URIs of qualified experts
+	 * @param ego URI of our seeker
+	 * @return set of URIs of qualified experts, who are co-cited with ego, but not coauthors of ego
+	 * @throws URISyntaxException
+	 */
+	public Set<URI> cocitation(Set<URI> experts, URI ego) throws URISyntaxException {
+		AuthorAuthorCitation aac = new AuthorAuthorCitation();
+		Set<URI> returnValue = new TreeSet<URI>(experts); // copy constructor
+		returnValue.removeAll(researcher.getCoAuthors(ego)); // disqualify previous coauthors
+		returnValue.retainAll(aac.getAuthorAuthorCoCitationSet(ego)); // must be co-cited
+		returnValue.remove(ego); // should not be in expert list
+		return returnValue;
+	}
+
 	/*
 	 * Method to get list of recommendations through Friend-of-Friend heuristic
 	 * @params : List of identified experts, ego

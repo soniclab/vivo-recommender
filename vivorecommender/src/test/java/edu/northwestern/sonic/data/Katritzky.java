@@ -1,16 +1,28 @@
-/**
- * Test data
- */
 package edu.northwestern.sonic.data;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 /**
+ * Test data;
+ * The most prolific author at the University of Florida
+ * 
  * @author Hugh
  *
  */
-public class Katritsky {
+public class Katritzky {
 	
-	public final static String URI_STRING = "http://vivo.ufl.edu/individual/n3622";
-		
+	private final static String VIVO_URI_STRING = "http://vivo.ufl.edu/individual/n3622";
+	
+	public static URI VIVO_URI = null;
+	static {
+		try {
+			VIVO_URI = new URI(VIVO_URI_STRING);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
 	public final static int[] PMIDS = { 10655641, 10814343, 11073619, 11073623, 11112611, 11149870,
 			11304212, 11304213, 11375031, 11375032, 11375033, 11410031, 11410046, 11429892,
 			11430071, 11485487, 11485488, 11485491, 11485492, 11529762, 11578235, 11578236,
@@ -31,6 +43,7 @@ public class Katritsky {
 			18956833, 19039367, 19194572, 19196166, 19291102, 19296588, 19462046, 19635052,
 			19635053, 19697896, 19830293, 19831362, 20077186, 20112909, 20153498, 20204199,
 			20213770, 20372743, 20459134, 20490619, 20673628, 20695453, 20731377, 20825153,
-			20828118, 20843586 };
+			20828118, 20843586 
+			};
 	
 }

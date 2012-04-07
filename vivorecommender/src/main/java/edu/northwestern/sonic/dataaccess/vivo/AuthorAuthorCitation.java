@@ -63,14 +63,25 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 	 * authorship;
 	 * get the authors of a list of articles
 	 * @param pubMedIds an article 
-	 * @return list of URIs of authors of articles
+	 * @return set of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int[] pubMedIds) throws URISyntaxException { 
+	public Set<URI> getAuthorsSet(int[] pubMedIds) throws URISyntaxException { 
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getAuthorsSet(pubMedId));
-		return returnValue.toArray(new URI[0]);	
+		return returnValue;	
+	}
+		
+	/**
+	 * authorship;
+	 * get the authors of a list of articles
+	 * @param pubMedIds an article 
+	 * @return array of URIs of authors of articles
+	 * @throws URISyntaxException 
+	 */
+	public URI[] getAuthors(int[] pubMedIds) throws URISyntaxException { 
+		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
 	}
 		
 	/**
@@ -101,11 +112,22 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 	 * author-author cocitation;
 	 * get the authors of a list of articles
 	 * @param uri URI of an author 
-	 * @return list of URIs of authors cocited with author
+	 * @return array of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
 	public URI[] getAuthorAuthorCoCitation(URI author) throws URISyntaxException { 
 		return getAuthors(medline.getArticleArticleCoCitation(getArticles(author)));	
+	}
+
+	/**
+	 * author-author cocitation;
+	 * get the authors of a list of articles
+	 * @param uri URI of an author 
+	 * @return list of URIs of authors cocited with author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getAuthorAuthorCoCitationSet(URI author) throws URISyntaxException { 
+		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
 }
