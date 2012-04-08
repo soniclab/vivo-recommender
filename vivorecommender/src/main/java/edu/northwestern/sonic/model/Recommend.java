@@ -45,7 +45,7 @@ public class Recommend {
 	 */
 	public Set<URI> cocitation(Set<URI> experts, URI ego) throws URISyntaxException {
 		Set<URI> returnValue = new TreeSet<URI>(experts); // copy constructor
-		returnValue.removeAll(researcher.getCoAuthors(ego)); // disqualify previous coauthors
+		returnValue.removeAll(authorAuthorCitation.getCoAuthors(ego)); // disqualify previous coauthors
 		returnValue.retainAll(authorAuthorCitation.getAuthorAuthorCoCitationSet(ego)); // must be co-cited
 		returnValue.remove(ego); // should not be in expert list
 		return returnValue;
@@ -60,7 +60,7 @@ public class Recommend {
 		Network returnValue = new Network(false);
 		for(URI uri : uris) {
 			String uriString = uri.toString();
-			Set<URI> coauthors = researcher.getCoAuthors(uri);
+			Set<URI> coauthors = authorAuthorCitation.getCoAuthors(uri);
 			for(URI coauthor : coauthors)
 				returnValue.add(uriString, coauthor.toString());
 		}

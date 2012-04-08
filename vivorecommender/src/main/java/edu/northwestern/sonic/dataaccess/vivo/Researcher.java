@@ -93,20 +93,4 @@ public class Researcher extends VivoSparqlService {
 	    
 	}
 	
-	public Set<URI> getCoAuthors(URI expertURI) throws URISyntaxException {
-		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .");
-		whereClause.append("?cn vivo:linkedInformationResource ?pub .");
-		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .");
-		whereClause.append("?cn2 vivo:linkedAuthor ?X .");
-		whereClause.append("FILTER (<" + expertURI.toString() + "> != ?X)");
-		return getDistinctSortedURIs(whereClause.toString());
-	}
-	
-	public Set<URI> getCoAuthors(Set<URI> uris) throws URISyntaxException {
-		TreeSet<URI> returnValue = new TreeSet<URI>();
-		for(URI uri : uris)
-			returnValue.addAll(getCoAuthors(uri));
-		return returnValue;	
-	}
-	
 }

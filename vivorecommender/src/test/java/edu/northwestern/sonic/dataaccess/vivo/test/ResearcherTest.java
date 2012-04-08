@@ -51,12 +51,6 @@ public class ResearcherTest {
 	}
 	
 	@Test 
-	public void testGetCoAuthors() throws URISyntaxException {
-		User user = researcher.getUser("stephen.grobmyer@surgery.ufl.edu");
-		assertEquals("Number of CoAuthors", expectedCoauthors, researcher.getCoAuthors(user.getUri()).size());
-	}
-	
-	@Test 
 	public void testGetImage() throws URISyntaxException {
 		User user = researcher.getUser("eabuss@ufl.edu");
 		assertEquals("Image url :", "http://vivo.ufl.edu/file/n24027/Eileen2.jpg", researcher.getImage(user.getUri()));

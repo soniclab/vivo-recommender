@@ -15,7 +15,7 @@ import edu.northwestern.sonic.util.StringUtil;
  * @author Hugh
  * 
  */
-public class AuthorAuthorCitation extends VivoSparqlService {
+public class AuthorAuthorCitation extends Authorship {
 
 	private final ArticleArticleCitation medline = new ArticleArticleCitation();
 

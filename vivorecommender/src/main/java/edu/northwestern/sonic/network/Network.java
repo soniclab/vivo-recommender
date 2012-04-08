@@ -101,7 +101,7 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	};
 
 	/**
-	 * constructor
+	 * constructor for an empty directed network
 	 *
 	 * @param edges a list of pairs of strings, each pair the vertices of an edge
 	 */
@@ -112,17 +112,14 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	 * constructor
 	 *
 	 * @param edges a list of pairs of strings, each pair the vertices of an edge
+	 * @param directed true for direct, false for undirected
 	 */
 	public Network(boolean directed) {
 		this.directed = directed;
 	}
 	
-	private void add(List<String[]> edges) {
-		for (String[] edge : edges)
-			add(edge[0], edge[1]);
-	}
 	/**
-	 * constructor
+	 * constructor for a directed network
 	 *
 	 * @param edges a list of pairs of strings, each pair the vertices of an edge
 	 */
@@ -134,12 +131,22 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	 * constructor
 	 *
 	 * @param edges a list of pairs of strings, each pair the vertices of an edge
+	 * @param directed true for direct, false for undirected
 	 */
 	public Network(List<String[]> edges, boolean directed) {
 		this(directed);
 		add(edges);
 	}
 	
+	/**
+	 * add vertices and edges
+	 * @param edges
+	 */
+	private void add(List<String[]> edges) {
+		for (String[] edge : edges)
+			add(edge[0], edge[1]);
+	}
+
 	public void add(String vertex1, String vertex2) {
 		addVertex(vertex1);
 		addVertex(vertex2);
