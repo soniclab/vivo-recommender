@@ -1,7 +1,7 @@
 /**
  * unit tests for sparql filter lists
  */
-package edu.northwestern.sonic.dataaccess.unit;
+package edu.northwestern.sonic.dataaccess.test;
 
 import static org.junit.Assert.*;
 

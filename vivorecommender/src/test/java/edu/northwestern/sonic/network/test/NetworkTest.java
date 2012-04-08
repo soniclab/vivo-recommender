@@ -1,4 +1,4 @@
-package edu.northwestern.sonic.network.unit;
+package edu.northwestern.sonic.network.test;
 
 import static org.junit.Assert.*;
 import java.util.*;

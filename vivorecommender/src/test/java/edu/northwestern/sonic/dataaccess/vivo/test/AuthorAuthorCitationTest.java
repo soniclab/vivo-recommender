@@ -1,4 +1,4 @@
-package edu.northwestern.sonic.dataaccess.vivo.functional;
+package edu.northwestern.sonic.dataaccess.vivo.test;
 
 import static org.junit.Assert.*;
 
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.northwestern.sonic.data.Katritzky;
+import edu.northwestern.sonic.dataaccess.test.Katritzky;
 import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 /**
  * 

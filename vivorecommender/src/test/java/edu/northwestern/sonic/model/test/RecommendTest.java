@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.northwestern.sonic.data.Katritzky;
+import edu.northwestern.sonic.dataaccess.test.Katritzky;
 import edu.northwestern.sonic.dataaccess.vivo.Identification;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.model.Recommend;

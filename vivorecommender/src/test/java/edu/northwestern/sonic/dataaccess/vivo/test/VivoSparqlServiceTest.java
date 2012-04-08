@@ -1,7 +1,7 @@
 /**
  * 
  */
-package edu.northwestern.sonic.dataaccess.vivo.functional;
+package edu.northwestern.sonic.dataaccess.vivo.test;
 
 import static org.junit.Assert.*;
 

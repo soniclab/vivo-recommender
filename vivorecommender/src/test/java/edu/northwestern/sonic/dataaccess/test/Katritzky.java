@@ -1,4 +1,4 @@
-package edu.northwestern.sonic.data;
+package edu.northwestern.sonic.dataaccess.test;
 
 import java.net.URI;
 import java.net.URISyntaxException;

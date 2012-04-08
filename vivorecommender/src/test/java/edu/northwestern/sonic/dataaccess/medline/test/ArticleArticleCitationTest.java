@@ -1,7 +1,7 @@
 /**
  * Test interface to U. of Iowa medline SPARQL endpoint
  */
-package edu.northwestern.sonic.dataaccess.medline.functional;
+package edu.northwestern.sonic.dataaccess.medline.test;
 
 import static org.junit.Assert.*;
 
