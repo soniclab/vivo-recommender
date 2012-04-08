@@ -8,9 +8,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import edu.northwestern.sonic.dataaccess.test.Katritzky;
 import edu.northwestern.sonic.dataaccess.vivo.Identification;

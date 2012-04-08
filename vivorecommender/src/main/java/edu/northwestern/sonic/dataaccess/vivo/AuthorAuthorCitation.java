@@ -98,6 +98,18 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 
 	/**
 	 * author-author citation;
+	 * get the authors cited by an author
+	 * A -> X, given the left-hand side, find the right-hand side 
+	 * @param uri URI of an author 
+	 * @return list of URIs of authors cited by an author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getAuthorAuthorCitationFromSet(URI author) throws URISyntaxException { 
+		return getAuthorsSet(medline.getArticleArticleCitationFrom(getArticles(author)));	
+	}
+
+	/**
+	 * author-author citation;
 	 * get the authors that cite an author
 	 * X -> A, given the right-hand side, find the left-hand side 
 	 * @param uri URI of an author 
@@ -106,6 +118,18 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 	 */
 	public URI[] getAuthorAuthorCitationTo(URI author) throws URISyntaxException { 
 		return getAuthors(medline.getArticleArticleCitationTo(getArticles(author)));	
+	}
+
+	/**
+	 * author-author citation;
+	 * get the authors that cite an author
+	 * X -> A, given the right-hand side, find the left-hand side 
+	 * @param uri URI of an author 
+	 * @return list of URIs of authors that cite by an author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getAuthorAuthorCitationToSet(URI author) throws URISyntaxException { 
+		return getAuthorsSet(medline.getArticleArticleCitationTo(getArticles(author)));	
 	}
 
 	/**

@@ -12,7 +12,6 @@ import cern.colt.matrix.linalg.Algebra;
 import edu.northwestern.sonic.network.Network;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
 
-
 /**
  * @author Hugh
  *

@@ -25,13 +25,10 @@ import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
  * @author Hugh
  * 
  */
+@SuppressWarnings("serial")
 public class Network extends DirectedSparseMultigraph<String, String> {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	public static final String DEL = " "; // delimiter between from and to vertices in edge string
+	private boolean directed = true;
 
 	// Inner classes
 	private abstract class IntMetric {
@@ -88,9 +85,8 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 		
 	}
 	
-	private DijkstraShortestPath<String, String> shortestPath;
-	private DoubleMetric betweenness;
-	private DoubleMetric closeness;
+	private DijkstraShortestPath<String, String> shortestPath = new DijkstraShortestPath<String, String>(this);;
+	private DoubleMetric closeness  = new DoubleMetric(new ClosenessCentrality<String, String>(this));
 	private IntMetric inDegree = new IntMetric() {
 		@Override
 		public int metric(String vertex) {
@@ -109,15 +105,47 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	 *
 	 * @param edges a list of pairs of strings, each pair the vertices of an edge
 	 */
+	public Network() {
+	}
+	
+	/**
+	 * constructor
+	 *
+	 * @param edges a list of pairs of strings, each pair the vertices of an edge
+	 */
+	public Network(boolean directed) {
+		this.directed = directed;
+	}
+	
+	private void add(List<String[]> edges) {
+		for (String[] edge : edges)
+			add(edge[0], edge[1]);
+	}
+	/**
+	 * constructor
+	 *
+	 * @param edges a list of pairs of strings, each pair the vertices of an edge
+	 */
 	public Network(List<String[]> edges) {
-		for (String[] edge : edges) {
-			addVertex(edge[0]);
-			addVertex(edge[1]);
-			addEdge(edge[0] + DEL + edge[1], edge[0], edge[1]);
-		}
-		shortestPath = new DijkstraShortestPath<String, String>(this);
-		closeness = new DoubleMetric(new ClosenessCentrality<String, String>(this));
-		betweenness = new DoubleMetric(new BetweennessCentrality<String, String>(this));
+		add(edges);
+	}
+	
+	/**
+	 * constructor
+	 *
+	 * @param edges a list of pairs of strings, each pair the vertices of an edge
+	 */
+	public Network(List<String[]> edges, boolean directed) {
+		this(directed);
+		add(edges);
+	}
+	
+	public void add(String vertex1, String vertex2) {
+		addVertex(vertex1);
+		addVertex(vertex2);
+		addEdge(vertex1 + DEL + vertex2, vertex1, vertex2);
+		if(!directed)
+			addEdge(vertex2 + DEL + vertex1, vertex2, vertex1);		
 	}
 	
 	/**
@@ -203,6 +231,7 @@ public class Network extends DirectedSparseMultigraph<String, String> {
 	 * @return betweenness centrality
 	 */
 	public double getBetweennessCentrality(String vertex) {
+		final DoubleMetric betweenness = new DoubleMetric(new BetweennessCentrality<String, String>(this));
 		return betweenness.get(vertex);
 	}
 
