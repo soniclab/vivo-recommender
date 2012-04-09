@@ -2,8 +2,11 @@ package edu.northwestern.sonic.dataaccess.vivo;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import edu.northwestern.sonic.dataaccess.medline.ArticleArticleCitation;
 import edu.northwestern.sonic.util.ArraysUtil;
@@ -181,4 +184,37 @@ public class AuthorAuthorCitation extends Authorship {
 		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
+	/**
+	 * Hirsh index;
+	 * "A scientist has index h if h of his/her N papers have at least h citations each,
+	 * and the other (N - h) papers have no more than h citations each."
+	 * Hirsch, J. E. (15 November 2005). "An index to quantify an individual's scientific research output";
+	 * PNAS 102 (46): 16569–16572;
+	 * arXiv:physics/0508025;
+	 * Bibcode 2005PNAS..10216569H;
+	 * doi:10.1073/pnas.0507655102;
+	 * PMC 1283832;
+	 * PMID 16275915
+	 * 
+	 * @param author URI of an author
+	 * @return h-index
+	 */
+	public int getHIndex(URI author) {
+		int[] articles = getArticles(author);
+		if(articles.length == 0)
+			return 0; // no articles
+		int[] citations = new int[articles.length];
+		for(int i = 0; i < articles.length; i++)
+			citations[i] = medline.getArticleArticleCitationTo(articles[i]).length;
+		Arrays.sort(citations);
+		ArrayUtils.reverse(citations);
+		if(citations[0] == 0)
+			return 0; // no citations
+		for(int i = 0; i < citations.length; i++) {
+			if(citations[i] <= i)
+				return i;
+		}
+		return citations.length; // all highly cited articles
+	}
+	
 }

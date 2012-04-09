@@ -116,5 +116,5 @@ public class Authorship extends VivoSparqlService {
 			returnValue.addAll(getCoAuthors(uri));
 		return returnValue;	
 	}
-	
+
 }

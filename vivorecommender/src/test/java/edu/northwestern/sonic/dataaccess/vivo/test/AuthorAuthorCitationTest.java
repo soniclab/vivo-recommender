@@ -89,4 +89,9 @@ public class AuthorAuthorCitationTest {
 		assertArrayEquals("authors", expected, authors);
 	}
 
+	@Test
+	public void testGetHIndex() throws URISyntaxException {
+		assertEquals("h index", 2, authorAuthorCitation.getHIndex(Katritzky.VIVO_URI));
+	}
+
 }
