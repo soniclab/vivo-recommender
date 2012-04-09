@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import edu.northwestern.sonic.model.User;
 
 public class Researcher extends VivoSparqlService {

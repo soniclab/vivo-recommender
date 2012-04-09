@@ -3,18 +3,16 @@ package edu.northwestern.sonic.model;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Map;
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-
 import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.Network;
@@ -112,13 +110,7 @@ public class Recommend {
 		return returnValue;
 	}
 	
-	/*
-	 * Method to get list of recommendations through Friend-of-Friend heuristic
-	 * @params : List of identified experts, ego
->>>>>>> branch 'master' of ssh://anup@sonicserver.northwestern.edu/var/git/vivorecommender
-	 */
-
-public List<User> friendOfFriend(Set<URI> experts, User ego) throws URISyntaxException{
+	public List<User> friendOfFriend(Set<URI> experts, User ego) throws URISyntaxException{
 		Set<URI> fOFList = new HashSet<URI>();
 		experts.add(ego.getUri());
 		Network coauthorshipNet = getCoAuthorship(experts); // putting experts and their coauthors in network.
