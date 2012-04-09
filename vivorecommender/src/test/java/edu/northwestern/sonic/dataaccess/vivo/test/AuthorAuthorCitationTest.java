@@ -26,29 +26,6 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
-	public void testGetPmids() throws URISyntaxException {
-		int[] pmids = authorAuthorCitation.getArticles(Katritzky.VIVO_URI);
-		assertEquals("number of articles", 160, Katritzky.PMIDS.length);
-		assertArrayEquals("articles", Katritzky.PMIDS, pmids);
-	}
-
-	@Test
-	public void testGetAuthors() throws URISyntaxException {
-		final URI[] expected = {
-			new URI("http://vivo.ufl.edu/individual/n1083315624"),	// Tatham
-			new URI("http://vivo.ufl.edu/individual/n139140470"),	// Lomaka
-			new URI("http://vivo.ufl.edu/individual/n1521641392"),	// Fara
-			new URI("http://vivo.ufl.edu/individual/n1855538095"),	// Karelson
-			new URI("http://vivo.ufl.edu/individual/n1856088751"),	// Petrukhin
-			new URI("http://vivo.ufl.edu/individual/n3622"),		// Katritzky
-			new URI("http://vivo.ufl.edu/individual/n753652860")	// Maran
-			};
-		URI[] authors = authorAuthorCitation.getAuthors(12470284);
-		assertEquals("number of authors", expected.length, authors.length);
-		assertArrayEquals("authors", expected, authors);
-	}
-
-	@Test
 	public void testGetAuthorAuthorCitationFrom() throws URISyntaxException {
 		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationFrom(Katritzky.VIVO_URI);
 		assertEquals("number of authors", 20, authors.length);

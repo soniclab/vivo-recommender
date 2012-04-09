@@ -21,16 +21,43 @@ public class AuthorAuthorCitation extends Authorship {
 
 	/**
 	 * authorship;
-	 * get the articles by an author
+	 * get the articles by an author;
+	 * relates VIVO authors to Medline PubMed identifiers;
+	 * the semantic bridge between VIVO and Medline
+	 * 
 	 * @param URI an author 
-	 * @return list of pubmed ids of papers by a particular author
+	 * @return set of pubmed ids of papers by a particular author
 	 */
-	public int[] getArticles(URI author) {
+	private Set<Integer> getArticlesSet(URI author) {
 		final String whereClause = 
 			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
 			"?pub bibo:pmid ?X .";
-		return ArraysUtil.toArrayInt(getDistinctSortedIntegers(whereClause));
+		return getDistinctSortedIntegers(whereClause);
+	}
+	
+	/**
+	 * authorship;
+	 * get the articles by an author;
+	 * relates VIVO authors to Medline PubMed identifiers;
+	 * the semantic bridge between VIVO and Medline
+	 * 
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by a particular author
+	 */
+	public int[] getArticles(URI author) {
+		return ArraysUtil.toArrayInt(getArticlesSet(author));
+	}
+	
+	/**
+	 * article author citation;
+	 * get the articles that cite an author
+	 * 
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by that cite a particular author
+	 */
+	public Set<Integer> getArticleAuthorCitationTo(URI author) {
+		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
 	}
 	
 	/**

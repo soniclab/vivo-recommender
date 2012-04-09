@@ -131,11 +131,33 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
-	public int[] getArticleArticleCitationTo(int[] pubMedIds) {
+	public Set<Integer> getArticleArticleCitationToSet(int[] pubMedIds) {
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getArticleArticleCitationToSet(pubMedId));
-		return ArraysUtil.toArrayInt(returnValue);	
+		return returnValue;	
+	}
+	
+	/**
+	 * get the articles that cite the articles in a list;
+	 * get the articles that cite any of the article in a list;
+	 * X -> A, given the right-hand side, find the left-hand side 
+	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
+	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
+	 */
+	public Set<Integer> getArticleArticleCitationToSet(Set<Integer> pubMedIds) {
+		return getArticleArticleCitationToSet(ArraysUtil.toArrayInt((pubMedIds)));	
+	}
+	
+	/**
+	 * get the articles that cite the articles in a list;
+	 * get the articles that cite any of the article in a list;
+	 * X -> A, given the right-hand side, find the left-hand side 
+	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
+	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
+	 */
+	public int[] getArticleArticleCitationTo(int[] pubMedIds) {
+		return ArraysUtil.toArrayInt(getArticleArticleCitationToSet(pubMedIds));	
 	}
 	
 	// Cocitation

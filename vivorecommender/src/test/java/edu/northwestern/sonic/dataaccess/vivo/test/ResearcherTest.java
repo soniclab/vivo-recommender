@@ -17,7 +17,6 @@ import edu.northwestern.sonic.model.User;
 public class ResearcherTest {
 
 	static Researcher researcher = new Researcher();
-	private final int expectedCoauthors = 20;
 	private final String emailid = "mconlon@ufl.edu";
 	private final String uri = "http://vivo.ufl.edu/individual/n25562";
 	private final String name = "Conlon, Michael";

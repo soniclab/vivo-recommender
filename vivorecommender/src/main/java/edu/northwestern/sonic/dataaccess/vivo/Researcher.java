@@ -3,9 +3,6 @@ package edu.northwestern.sonic.dataaccess.vivo;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 import edu.northwestern.sonic.model.User;
 
 public class Researcher extends VivoSparqlService {

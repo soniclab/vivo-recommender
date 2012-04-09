@@ -21,6 +21,26 @@ public class Authorship extends VivoSparqlService {
 	 * get the articles by an author
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by a particular author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getArticles(URI author, String keyword) throws URISyntaxException {
+		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
+		whereClause.append("vivo:authorInAuthorship ?cn .\n");
+		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
+		whereClause.append("?X vivo:freetextKeyword ?keyword .\n");
+		whereClause.append("FILTER (");
+		whereClause.append("regex(?keyword, \"");
+		whereClause.append(keyword);
+		whereClause.append("\",\"i\")");
+		whereClause.append(")");
+		return getDistinctSortedURIs(whereClause.toString());
+	}
+	
+	/**
+	 * authorship qualified by keywords on the article
+	 * get the articles by an author with a keyword
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by a particular author
 	 */
 	public int[] getArticles(URI author) {
 		final String whereClause = 
@@ -82,10 +102,10 @@ public class Authorship extends VivoSparqlService {
 	}
 		
 	public Set<URI> getCoAuthors(URI expertURI) throws URISyntaxException {
-		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .");
-		whereClause.append("?cn vivo:linkedInformationResource ?pub .");
-		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .");
-		whereClause.append("?cn2 vivo:linkedAuthor ?X .");
+		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .\n");
+		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
+		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");
+		whereClause.append("?cn2 vivo:linkedAuthor ?X .\n");
 		whereClause.append("FILTER (<" + expertURI.toString() + "> != ?X)");
 		return getDistinctSortedURIs(whereClause.toString());
 	}
