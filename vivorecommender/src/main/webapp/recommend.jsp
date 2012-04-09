@@ -70,7 +70,8 @@
 				<div class="span2 offset5">
 					<%
 						String[] egoDetails = (String[]) request.getAttribute("egoDetails");
-					    String researchTopic = (String) request.getAttribute("researchTopic");
+						String researchTopic = (String) request
+								.getAttribute("researchTopic");
 					%>
 					<a class="thumbnail" href="<%=egoDetails[0]%>"> <img alt=""
 						src="<%=egoDetails[2]%>">
@@ -109,47 +110,45 @@
 						</thead>
 						<tbody>
 							<%
-				 			Map<String, String[]> experts = (Map<String, String[]>) request
-				 					.getAttribute("experts");
-				 			Iterator<Map.Entry<String, String[]>> entries = experts.entrySet()
-				 					.iterator();
-				 		
-				 			while (entries.hasNext()) {
-				 				Map.Entry<String, String[]> expert = entries.next();
-				 				String key = (String) expert.getKey();
-				 				String[] details = (String[]) expert.getValue();
-				 			
-				 		%>
+								Map<String, List<String>> experts = (Map<String, List<String>>) request
+										.getAttribute("experts");
+								Iterator<Map.Entry<String, List<String>>> entries = experts
+										.entrySet().iterator();
+
+								while (entries.hasNext()) {
+									Map.Entry<String, List<String>> expert = entries.next();
+									String key = (String) expert.getKey();
+									List<String> details = (List<String>) expert.getValue();
+							%>
 							<tr>
 								<div class="span2">
 									<td><a class="thumbnail" href="<%=key%>"> <img alt=""
-											src="<%=details[1]%>">
+											src="<%=details.get(1)%>">
 									</a></td>
 								</div>
 								<td>
 									<center>
-										<div class="caption">
-											<h5>
-												<a href="<%=key%>"><%=details[0]%></a>
-											</h5>
-											<dl class="dl-horizontal">
-												<dt>Score</dt>
-												<dd>xx</dd>
-												<dt>Indegree centrality</dt>
-												<dd>xx</dd>
-												<dt>No. of Publications</dt>
-												<dd>xx</dd>
-												<dt>Ranked through
-												<dt>
-												<dd>xx</dd>
-											</dl>
-										</div>
+
+										<a href="<%=key%>"><%=details.get(0)%></a>
+
 									</center>
+									<div class="span3">
+									<p>  </p>
+									<ol>
+										<%
+											for (int i = 2; i < details.size(); i++) {
+										%>
+										<li><%=details.get(i)%></li>
+										<%
+											}
+										%>
+									</ol>
+									</div>
 								</td>
 							</tr>
 							<%
-				 					 	}
-				 					 %>
+								}
+							%>
 						</tbody>
 					</table>
 				</div>

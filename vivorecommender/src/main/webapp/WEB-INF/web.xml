@@ -57,7 +57,7 @@
       <url-pattern>/preference</url-pattern>
    </servlet-mapping>
    
-    <filter>
+  <filter>
       <filter-name>security-filter</filter-name>
       <filter-class>edu.northwestern.sonic.controller.SecurityFilter</filter-class>
    </filter>
@@ -65,5 +65,5 @@
       <filter-name>security-filter</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
-  
+   
 </web-app>

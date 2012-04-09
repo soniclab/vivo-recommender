@@ -1,9 +1,12 @@
 package edu.northwestern.sonic.dataaccess.vivo.functional;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +14,6 @@ import org.junit.Test;
 
 import edu.northwestern.sonic.dataaccess.vivo.Identification;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
-import edu.northwestern.sonic.dataaccess.vivo.VivoSparqlService;
 import edu.northwestern.sonic.model.User;
 
 /*
@@ -37,7 +39,7 @@ public class ResearcherTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
+/*	@Test
 	public void testGetUser() throws URISyntaxException {
 		User user = researcher.getUser("mconlon@ufl.edu");
 		assertEquals("Email id", emailid,user.getEmail());
@@ -64,6 +66,20 @@ public class ResearcherTest {
 	public void testGetImage() throws URISyntaxException {
 		User user = researcher.getUser("eabuss@ufl.edu");
 		assertEquals("Image url :", "http://vivo.ufl.edu/file/n24027/Eileen2.jpg", researcher.getImage(user.getUri()));
+	}
+	
+	@Test
+	public void testGetUserByURI() throws URISyntaxException {
+		User user = researcher.getUser(new URI(uri));
+		assertEquals("Email : ", emailid, user.getEmail());
+	}*/
+	
+	@Test
+	public void testGetUsers() throws URISyntaxException {
+		Identification identification = new Identification();
+		Set<URI> identifiedExperts = identification.identifyExpertsByResearchArea("Entomology");
+		List<User> experts = researcher.getUsers(identifiedExperts);
+		assertEquals("List size : ", 18, experts.size());
 	}
 	
 }

@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
+import edu.northwestern.sonic.model.User;
+
 public class SecurityFilter implements Filter 
 {
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -55,8 +57,8 @@ public class SecurityFilter implements Filter
 		}
 		// All other functionality requires authentication.
 		HttpSession session = req.getSession();
-		String userURI = (String) session.getAttribute("userURI");
-		if (userURI != null)
+		User ego = (User)session.getAttribute("ego");
+		if (ego != null)
 		{
 			// User is authenticated.
 			chain.doFilter(req, resp);
@@ -64,6 +66,10 @@ public class SecurityFilter implements Filter
 		}
 
 		// Request is not authorized.
+		String researchTopic = req.getParameter("search");
+		if(researchTopic!=null && !researchTopic.equals("")){
+			session.setAttribute("researchTopic", researchTopic);
+		}
 		resp.sendRedirect("login");
-					}   
+	}   
 }

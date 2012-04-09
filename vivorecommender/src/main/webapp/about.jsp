@@ -76,13 +76,12 @@ body {
 				 	<table class="table table-striped table-bordered pull-right">
 				 		<thead>
 				 			<tr>
-				 				<th colspan="2" ><center>Team</center></th>
+				 				<th><center>Team</center></th>
 				 			</tr>
 				 		</thead>
 				 		<tbody>
 				 			<tr>
 				 				
-				 				<td><div class="thumbnail"><img alt="" src="img/nosh.jpg"></div></td>
 				 				<td>
 				 				            <center>
 				 				            <blockquote>
@@ -100,7 +99,6 @@ body {
 				 					</td>	
 				 			</tr>
 				 			<tr>
-				 				<td><div class="thumbnail"><img alt="" src="img/willem.jpg"></div></td>
 				 				<td>
 				 				            <center>
 				 				            <blockquote>
@@ -118,7 +116,6 @@ body {
 				 					</td>	
 				 			</tr>
 				 			<tr>
-				 				<td><div class="thumbnail"><img alt="" src="img/hugh.jpg"></div></td>
 				 				<td>
 				 				            <center>
 				 				            <blockquote>
@@ -136,25 +133,23 @@ body {
 				 					</td>	
 				 			</tr>
 				 			<tr>
-				 				<td><div class="thumbnail"><img alt="" src="img/york.jpg"></div></td>
 				 				<td>
 				 				            <center>
 				 				            <blockquote>
-				 				            <p>Guangyao (York) Yao</p>
-				 				            <small>Senior Research Programmer</small>
+				 				            <p>Anup Sawant</p>
+				 				            <small>Research Programmer</small>
 				 				            </blockquote>
 				 				            </center>
 					                        <dl class="dl-horizontal">
 												<dt>Email</dt>
-												<dd>yao.gyao@northwestern.edu</dd>
+												<dd>anup.sawant@northwestern.edu</dd>
 												<dt>Phone</dt>
-												<dd>847-467-2567</dd>
+												<dd>864-650-6368</dd>
 											</dl>
 											
 				 					</td>	
 				 			</tr>
 				 			<tr>
-				 				<td><div class="thumbnail"><img alt="" src="img/joe.jpg"></div></td>
 				 				<td>
 				 				            <center>
 				 				            <blockquote>
@@ -171,30 +166,12 @@ body {
 											
 				 					</td>	
 				 			</tr>
-				 			<tr>
-				 				<td><div class="thumbnail"><img alt="" src="img/jinling.jpg"></div></td>
-				 				<td>
-				 				            <center>
-				 				            <blockquote>
-				 				            <p>Jinling Li</p>
-				 				            <small>Research Programmer</small>
-				 				            </blockquote>
-				 				            </center>
-					                        <dl class="dl-horizontal">
-												<dt>Email</dt>
-												<dd>jinling-li@northwestern.edu</dd>
-												<dt>Phone</dt>
-												<dd>847-467-2565</dd>
-											</dl>
-											
-				 					</td>	
-				 			</tr>
 				 		</tbody>
 				 	</table>
 				 </div>
 			 </div>
 
-		<footer> </footer>
+		<footer><p>NSF Grant no. : XXXXXXX</p> </footer>
 
 	</div>
 	<!-- /container -->

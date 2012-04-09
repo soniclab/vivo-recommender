@@ -51,13 +51,13 @@ public class RecommendServlet extends HttpServlet {
 			}
 		}
 		Researcher researcher = new Researcher();
-		User seeker;
+		User ego;
 		try {
-			seeker = researcher.getUser((String)req.getSession().getAttribute("userEmail"));
-			String imageUrl = researcher.getImage(seeker.getUri());
-			Map<String,String[]> experts = getRecommendations(researchTopic,seeker);
+			ego = (User)req.getSession().getAttribute("ego");
+			String imageUrl = researcher.getImage(ego.getUri());
+			Map<String,List<String>> experts = getRecommendations(researchTopic,ego);
 			logger.debug("Forwarding to recommend.jsp");
-			String[] egoDetails = new String[]{seeker.getUri().toString(),seeker.getName(),imageUrl};
+			String[] egoDetails = new String[]{ego.getUri().toString(),ego.getName(),imageUrl};
 			req.setAttribute("egoDetails", egoDetails);
 			req.setAttribute("experts", experts);
 			req.setAttribute("researchTopic",researchTopic);
@@ -68,26 +68,58 @@ public class RecommendServlet extends HttpServlet {
 		recommendJsp.forward(req, resp);
 	}
 	
-	private Map<String,String[]> getRecommendations(String researchTopic, User seeker) throws URISyntaxException{
+	private Map<String,List<String>> getRecommendations(String researchTopic, User ego) throws URISyntaxException{
 		Identification identification = new Identification();
 		Set<URI> identifiedExperts;
 		Recommend recommend = new Recommend();
-		List<URI> combinedList = new ArrayList<URI>();
+		List<List<User>> combinedList = new ArrayList<List<User>>();
 		identifiedExperts = identification.identifyExpertsByResearchArea(researchTopic);
-		combinedList.addAll(recommend.affiliation(identifiedExperts, seeker));
-		combinedList.addAll(recommend.friendOfFriend(identifiedExperts, seeker));
-		return makeUsers(combinedList);
+		List<User> affList = recommend.affiliation(identifiedExperts, ego);
+		List<User> fofList = recommend.friendOfFriend(identifiedExperts, ego);
+		List<User> bofList = recommend.birdsOfFeather(identifiedExperts, ego);
+		List<String> heuristics = new ArrayList<String>();
+		if(affList !=null && affList.size() > 0){
+			combinedList.add(affList);
+			heuristics.add("'Affiliation'");
+		}
+		if(fofList !=null && fofList.size() > 0){
+			combinedList.add(fofList);
+			heuristics.add("'Friend of a Friend'");
+		}
+		if(bofList !=null && bofList.size() > 0){
+			combinedList.add(bofList);
+			heuristics.add("'Birds of Feather'");
+		}
+		return makeFinalList(combinedList,heuristics);
 	}
 	
-	private Map<String,String[]> makeUsers(List<URI> combinedList) throws URISyntaxException{
-		Map<String,String[]> experts = Collections.synchronizedMap(new HashMap<String,String[]>());
+	private Map<String,List<String>> makeFinalList(List<List<User>> combinedList, List<String> heuristics) throws URISyntaxException{
+		Map<String,List<String>> experts = Collections.synchronizedMap(new HashMap<String,List<String>>());
 		Researcher researcher = new Researcher();
-		URI uri = null;
-		Iterator<URI> combinedItr = combinedList.iterator();
+		List<User> list = null;
+		User expert = null;
+		int count = 0;
+		List<String> details;
+		Iterator<List<User>> combinedItr = combinedList.iterator();
 		while(combinedItr.hasNext()){
-			uri = combinedItr.next();
-			experts.put(uri.toString(), new String[]{researcher.getLabel(uri),
-					researcher.getImage(uri)});
+			list = combinedItr.next();
+			Iterator<User> itr = list.iterator();
+			while(itr.hasNext()){
+				expert = itr.next();
+				if(!experts.containsKey(expert.getUri().toString())){
+					experts.put(expert.getUri().toString(), new ArrayList<String>());
+					details = experts.get(expert.getUri().toString());
+					details.add(researcher.getLabel(expert.getUri()));
+					details.add(researcher.getImage(expert.getUri()));
+					details.add(heuristics.get(count));
+					experts.put(expert.getUri().toString(), details);
+				}else{
+					details = experts.get(expert.getUri().toString());
+					details.add(heuristics.get(count));
+					experts.put(expert.getUri().toString(), details);
+				}
+			}
+			count++;
 		}
 		return experts;
 	}

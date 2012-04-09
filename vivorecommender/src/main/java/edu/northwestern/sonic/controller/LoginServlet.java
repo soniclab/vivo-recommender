@@ -44,23 +44,28 @@ public class LoginServlet extends HttpServlet {
 		logger.debug("doPost()");
 
 		String userEmail = req.getParameter("userEmail");
-		User user = null;
+		User ego = null;
 		try {
-			user = new Researcher().getUser(userEmail);
+			ego = new Researcher().getUser(userEmail);
 		} catch (URISyntaxException e) {
 			logger.error(e,e);
 		}
-		if (user == null)
+		HttpSession session = req.getSession();
+		
+		if (ego == null)
 		{
 			logger.debug("authentication failed: bad e-mail id");
 			req.setAttribute("message", "Sorry ! We could not identify you.");
 			jsp.forward(req, resp);
 			return;
+		}else {
+			String userURI = ego.getUri().toString();
+			//session.setAttribute("userURI", userURI);
+			//session.setAttribute("userEmail", userEmail);
+			session.setAttribute("ego", ego);
 		}
-		HttpSession session = req.getSession();
-		String userURI = user.getUri().toString();
-		session.setAttribute("userURI", userURI);
-		session.setAttribute("userEmail", userEmail);
+		
+		
 		String researchTopic = (String)session.getAttribute("researchTopic");
 		logger.debug("authenticated");
 		String url = null;

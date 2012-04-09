@@ -70,17 +70,29 @@ body {
 	<!-- /.navbar -->
 
 	<div class="container">
-	<center>
-		<form class="well" method="POST" action="">
-			<label>Identify yourself</label> <input type="text" name="userEmail" class="span3"
-				placeholder="example@something.com...">
-			<%
-				String message = (String) request.getAttribute("message");
-			%>
-				<%if(message!=null){ %><p><span class="help-inline"><%=message%></span></p> <% } %>
-			<button type="submit" class="btn btn-primary">Submit</button>
-		</form>
-   </center>
+		<center>
+			<form class="well" method="POST" action="">
+				<h3>Identify Yourself</h3>
+				<input type="text" name="userEmail" class="span3"
+					placeholder="example@something.com...">
+				<p>
+					<span class="help-inline">Helps provide better
+						recommendations.</span>
+				</p>
+				<%
+					String message = (String) request.getAttribute("message");
+				%>
+				<%
+					if (message != null) {
+				%><p>
+					<span class="help-inline"><%=message%></span>
+				</p>
+				<%
+					}
+				%>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</form>
+		</center>
 
 		<footer> </footer>
 

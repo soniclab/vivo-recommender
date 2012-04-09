@@ -6,6 +6,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
+import java.util.Iterator;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,7 +23,7 @@ public class RecommendTest {
 	private final int fofListSize = 4;
 	private final int affListSize = 1;
 	private Set<URI> experts = null;
-	private User seeker = null;
+	private User ego = null;
 	private Recommend recommend = null;
 	
 	@Before
@@ -30,23 +31,28 @@ public class RecommendTest {
 		researcher = new Researcher();
 		identification = new Identification();
 		experts = identification.identifyExpertsByResearchArea("Entomology");
-		seeker = researcher.getUser("mahoy@ifas.ufl.edu");
+		ego = researcher.getUser("mahoy@ifas.ufl.edu");
 		recommend = new Recommend();
 	}
 
 	@After
 	public void tearDown() throws Exception {
 	}
-
 	@Test
 	public void testFriendOfFriend() throws URISyntaxException {
-		List<URI> fOFList = recommend.friendOfFriend(experts, seeker);
+		List<User> fOFList = recommend.friendOfFriend(experts, ego);
 		assertEquals("List size : ", fofListSize, fOFList.size());
 	}
 	
 	@Test
-	public void testAffiliation(){
-		List<URI> affList = recommend.affiliation(experts, seeker);
+	public void testAffiliation() throws URISyntaxException{
+		List<User> affList = recommend.affiliation(experts, ego);
 		assertEquals("List size : ", affListSize, affList.size());
+	}
+	
+	@Test
+	public void testBirdsOfFeather() throws URISyntaxException{
+		List<User> bof = recommend.birdsOfFeather(experts, ego);
+		assertEquals("List size : ",17,bof.size());
 	}
 }
