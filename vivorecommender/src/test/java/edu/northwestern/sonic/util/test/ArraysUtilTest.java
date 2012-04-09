@@ -1,7 +1,7 @@
 /**
  * Tests for array handling utilities
  */
-package edu.northwestern.sonic.util.unit;
+package edu.northwestern.sonic.util.test;
 
 import static org.junit.Assert.*;
 import org.apache.commons.lang3.ArrayUtils;

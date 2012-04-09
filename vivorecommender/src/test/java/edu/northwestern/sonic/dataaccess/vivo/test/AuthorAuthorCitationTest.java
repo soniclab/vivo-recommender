@@ -1,7 +1,4 @@
-/**
- * 
- */
-package edu.northwestern.sonic.dataaccess.vivo.functional;
+package edu.northwestern.sonic.dataaccess.vivo.test;
 
 import static org.junit.Assert.*;
 
@@ -12,10 +9,10 @@ import java.util.Arrays;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import edu.northwestern.sonic.data.Katritsky;
+import edu.northwestern.sonic.dataaccess.test.Katritzky;
 import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
-
 /**
+ * 
  * @author Hugh
  *
  */
@@ -23,46 +20,20 @@ public class AuthorAuthorCitationTest {
 	
 	private final static AuthorAuthorCitation authorAuthorCitation = new AuthorAuthorCitation();
 	
-	private static URI KATRITSKY_URI = null;
-	
 	@BeforeClass
 	public static void setUp() throws URISyntaxException  {
-		Arrays.sort(Katritsky.PMIDS);
-		KATRITSKY_URI = new URI(Katritsky.URI_STRING);
-	}
-
-	@Test
-	public void testGetPmids() throws URISyntaxException {
-		int[] pmids = authorAuthorCitation.getArticles(KATRITSKY_URI);
-		assertEquals("number of articles", 160, Katritsky.PMIDS.length);
-		assertArrayEquals("articles", Katritsky.PMIDS, pmids);
-	}
-
-	@Test
-	public void testGetAuthors() throws URISyntaxException {
-		final URI[] expected = {
-				new URI("http://vivo.ufl.edu/individual/n1083315624"),	// Tatham
-				new URI("http://vivo.ufl.edu/individual/n139140470"),	// Lomaka
-				new URI("http://vivo.ufl.edu/individual/n1521641392"),	// Fara
-				new URI("http://vivo.ufl.edu/individual/n1855538095"),	// Karelson
-				new URI("http://vivo.ufl.edu/individual/n1856088751"),	// Petrukhin
-				new URI("http://vivo.ufl.edu/individual/n3622"),		// Katritsky
-				new URI("http://vivo.ufl.edu/individual/n753652860")	// Maran
-		};
-		URI[] authors = authorAuthorCitation.getAuthors(12470284);
-		assertEquals("number of authors", expected.length, authors.length);
-		assertArrayEquals("authors", expected, authors);
+		Arrays.sort(Katritzky.PMIDS);
 	}
 
 	@Test
 	public void testGetAuthorAuthorCitationFrom() throws URISyntaxException {
-		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationFrom(KATRITSKY_URI);
+		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationFrom(Katritzky.VIVO_URI);
 		assertEquals("number of authors", 20, authors.length);
 	}
 
 	@Test
 	public void testGetAuthorAuthorCitationTo() throws URISyntaxException {
-		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationTo(KATRITSKY_URI);
+		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationTo(Katritzky.VIVO_URI);
 		assertEquals("number of authors", 10, authors.length);
 	}
 
@@ -113,12 +84,14 @@ public class AuthorAuthorCitationTest {
 			new URI("http://vivo.ufl.edu/individual/n874722241")
 		};
 		URI[] authors;
-		authors = authorAuthorCitation.getAuthorAuthorCoCitation(KATRITSKY_URI);
-		assertEquals("number of authors (from URI)", expected.length, authors.length);
-		assertArrayEquals("authors (from URI)", expected, authors);
-		authors = authorAuthorCitation.getAuthorAuthorCoCitation(Katritsky.URI_STRING);
-		assertEquals("number of authors (from String)", expected.length, authors.length);
-		assertArrayEquals("authors (from String)", expected, authors);
+		authors = authorAuthorCitation.getAuthorAuthorCoCitation(Katritzky.VIVO_URI);
+		assertEquals("number of authors", expected.length, authors.length);
+		assertArrayEquals("authors", expected, authors);
+	}
+
+	@Test
+	public void testGetHIndex() throws URISyntaxException {
+		assertEquals("h index", 2, authorAuthorCitation.getHIndex(Katritzky.VIVO_URI));
 	}
 
 }

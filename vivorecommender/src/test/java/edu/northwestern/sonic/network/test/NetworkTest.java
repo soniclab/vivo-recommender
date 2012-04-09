@@ -1,4 +1,4 @@
-package edu.northwestern.sonic.network.unit;
+package edu.northwestern.sonic.network.test;
 
 import static org.junit.Assert.*;
 import java.util.*;
@@ -11,7 +11,6 @@ import cern.colt.matrix.impl.SparseDoubleMatrix2D;
 import cern.colt.matrix.linalg.Algebra;
 import edu.northwestern.sonic.network.Network;
 import edu.uci.ics.jung.algorithms.matrix.GraphMatrixOperations;
-
 
 /**
  * @author Hugh

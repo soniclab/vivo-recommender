@@ -3,15 +3,19 @@ package edu.northwestern.sonic.model;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
+
+import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.Network;
 
@@ -19,6 +23,7 @@ public class Recommend {
 	
 	private Researcher researcher = new Researcher();
 	public static Network coauthorshipNet = null;
+	AuthorAuthorCitation authorAuthorCitation = new AuthorAuthorCitation();
 	
 	/**
 	 * @author Anup
@@ -41,39 +46,88 @@ public class Recommend {
 	}
 	
 	/**
-	 * @author Anup
-	 * @param experts
-	 * @param seeker
-	 * @return list of experts connected through friends.
+	 * use co-citation as an indicator of possible future collaboration
+	 * @param experts set of URIs of qualified experts
+	 * @param ego URI of our seeker
+	 * @return set of URIs of qualified experts, who are co-cited with ego, but not coauthors of ego
 	 * @throws URISyntaxException
 	 */
-	public List<User> friendOfFriend(Set<URI> experts, User ego) throws URISyntaxException{
-		
-		URI expertURI = null;
-		Set<URI> fOFList = new HashSet<URI>();
-		List<String[]> edges = new ArrayList<String[]>();
-		Set<URI> coauthors = null;
-		experts.add(ego.getUri());
-		Iterator<URI> itr = experts.iterator();
-		while(itr.hasNext()){ // for all experts
-			// coauthors = new ArrayList<String[]>();
-			expertURI = itr.next();
-			coauthors = researcher.getCoAuthors(expertURI);
-			if(coauthors != null && coauthors.size() > 0){ // for all coauthors of expert
-				Iterator<URI> coItr = coauthors.iterator();
-				while(coItr.hasNext()){
-					// String[] details = coItr.next();
-					URI uri = coItr.next();
-					edges.add(new String[]{expertURI.toString(),uri.toString()});
-					edges.add(new String[]{uri.toString(),expertURI.toString()});	
-				}
-			}	
+	public Set<URI> cocitation(Set<URI> experts, URI ego) throws URISyntaxException {
+		Set<URI> returnValue = new TreeSet<URI>(experts); // copy constructor
+		returnValue.removeAll(authorAuthorCitation.getCoAuthors(ego)); // disqualify previous coauthors
+		returnValue.retainAll(authorAuthorCitation.getAuthorAuthorCoCitationSet(ego)); // must be co-cited
+		returnValue.remove(ego); // should not be in expert list
+		return returnValue;
+	}
+
+	/*
+	 * coauthorship network for a list of authors
+	 * @params uris a set of author URIs
+	 * @return combined ego networks (radius 1)
+	 */
+	public Network getCoAuthorship(Set<URI> uris) throws URISyntaxException {
+		Network returnValue = new Network(false);
+		for(URI uri : uris) {
+			String uriString = uri.toString();
+			Set<URI> coauthors = authorAuthorCitation.getCoAuthors(uri);
+			for(URI coauthor : coauthors)
+				returnValue.add(uriString, coauthor.toString());
 		}
-		coauthorshipNet = new Network(edges); // putting experts and their coauthors in network.
-		itr = experts.iterator();
+		return returnValue;
+	}
+	
+	/*
+	 * coauthorship network for a list of authors
+	 * @params uris a set of author URIs
+	 * @return combined cocitation networks (radius 1)
+	 */
+	public Network getCoCitation(Set<URI> uris) throws URISyntaxException {
+		Network returnValue = new Network(false);
+		for(URI uri : uris) {
+			String uriString = uri.toString();
+			Set<URI> coCitedAuthors = authorAuthorCitation.getAuthorAuthorCoCitationSet(uri);
+			for(URI coCitedAuthor : coCitedAuthors)
+				returnValue.add(uriString, coCitedAuthor.toString());
+		}
+		return returnValue;
+	}
+	
+	/*
+	 * citation network for a list of authors
+	 * @params uris a set of author URIs
+	 * @return combined citation networks (radius 1)
+	 */
+	public Network getCitation(Set<URI> uris) throws URISyntaxException {
+		Network returnValue = new Network(false);
+		Set<URI> citedAuthors = new TreeSet<URI>();
+		for(URI uri : uris) {
+			String uriString = uri.toString();
+			citedAuthors = authorAuthorCitation.getAuthorAuthorCitationToSet(uri);
+			for(URI citedAuthor : citedAuthors)
+				returnValue.add(citedAuthor.toString(), uriString);
+			citedAuthors = authorAuthorCitation.getAuthorAuthorCitationFromSet(uri);
+			for(URI citedAuthor : citedAuthors)
+				returnValue.add(uriString, citedAuthor.toString());
+		}
+		return returnValue;
+	}
+	
+	/*
+	 * Method to get list of recommendations through Friend-of-Friend heuristic
+	 * @params : List of identified experts, ego
+>>>>>>> branch 'master' of ssh://anup@sonicserver.northwestern.edu/var/git/vivorecommender
+	 */
+
+public List<User> friendOfFriend(Set<URI> experts, User ego) throws URISyntaxException{
+		Set<URI> fOFList = new HashSet<URI>();
+		experts.add(ego.getUri());
+		Network coauthorshipNet = getCoAuthorship(experts); // putting experts and their coauthors in network.
+		Iterator<URI> itr = experts.iterator();
 		while(itr.hasNext()){ // making a list of all experts linked to seeker through friends.
-			expertURI = itr.next();
-			if(coauthorshipNet.getShortestPathLength(ego.getUri().toString(), expertURI.toString()) > 0 && !expertURI.equals(ego.getUri())){
+			URI expertURI = itr.next();
+			if(expertURI.equals(ego.getUri()))
+				continue;
+			if(coauthorshipNet.getShortestPathLength(ego.getUri().toString(), expertURI.toString()) > 0){
 				fOFList.add(expertURI);
 			}
 		}

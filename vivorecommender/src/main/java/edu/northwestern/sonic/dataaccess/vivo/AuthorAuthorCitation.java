@@ -2,8 +2,11 @@ package edu.northwestern.sonic.dataaccess.vivo;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import edu.northwestern.sonic.dataaccess.medline.ArticleArticleCitation;
 import edu.northwestern.sonic.util.ArraysUtil;
@@ -15,22 +18,49 @@ import edu.northwestern.sonic.util.StringUtil;
  * @author Hugh
  * 
  */
-public class AuthorAuthorCitation extends VivoSparqlService {
+public class AuthorAuthorCitation extends Authorship {
 
 	private final ArticleArticleCitation medline = new ArticleArticleCitation();
 
 	/**
 	 * authorship;
-	 * get the articles by an author
+	 * get the articles by an author;
+	 * relates VIVO authors to Medline PubMed identifiers;
+	 * the semantic bridge between VIVO and Medline
+	 * 
 	 * @param URI an author 
-	 * @return list of pubmed ids of papers by a particular author
+	 * @return set of pubmed ids of papers by a particular author
 	 */
-	public int[] getArticles(URI author) {
+	private Set<Integer> getArticlesSet(URI author) {
 		final String whereClause = 
 			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
 			"?pub bibo:pmid ?X .";
-		return ArraysUtil.toArrayInt(getDistinctSortedIntegers(whereClause));
+		return getDistinctSortedIntegers(whereClause);
+	}
+	
+	/**
+	 * authorship;
+	 * get the articles by an author;
+	 * relates VIVO authors to Medline PubMed identifiers;
+	 * the semantic bridge between VIVO and Medline
+	 * 
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by a particular author
+	 */
+	public int[] getArticles(URI author) {
+		return ArraysUtil.toArrayInt(getArticlesSet(author));
+	}
+	
+	/**
+	 * article author citation;
+	 * get the articles that cite an author
+	 * 
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by that cite a particular author
+	 */
+	public Set<Integer> getArticleAuthorCitationTo(URI author) {
+		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
 	}
 	
 	/**
@@ -63,14 +93,25 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 	 * authorship;
 	 * get the authors of a list of articles
 	 * @param pubMedIds an article 
-	 * @return list of URIs of authors of articles
+	 * @return set of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int[] pubMedIds) throws URISyntaxException { 
+	public Set<URI> getAuthorsSet(int[] pubMedIds) throws URISyntaxException { 
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getAuthorsSet(pubMedId));
-		return returnValue.toArray(new URI[0]);	
+		return returnValue;	
+	}
+		
+	/**
+	 * authorship;
+	 * get the authors of a list of articles
+	 * @param pubMedIds an article 
+	 * @return array of URIs of authors of articles
+	 * @throws URISyntaxException 
+	 */
+	public URI[] getAuthors(int[] pubMedIds) throws URISyntaxException { 
+		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
 	}
 		
 	/**
@@ -87,6 +128,18 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 
 	/**
 	 * author-author citation;
+	 * get the authors cited by an author
+	 * A -> X, given the left-hand side, find the right-hand side 
+	 * @param uri URI of an author 
+	 * @return list of URIs of authors cited by an author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getAuthorAuthorCitationFromSet(URI author) throws URISyntaxException { 
+		return getAuthorsSet(medline.getArticleArticleCitationFrom(getArticles(author)));	
+	}
+
+	/**
+	 * author-author citation;
 	 * get the authors that cite an author
 	 * X -> A, given the right-hand side, find the left-hand side 
 	 * @param uri URI of an author 
@@ -98,10 +151,22 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 	}
 
 	/**
+	 * author-author citation;
+	 * get the authors that cite an author
+	 * X -> A, given the right-hand side, find the left-hand side 
+	 * @param uri URI of an author 
+	 * @return list of URIs of authors that cite by an author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getAuthorAuthorCitationToSet(URI author) throws URISyntaxException { 
+		return getAuthorsSet(medline.getArticleArticleCitationTo(getArticles(author)));	
+	}
+
+	/**
 	 * author-author cocitation;
 	 * get the authors of a list of articles
 	 * @param uri URI of an author 
-	 * @return list of URIs of authors cocited with author
+	 * @return array of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
 	public URI[] getAuthorAuthorCoCitation(URI author) throws URISyntaxException { 
@@ -111,12 +176,66 @@ public class AuthorAuthorCitation extends VivoSparqlService {
 	/**
 	 * author-author cocitation;
 	 * get the authors of a list of articles
-	 * @param uri of an author as a String 
+	 * @param uri URI of an author 
 	 * @return list of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCoCitation(String author) throws URISyntaxException {
-		return getAuthorAuthorCoCitation(new URI(author));
+	public Set<URI> getAuthorAuthorCoCitationSet(URI author) throws URISyntaxException { 
+		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
-		
+
+	/**
+	 * Hirsh index;
+	 * "A scientist has index h if h of his/her N papers have at least h citations each,
+	 * and the other (N - h) papers have no more than h citations each."
+	 * Hirsch, J. E. (15 November 2005). "An index to quantify an individual's scientific research output";
+	 * PNAS 102 (46): 16569–16572;
+	 * arXiv:physics/0508025;
+	 * Bibcode 2005PNAS..10216569H;
+	 * doi:10.1073/pnas.0507655102;
+	 * PMC 1283832;
+	 * PMID 16275915
+	 * 
+	 * @param citations an array of citation counts for an author
+	 * @return h-index
+	 */
+	private int getHIndex(int[] citations) {
+		Arrays.sort(citations); // ascending
+		ArrayUtils.reverse(citations); // descending
+		if(citations[0] == 0)
+			return 0; // no citations
+		for(int i = 0; i < citations.length; i++) {
+			if(citations[i] <= i)
+				return i; // remaining papers have no more than citations[i] citations each
+		}
+		return citations.length; // all highly cited articles
+	}
+	
+	/**
+	 * Hirsh index;
+	 * "A scientist has index h if h of his/her N papers have at least h citations each,
+	 * and the other (N - h) papers have no more than h citations each."
+	 * Hirsch, J. E. (15 November 2005). "An index to quantify an individual's scientific research output";
+	 * PNAS 102 (46): 16569–16572;
+	 * arXiv:physics/0508025;
+	 * Bibcode 2005PNAS..10216569H;
+	 * doi:10.1073/pnas.0507655102;
+	 * PMC 1283832;
+	 * PMID 16275915
+	 * 
+	 * @param author URI of an author
+	 * @return h-index
+	 */
+	public int getHIndex(URI author) {
+		// array of article PubMed identifiers
+		int[] articles = getArticles(author);
+		if(articles.length == 0)
+			return 0; // no articles
+		// array of citation counts
+		int[] citations = new int[articles.length];
+		for(int i = 0; i < articles.length; i++)
+			citations[i] = medline.getArticleArticleCitationTo(articles[i]).length;
+		return getHIndex(citations);
+	}
+	
 }
