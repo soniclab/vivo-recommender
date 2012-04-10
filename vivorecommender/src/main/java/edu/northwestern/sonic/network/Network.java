@@ -28,6 +28,12 @@ import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 @SuppressWarnings("serial")
 public class Network extends DirectedSparseMultigraph<String, String> {
 	public static final String DEL = " "; // delimiter between from and to vertices in edge string
+	/**
+	 * Network extends DirectedSparseMultigraph,
+	 * but what we really should do is have 2 classes
+	 * 1 extending Directed- and 1 extending UndirectedSparseMultigraph
+	 * We use directed as undirected by adding edges in both directions if directed is true.
+	 */
 	private boolean directed = true;
 
 	// Inner classes
