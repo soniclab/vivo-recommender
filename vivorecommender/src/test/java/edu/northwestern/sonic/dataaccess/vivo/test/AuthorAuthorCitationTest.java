@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,6 +37,14 @@ public class AuthorAuthorCitationTest {
 	public void testGetAuthorAuthorCitationTo() throws URISyntaxException {
 		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationTo(Katritzky.VIVO_URI);
 		assertEquals("number of authors", 10, authors.length);
+	}
+
+	@Test
+	public void testGetAuthorAuthorCitation() throws URISyntaxException {
+		final Set<Integer> expected = new TreeSet<Integer>(Arrays.asList(new Integer[]{18508970}));
+		Set<Integer> articles = authorAuthorCitation.getAuthorAuthorCitation(Katritzky.VIVO_URI, Katritzky.VIVO_URI);
+		assertEquals("number of articles", expected.size(), articles.size());
+		assertEquals("articles", expected, articles);
 	}
 
 	@Test

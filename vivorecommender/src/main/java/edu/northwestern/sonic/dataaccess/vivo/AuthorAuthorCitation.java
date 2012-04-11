@@ -70,7 +70,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return set of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	private Set<URI> getAuthorsSet(int pubMedId) throws URISyntaxException { 
+	private Set<URI> getAuthorsSet(int pubMedId) { 
 		final String whereClause =
 			"?X vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
@@ -85,7 +85,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int pubMedId) throws URISyntaxException { 
+	public URI[] getAuthors(int pubMedId) { 
 		return getAuthorsSet(pubMedId).toArray(new URI[0]);
 	}
 		
@@ -96,7 +96,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return set of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorsSet(int[] pubMedIds) throws URISyntaxException { 
+	public Set<URI> getAuthorsSet(int[] pubMedIds) { 
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getAuthorsSet(pubMedId));
@@ -110,7 +110,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return array of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int[] pubMedIds) throws URISyntaxException { 
+	public URI[] getAuthors(int[] pubMedIds) { 
 		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
 	}
 		
@@ -122,7 +122,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cited by an author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCitationFrom(URI author) throws URISyntaxException { 
+	public URI[] getAuthorAuthorCitationFrom(URI author) { 
 		return getAuthors(medline.getArticleArticleCitationFrom(getArticles(author)));	
 	}
 
@@ -134,7 +134,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cited by an author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCitationFromSet(URI author) throws URISyntaxException { 
+	public Set<URI> getAuthorAuthorCitationFromSet(URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCitationFrom(getArticles(author)));	
 	}
 
@@ -146,8 +146,32 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors that cite by an author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCitationTo(URI author) throws URISyntaxException { 
+	public URI[] getAuthorAuthorCitationTo(URI author) { 
 		return getAuthors(medline.getArticleArticleCitationTo(getArticles(author)));	
+	}
+
+	/**
+	 * author-author citation;
+	 * get the articles by one author that cite another author
+	 * @param authorFrom URI of an author, the citing author 
+	 * @param articlesTo set of PubMed ids of articles by the cited author 
+	 * @return set of PubMed ids of articles by authorFrom that cite articlesTo
+	 */
+	public Set<Integer> getAuthorAuthorCitation(URI authorFrom, Set<Integer> articlesTo) {
+		Set<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
+		returnValue.retainAll(getArticlesSet(authorFrom));
+		return returnValue;	
+	}
+
+	/**
+	 * author-author citation;
+	 * get the articles by one author that cite another author
+	 * @param authorFrom URI of an author, the citing author 
+	 * @param authorTo URI of an author, the cited author 
+	 * @return set of PubMed ids of articles by authorFrom that cite authorTo
+	 */
+	public Set<Integer> getAuthorAuthorCitation(URI authorFrom, URI authorTo) {
+		return getAuthorAuthorCitation(authorFrom, getArticlesSet(authorTo));	
 	}
 
 	/**
@@ -158,7 +182,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors that cite by an author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCitationToSet(URI author) throws URISyntaxException { 
+	public Set<URI> getAuthorAuthorCitationToSet(URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCitationTo(getArticles(author)));	
 	}
 
@@ -169,7 +193,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return array of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCoCitation(URI author) throws URISyntaxException { 
+	public URI[] getAuthorAuthorCoCitation(URI author) { 
 		return getAuthors(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
@@ -180,7 +204,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCoCitationSet(URI author) throws URISyntaxException { 
+	public Set<URI> getAuthorAuthorCoCitationSet(URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 

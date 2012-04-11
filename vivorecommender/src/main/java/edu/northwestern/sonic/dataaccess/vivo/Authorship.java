@@ -23,7 +23,7 @@ public class Authorship extends VivoSparqlService {
 	 * @return list of pubmed ids of papers by a particular author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getArticles(URI author, String keyword) throws URISyntaxException {
+	public Set<URI> getArticles(URI author, String keyword) {
 		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
 		whereClause.append("vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
@@ -57,7 +57,7 @@ public class Authorship extends VivoSparqlService {
 	 * @return set of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	private Set<URI> getAuthorsSet(int pubMedId) throws URISyntaxException { 
+	private Set<URI> getAuthorsSet(int pubMedId) { 
 		final String whereClause =
 			"?X vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
@@ -72,7 +72,7 @@ public class Authorship extends VivoSparqlService {
 	 * @return list of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int pubMedId) throws URISyntaxException { 
+	public URI[] getAuthors(int pubMedId) { 
 		return getAuthorsSet(pubMedId).toArray(new URI[0]);
 	}
 		
@@ -83,7 +83,7 @@ public class Authorship extends VivoSparqlService {
 	 * @return set of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorsSet(int[] pubMedIds) throws URISyntaxException { 
+	public Set<URI> getAuthorsSet(int[] pubMedIds) { 
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getAuthorsSet(pubMedId));
@@ -97,11 +97,11 @@ public class Authorship extends VivoSparqlService {
 	 * @return array of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int[] pubMedIds) throws URISyntaxException { 
+	public URI[] getAuthors(int[] pubMedIds) { 
 		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
 	}
 		
-	public Set<URI> getCoAuthors(URI expertURI) throws URISyntaxException {
+	public Set<URI> getCoAuthors(URI expertURI) {
 		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");
@@ -110,7 +110,7 @@ public class Authorship extends VivoSparqlService {
 		return getDistinctSortedURIs(whereClause.toString());
 	}
 	
-	public Set<URI> getCoAuthors(Set<URI> uris) throws URISyntaxException {
+	public Set<URI> getCoAuthors(Set<URI> uris) {
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(URI uri : uris)
 			returnValue.addAll(getCoAuthors(uri));
