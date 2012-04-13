@@ -57,7 +57,7 @@ public class VivoSparqlService extends SparqlService {
 		"PREFIX wos: <http://vivo.mannlib.cornell.edu/ns/ThomsonWOS/0.1#>" + "\n" +
 		"PREFIX vitro-public: <http://vitro.mannlib.cornell.edu/ns/vitro/public#>" + "\n" +
 		"PREFIX vivo: <http://vivoweb.org/ontology/core#>" + "\n" +
-		"PREFIX vivoc: <http://vivo.library.cornell.edu/ns/0.1#>"+ "\n";
+		"PREFIX vivoc: <http://vivo.library.cornell.edu/ns/0.1#>";
 	
 	public VivoSparqlService(URL url, String queryPrefix) {
 		super(url, queryPrefix);

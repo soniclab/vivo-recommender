@@ -15,27 +15,9 @@ import edu.northwestern.sonic.util.StringUtil;
  * 
  */
 public class Authorship extends VivoSparqlService {
-
-	/**
-	 * authorship;
-	 * get the articles by an author
-	 * @param URI an author 
-	 * @return list of pubmed ids of papers by a particular author
-	 * @throws URISyntaxException 
-	 */
-	public Set<URI> getArticles(URI author, String keyword) {
-		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
-		whereClause.append("vivo:authorInAuthorship ?cn .\n");
-		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
-		whereClause.append("?X vivo:freetextKeyword ?keyword .\n");
-		whereClause.append("FILTER (");
-		whereClause.append("regex(?keyword, \"");
-		whereClause.append(keyword);
-		whereClause.append("\",\"i\")");
-		whereClause.append(")");
-		return getDistinctSortedURIs(whereClause.toString());
-	}
 	
+	// Authorship
+
 	/**
 	 * authorship qualified by keywords on the article
 	 * get the articles by an author with a keyword
@@ -101,6 +83,27 @@ public class Authorship extends VivoSparqlService {
 		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
 	}
 		
+	/**
+	 * authorship qualified by a concept;
+	 * get the VIVO URIs of articles by an author with a keyword
+	 * @param URI an author 
+	 * @param keyword a concept
+	 * @return list of pubmed ids of papers by a particular author
+	 * @throws URISyntaxException 
+	 */
+	public Set<URI> getArticles(URI author, String keyword) {
+		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
+		whereClause.append("vivo:authorInAuthorship ?cn .\n");
+		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
+		whereClause.append("?X vivo:freetextKeyword ?keyword .\n");
+		whereClause.append("FILTER (regex(?keyword, \"");
+		whereClause.append(keyword);
+		whereClause.append("\",\"i\"))");
+		return getDistinctSortedURIs(whereClause.toString());
+	}
+	
+	// Co-authorship
+	
 	public Set<URI> getCoAuthors(URI expertURI) {
 		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");

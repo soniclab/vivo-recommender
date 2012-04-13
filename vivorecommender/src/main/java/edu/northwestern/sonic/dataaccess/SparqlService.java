@@ -69,8 +69,13 @@ public class SparqlService {
 	 * @return Jena QueryExecution
 	 */
 	private QueryExecution getQueryExecution(String queryString) {
-		log.info("QUERY:\n" + queryString);
-		Query query = QueryFactory.create(getQueryPrefix() + queryString);
+		StringBuffer queryStringBuffer = new StringBuffer(getQueryPrefix());
+		queryStringBuffer.append('\n');
+		queryStringBuffer.append(queryString);
+		String s = queryStringBuffer.toString();
+		LogUtil.printStackTrace();
+		log.info("QUERY:\n" + s);
+		Query query = QueryFactory.create(s);
 		return getQueryExecution(query);
 	}
 

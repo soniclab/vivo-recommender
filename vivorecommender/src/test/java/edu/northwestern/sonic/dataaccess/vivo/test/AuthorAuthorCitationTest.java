@@ -28,19 +28,19 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
-	public void testGetAuthorAuthorCitationFrom() throws URISyntaxException {
+	public void testGetAuthorAuthorCitationFrom() {
 		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationFrom(Katritzky.VIVO_URI);
 		assertEquals("number of authors", 20, authors.length);
 	}
 
 	@Test
-	public void testGetAuthorAuthorCitationTo() throws URISyntaxException {
+	public void testGetAuthorAuthorCitationTo() {
 		URI[] authors = authorAuthorCitation.getAuthorAuthorCitationTo(Katritzky.VIVO_URI);
 		assertEquals("number of authors", 10, authors.length);
 	}
 
 	@Test
-	public void testGetAuthorAuthorCitation() throws URISyntaxException {
+	public void testGetAuthorAuthorCitation() {
 		final Set<Integer> expected = new TreeSet<Integer>(Arrays.asList(new Integer[]{18508970}));
 		Set<Integer> articles = authorAuthorCitation.getAuthorAuthorCitation(Katritzky.VIVO_URI, Katritzky.VIVO_URI);
 		assertEquals("number of articles", expected.size(), articles.size());
@@ -100,8 +100,22 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
-	public void testGetHIndex() throws URISyntaxException {
+	public void testGetHIndex() {
 		assertEquals("h index", 2, authorAuthorCitation.getHIndex(Katritzky.VIVO_URI));
+	}
+
+	@Test
+	public void testGetQualifiedHIndex() {
+		assertEquals("h index", 1, authorAuthorCitation.getHIndex(Katritzky.VIVO_URI, "organic"));
+	}
+
+	@Test
+	public void testGetArticle() throws URISyntaxException {
+		final URI authorUri = new URI("http://vivo.ufl.edu/individual/n368979405");
+		assertEquals("article not found by URI", 0, authorAuthorCitation.getArticle(new URI("http://www.example.com/")).intValue());
+		assertEquals("article not found by PubMed id", null, authorAuthorCitation.getArticle(0));
+		assertEquals("article by VIVO URI", 12790603, authorAuthorCitation.getArticle(authorUri).intValue());
+		assertEquals("article by PubMed id", authorUri, authorAuthorCitation.getArticle(12790603));
 	}
 
 }
