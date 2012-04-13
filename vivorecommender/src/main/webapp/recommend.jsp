@@ -11,6 +11,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <link href="datareq" type="application/json" rel="exhibit/data" />
+    
     <!-- Le styles -->
     <link href="css/vivorec.css" rel="stylesheet">
     <style>
@@ -30,6 +32,9 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
+    
+    <script src="http://api.simile-widgets.org/exhibit/2.2.0/exhibit-api.js"
+	type="text/javascript"></script>
 </head>
 <body>
 <div class="navbar navbar-fixed-top">
@@ -94,63 +99,38 @@
 
 			<div class="row">
 
-				<div class="span4 offset4">
-					<table class="table table-striped table-bordered pull-right">
-						<thead>
-							<tr>
-								<th colspan="2"><center>
-										VIVO Experts on '<%=researchTopic%>'
-									</center>
-									<center>
-												<a href="#">Results as graph</a>
-									</center>
-									<!-- <center><a id="pbar" data-toggle="modal" href="#rankdet">metrics</a></center> -->
-									</th>
-							</tr>
-						</thead>
-						<tbody>
-							<%
-								Map<String, List<String>> experts = (Map<String, List<String>>) request
-										.getAttribute("experts");
-								Iterator<Map.Entry<String, List<String>>> entries = experts
-										.entrySet().iterator();
+				<div class="span10 offset1">
+					<table class="table table-striped"
+					width="100%">
+						<tr valign="top">
+							<td ex:role="viewPanel">
+							<table ex:role="lens" class="faculty member">
+									<tr>
+									    <div class="span2">
+										<td><a class="thumbnail" ex:href-content=".uri" target="_blank"><img ex:src-content=".imageURL" /></a></td>
+										</div>
+										<td>
+											<div ex:content=".label" class="name"></div>
+											<div ex:if-exists=".heuristics" class="heuristics">
+												Heuristics: <span ex:content=".heuristics"></span>
+											</div>
+										</td>
+									</tr>
+								</table>
+								<div ex:role="exhibit-view" ex:viewClass="Exhibit.TabularView"
+									ex:columns=".label, .imageURL, .heuristics"
+									ex:columnLabels="name, photo, heuristics"
+									ex:columnFormats="list, image, list"
+									ex:sortColumn="0" ex:sortAscending="false"></div>
+							</td>
+							<td width="25%">
+							 <div  ex:role="facet" ex:facetClass="TextSearch"></div>
+			                 <div ex:role="facet" ex:expression=".heuristics" ex:facetLabel="Heuristics"></div>
+							</td>
 
-								while (entries.hasNext()) {
-									Map.Entry<String, List<String>> expert = entries.next();
-									String key = (String) expert.getKey();
-									List<String> details = (List<String>) expert.getValue();
-							%>
-							<tr>
-								<div class="span2">
-									<td><a class="thumbnail" href="<%=key%>"> <img alt=""
-											src="<%=details.get(1)%>">
-									</a></td>
-								</div>
-								<td>
-									<center>
-
-										<a href="<%=key%>"><%=details.get(0)%></a>
-
-									</center>
-									<div class="span3">
-									<p>  </p>
-									<ol>
-										<%
-											for (int i = 2; i < details.size(); i++) {
-										%>
-										<li><%=details.get(i)%></li>
-										<%
-											}
-										%>
-									</ol>
-									</div>
-								</td>
-							</tr>
-							<%
-								}
-							%>
-						</tbody>
-					</table>
+						</tr>
+					
+				</table>
 				</div>
 			</div>
 		</div>

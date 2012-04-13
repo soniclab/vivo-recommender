@@ -61,6 +61,8 @@ public class RecommendServlet extends HttpServlet {
 			req.setAttribute("egoDetails", egoDetails);
 			req.setAttribute("experts", experts);
 			req.setAttribute("researchTopic",researchTopic);
+			HttpSession session = req.getSession();
+			session.setAttribute("experts", experts);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			logger.error(e, e);

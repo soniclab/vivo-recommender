@@ -57,6 +57,16 @@
       <url-pattern>/preference</url-pattern>
    </servlet-mapping>
    
+    <servlet>
+      <servlet-name>datareq</servlet-name>
+      <servlet-class>edu.northwestern.sonic.controller.DataReqServlet</servlet-class>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>datareq</servlet-name>
+      <url-pattern>/datareq</url-pattern>
+   </servlet-mapping>
+   
    <filter>
       <filter-name>security-filter</filter-name>
       <filter-class>edu.northwestern.sonic.controller.SecurityFilter</filter-class>
@@ -65,5 +75,4 @@
       <filter-name>security-filter</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
-   
 </web-app>
