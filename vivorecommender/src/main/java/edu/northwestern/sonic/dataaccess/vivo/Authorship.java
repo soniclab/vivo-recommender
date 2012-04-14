@@ -8,28 +8,38 @@ import java.util.TreeSet;
 import edu.northwestern.sonic.util.ArraysUtil;
 import edu.northwestern.sonic.util.StringUtil;
 /**
- * Wrapper for authorship;
+ * Authorship and co-authorship accessors;
  * combines citation data from PubMed with authorship data from VIVO.
  *
  * @author Hugh
  * 
  */
-public class Authorship extends VivoSparqlService {
+public class Authorship extends Article {
 	
 	// Authorship
 
 	/**
-	 * authorship qualified by keywords on the article
-	 * get the articles by an author with a keyword
+	 * authorship;
+	 * get the PubMed identifiers of VIVO articles by an author
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by a particular author
 	 */
-	public int[] getArticles(URI author) {
+	public TreeSet<Integer> getArticlesSet(URI author) {
 		final String whereClause = 
 			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
 			"?pub bibo:pmid ?X .";
-		return ArraysUtil.toArrayInt(getDistinctSortedIntegers(whereClause));
+		return getDistinctSortedIntegers(whereClause);
+	}
+	
+	/**
+	 * authorship;
+	 * get the PubMed identifiers of VIVO articles by an author
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by a particular author
+	 */
+	public int[] getArticles(URI author) {
+		return ArraysUtil.toArrayInt(getArticlesSet(author));
 	}
 	
 	/**
@@ -88,7 +98,7 @@ public class Authorship extends VivoSparqlService {
 	 * get the VIVO URIs of articles by an author with a keyword
 	 * @param URI an author 
 	 * @param keyword a concept
-	 * @return list of pubmed ids of papers by a particular author
+	 * @return set of pubmed ids of papers by a particular author
 	 * @throws URISyntaxException 
 	 */
 	public Set<URI> getArticles(URI author, String keyword) {
@@ -104,20 +114,18 @@ public class Authorship extends VivoSparqlService {
 	
 	// Co-authorship
 	
-	public Set<URI> getCoAuthors(URI expertURI) {
-		StringBuffer whereClause = new StringBuffer("<" + expertURI.toString() + "> vivo:authorInAuthorship ?cn .\n");
+	/**
+	 * get the co-authors of an author
+	 * @param author the VIVO URI of an author
+	 * @return the set of URIs of co-authors of author
+	 */
+	public Set<URI> getCoAuthors(URI author) {
+		StringBuffer whereClause = new StringBuffer("<" + author.toString() + "> vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");
 		whereClause.append("?cn2 vivo:linkedAuthor ?X .\n");
-		whereClause.append("FILTER (<" + expertURI.toString() + "> != ?X)");
+		whereClause.append("FILTER (<" + author.toString() + "> != ?X)");
 		return getDistinctSortedURIs(whereClause.toString());
-	}
-	
-	public Set<URI> getCoAuthors(Set<URI> uris) {
-		TreeSet<URI> returnValue = new TreeSet<URI>();
-		for(URI uri : uris)
-			returnValue.addAll(getCoAuthors(uri));
-		return returnValue;	
 	}
 
 }

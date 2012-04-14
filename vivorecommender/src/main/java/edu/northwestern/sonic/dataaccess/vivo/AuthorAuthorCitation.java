@@ -3,7 +3,6 @@ package edu.northwestern.sonic.dataaccess.vivo;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,7 +10,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import edu.northwestern.sonic.dataaccess.medline.ArticleArticleCitation;
 import edu.northwestern.sonic.util.ArraysUtil;
-import edu.northwestern.sonic.util.StringUtil;
 /**
  * Wrapper for author-author citation;
  * combines citation data from PubMed with authorship data from VIVO.
@@ -24,99 +22,6 @@ public class AuthorAuthorCitation extends Authorship {
 	private final ArticleArticleCitation medline = new ArticleArticleCitation();
 
 	/**
-	 * authorship;
-	 * get the articles by an author;
-	 * relates VIVO authors to Medline PubMed identifiers;
-	 * this method is the semantic bridge between VIVO and Medline
-	 * 
-	 * @param URI an author 
-	 * @return set of pubmed ids of papers by a particular author
-	 */
-	private Set<Integer> getArticlesSet(URI author) {
-		final String whereClause = 
-			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
-			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid ?X .";
-		return getDistinctSortedIntegers(whereClause);
-	}
-	
-	/**
-	 * get the PubMed Id for an article
-	 * 
-	 * @param article URI an article 
-	 * @return the pubmed id of article, 0 if not found
-	 */
-	public Integer getArticle(URI article) {
-		final StringBuffer whereClause = new StringBuffer(StringUtil.wrap(article));
-		whereClause.append("  bibo:pmid ?X .");
-		Set<Integer> returnValue = getDistinctSortedIntegers(whereClause.toString());
-		if(returnValue.size()==0)
-			return new Integer(0);
-		return returnValue.iterator().next();
-	}
-	
-	/**
-	 * get the PubMed Ids for the articles in a list
-	 * 
-	 * @param articles VIVO URIs of articles
-	 * @return set of pubmed ids of papers by a particular author
-	 */
-	private Set<Integer> getArticlePubMedIds(Set<URI> articles) {
-		Set<Integer> returnValue = new TreeSet<Integer>();
-		for(URI article : articles) {
-			Integer pmid = getArticle(article);
-			if(pmid != null)
-				returnValue.add(pmid);			
-		}
-		return returnValue;
-	}
-	
-	/**
-	 * get the URI for an article
-	 * 
-	 * @param article a PubMed identifier
-	 * @return the URI of article, null if not found
-	 */
-	public URI getArticle(int article) {
-		final StringBuffer whereClause = new StringBuffer("?X bibo:pmid '");
-		whereClause.append(article);
-		whereClause.append("'");
-		Set<URI> returnValue = getDistinctSortedURIs(whereClause.toString());
-		if(returnValue.size()==0)
-			return null;
-		return returnValue.iterator().next();
-	}
-	
-	/**
-	 * get the PubMed Ids for the articles in a list
-	 * 
-	 * @param articles VIVO URIs of articles
-	 * @return set of pubmed ids of papers by a particular author
-	 */
-	private Set<URI> getArticleURIs(Set<Integer> articles) {
-		Set<URI> returnValue = new TreeSet<URI>();
-		for(Integer article : articles) {
-			URI uri = getArticle(article);
-			if(uri != null)
-				returnValue.add(uri);			
-		}
-		return returnValue;
-	}
-	
-	/**
-	 * authorship;
-	 * get the articles by an author;
-	 * relates VIVO authors to Medline PubMed identifiers;
-	 * the semantic bridge between VIVO and Medline
-	 * 
-	 * @param URI an author 
-	 * @return list of pubmed ids of papers by a particular author
-	 */
-	public int[] getArticles(URI author) {
-		return ArraysUtil.toArrayInt(getArticlesSet(author));
-	}
-	
-	/**
 	 * article author citation;
 	 * get the articles that cite an author
 	 * 
@@ -127,57 +32,6 @@ public class AuthorAuthorCitation extends Authorship {
 		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
 	}
 	
-	/**
-	 * authorship;
-	 * get the set of authors by an article's pmid
-	 * @param pubMedId an article 
-	 * @return set of URIs of authors of a particular paper
-	 * @throws URISyntaxException 
-	 */
-	private Set<URI> getAuthorsSet(int pubMedId) { 
-		final String whereClause =
-			"?X vivo:authorInAuthorship ?cn ." + "\n" +
-			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid '" + pubMedId + "' .";
-		return getDistinctSortedURIs(whereClause);
-	}
-	
-	/**
-	 * authorship;
-	 * get the authors by an article's pmid
-	 * @param pubMedId an article 
-	 * @return list of URIs of authors of a particular paper
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthors(int pubMedId) { 
-		return getAuthorsSet(pubMedId).toArray(new URI[0]);
-	}
-		
-	/**
-	 * authorship;
-	 * get the authors of a list of articles
-	 * @param pubMedIds an article 
-	 * @return set of URIs of authors of articles
-	 * @throws URISyntaxException 
-	 */
-	public Set<URI> getAuthorsSet(int[] pubMedIds) { 
-		TreeSet<URI> returnValue = new TreeSet<URI>();
-		for(int pubMedId : pubMedIds)
-			returnValue.addAll(getAuthorsSet(pubMedId));
-		return returnValue;	
-	}
-		
-	/**
-	 * authorship;
-	 * get the authors of a list of articles
-	 * @param pubMedIds an article 
-	 * @return array of URIs of authors of articles
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthors(int[] pubMedIds) { 
-		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
-	}
-		
 	/**
 	 * author-author citation;
 	 * get the authors cited by an author
@@ -317,42 +171,24 @@ public class AuthorAuthorCitation extends Authorship {
 	}
 
 	/**
-	 * get the citations TO a pubmed article qualified by keyword;
-	 * get the set of articles that cite an article;
-	 * X -> A, given the right-hand side, find the left-hand side 
-	 * @param pubMedId, a Pubmed id
-	 * @param keyword, a concept
-	 * @return sorted set of pubmed ids of papers that cite pubMedId
-	 */
-	private Set<Integer> getArticleArticleCitationTo(int pubMedId, String keyword) {
-		final String queryString = 
-			"?cc ml:comments_corrections_ref_pmid '" + pubMedId + "'^^xsd:int . " +  "\n" + //destination
-			"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
-			"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
-			"?a ml:article_pmid ?X . " +  "\n"; // source
-		return getDistinctSortedIntegers(queryString);
-	}
-	
-	/**
 	 * Hirsh index; qualify the citing as well as the cited papers by a concept
 	 * 
 	 * @param author URI of an author
 	 * @return h-index
 	 */
-	public Object getHIndex(URI author, String keyword) {
-		// set of article URIs
-		Set<URI> articleURIs = getArticles(author, keyword);
-		if(articleURIs.size() == 0)
-			return 0; // no articles
-		// set of article PubMed identifiers
-		Set<Integer> articlePubMedIds = getArticlePubMedIds(articleURIs);
-		if(articlePubMedIds.size() == 0)
-			return 0; // no articles with PubMed identifiers
-		int[] citations = new int[articleURIs.size()]; // array of citation counts
-		Iterator<Integer> articlePubMedIdsIterator = articlePubMedIds.iterator();
-		for(int i = 0; i < articleURIs.size(); i++)
-			citations[i] = getArticleArticleCitationTo(articlePubMedIdsIterator.next(), keyword).size();
-		return getHIndex(citations);
+	public int getHIndex(URI author, String keyword) {
+		Set<URI> articles = getArticles(author, keyword);
+		if(articles.isEmpty())
+			return 0; // no qualified articles
+		Set<Integer> pubMedIds = getArticles(articles);
+		if(pubMedIds.isEmpty())
+			return 0; // no qualified articles with PubMed identifiers
+		Set<Integer> citations = new TreeSet<Integer>(); // array of citation counts
+		for(Integer pubMedId : pubMedIds)
+			citations.add(medline.getArticleArticleCitationTo(pubMedId).length);
+		if(citations.isEmpty())
+			return 0; // no citations from qualified articles to a qualified article
+		return getHIndex(ArraysUtil.toArrayInt(citations));
 	}
 	
 }

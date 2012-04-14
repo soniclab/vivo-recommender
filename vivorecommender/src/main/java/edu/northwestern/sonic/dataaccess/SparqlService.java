@@ -39,7 +39,7 @@ public class SparqlService {
 	 * @param url
 	 * @param queryPrefix
 	 */
-	public SparqlService(URL url, String queryPrefix) {
+	public SparqlService(final URL url, final String queryPrefix) {
 		this.url = url;
 		this.queryPrefix = queryPrefix;
 	}
@@ -68,7 +68,7 @@ public class SparqlService {
 	 * @param queryString without prefix
 	 * @return Jena QueryExecution
 	 */
-	private QueryExecution getQueryExecution(String queryString) {
+	private QueryExecution getQueryExecution(final String queryString) {
 		StringBuffer queryStringBuffer = new StringBuffer(getQueryPrefix());
 		queryStringBuffer.append('\n');
 		queryStringBuffer.append(queryString);
@@ -79,7 +79,7 @@ public class SparqlService {
 		return getQueryExecution(query);
 	}
 
-	private static String distinctQuery(String whereClause) {
+	private static String distinctQuery(final String whereClause) {
 		final String DISTINCT_PREFIX =
 				"SELECT DISTINCT ?X " +  "\n" +
 				"WHERE { " +  "\n";
@@ -94,7 +94,7 @@ public class SparqlService {
 	 * @param whereClause
 	 * @return sorted set of results as Integers
 	 */
-	public TreeSet<Integer> getDistinctSortedIntegers(String whereClause) {
+	public TreeSet<Integer> getDistinctSortedIntegers(final String whereClause) {
 		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
@@ -111,7 +111,7 @@ public class SparqlService {
 	 * @param whereClause
 	 * @return sorted set of results as URIs
 	 */
-	public TreeSet<URI> getDistinctSortedURIs(String whereClause) {
+	public TreeSet<URI> getDistinctSortedURIs(final String whereClause) {
 		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<URI> returnValue = new TreeSet<URI>();
@@ -136,7 +136,7 @@ public class SparqlService {
 	 * @param askClause
 	 * @return true or false
 	 */
-	public boolean ask(String askClause){
+	public boolean ask(final String askClause){
 		StringBuffer queryStringBuffer = new StringBuffer("ASK {\n");
 		queryStringBuffer.append(askClause);
 		queryStringBuffer.append("\n}");
@@ -148,7 +148,7 @@ public class SparqlService {
 	 * Get a list of the results of a query as strings
 	 * for simple queries by convention our free variable is X
 	 */
-	public List<String> getStrings(String query) {
+	public List<String> getStrings(final String query) {
 		List<String[]> results = getStrings(query, new String[]{"X"});
 		ArrayList<String> result = new ArrayList<String>();
 		for(String[] arr : results)
@@ -163,7 +163,7 @@ public class SparqlService {
 	 * @param variables list of unbound variables used in the query parameter
 	 * @return a set of arrays of String, each array of same length as the variables parameter
 	 */
-	public Set<String[]> getStringsSet(String query, String[] variables) {
+	public Set<String[]> getStringsSet(final String query, final String[] variables) {
 		Set<String[]> returnValue = new HashSet<String[]>(); // no dups
 	    QueryExecution queryExecution = getQueryExecution(query);
 	    ResultSet resultSet = queryExecution.execSelect();
@@ -190,7 +190,7 @@ public class SparqlService {
 	 * @param variables list of unbound variables used in the query parameter
 	 * @return a list of arrays of String, each array of same length as the variables parameter
 	 */
-	public List<String[]> getStrings(String query, String[] variables) {
+	public List<String[]> getStrings(final String query, final String[] variables) {
 		return new ArrayList<String[]>(getStringsSet(query, variables));
 	}
 	
