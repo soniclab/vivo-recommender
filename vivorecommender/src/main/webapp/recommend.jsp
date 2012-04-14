@@ -167,7 +167,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
-	<script src="js/keywords.js"></script>
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			$('#rankdet').bind('show');

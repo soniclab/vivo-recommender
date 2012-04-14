@@ -67,7 +67,6 @@
   </div><!-- /.navbar-inner -->
 
 </div><!-- /.navbar -->
-
     <div class="container">
 
       <!-- Main hero unit for a primary marketing message or call to action -->
@@ -106,7 +105,7 @@
 				 					</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" value="affiliation" name="affiliation">
+										<input type="checkbox" name="affiliation" id="affiliation" checked="<%= request.getParameter("affiliation") %>">
 									</label>
 									</td>
 				 			</tr>
@@ -119,7 +118,7 @@
 				 					</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" value="mqualified" name="mqualified">
+										<input type="checkbox" id="mqualified" name="mqualified" checked="<%= request.getParameter("mqualified") %>">
 
 									</label>
 								</td>
@@ -136,7 +135,7 @@
 
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" value="foaf" name="foaf">
+										<input type="checkbox" id="foaf" name="foaf" checked="<%= request.getParameter("foaf") %>">
 									</label>
 								</td>
 								
@@ -151,7 +150,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" value="exchange" name="exchange">
+										<input type="checkbox" id="exchange" name="exchange" checked="<%= request.getParameter("exchange") %>">
 									</label>
 								</td>
 
@@ -168,7 +167,7 @@
 				 				<td>
 
 				 					<label class="checkbox">
-										<input type="checkbox" value="ftc" name="ftc">
+										<input type="checkbox" id="ftc" name="ftc" checked="<%= request.getParameter("ftc") %>">
 									</label>
 								</td>
 								
@@ -185,7 +184,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" value="boaf" name="boaf">
+										<input type="checkbox" id="boaf" name="boaf" checked="<%= request.getParameter("boaf") %>">
 									</label>
 								</td>
 								
@@ -200,7 +199,7 @@
 				 				<td>
 				 					<label class="checkbox">
 
-										<input type="checkbox" value="mobilizing" name="mobilizing">
+										<input type="checkbox" id="mobilizing" name="mobilizing" checked="<%= request.getParameter("mobilizing") %>">
 									</label>
 								</td>
 								
@@ -216,7 +215,23 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" value="lucky" name="lucky">
+										<input type="checkbox" id="lucky" name="lucky" checked="<%= request.getParameter("lucky") %>">
+									</label>
+								</td>
+								
+				 			</tr>
+				 			<tr>
+				 			    <td>9</td>
+
+				 				<td>Co-citation</td>
+				 				<td>
+									<i id="hr9" data-content="The 'Co-citation' is a score based on number of times the ego is co-cited with an 
+									identified expert." data-original-title="Co-Citation" class="icon-info-sign icon-black"></i>
+
+				 				</td>	
+				 				<td>
+				 					<label class="checkbox">
+										<input type="checkbox" id="cocitation" name="cocitation" checked="<%= request.getParameter("cocitation") %>">
 									</label>
 								</td>
 								
@@ -246,8 +261,8 @@
             $('#hr6').popover({animation:true, placement:'right', trigger:'hover', delay:0});
             $('#hr7').popover({animation:true, placement:'right', trigger:'hover', delay:0});
             $('#hr8').popover({animation:true, placement:'right', trigger:'hover', delay:0});
+            $('#hr9').popover({animation:true, placement:'right', trigger:'hover', delay:0});
         });
     </script>
-
 </body>
 </html>

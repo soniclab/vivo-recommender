@@ -30,17 +30,49 @@ public class PreferenceServlet extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		logger.debug("doGet()");
+		
 		HttpSession session = req.getSession();
 		User ego = (User)session.getAttribute("ego");
-		// code to set the checkboxs on screen
+		
+		req.setAttribute("affiliation", ego.isAffiliation());
+		req.setAttribute("mqualified", ego.isMostQualified());
+		req.setAttribute("foaf",ego.isFriendOfFriend());
+		req.setAttribute("exchange", ego.isExchange());
+		req.setAttribute("ftc", ego.isFollowCrowd());
+		req.setAttribute("boaf",ego.isBirdsOfFeather());
+		req.setAttribute("mobilizing",ego.isMobilizing());
+		req.setAttribute("lucky", ego.isFeelingLucky());
+		req.setAttribute("cocitation", ego.isCitation());
+	
 		preferenceJsp.forward(req, resp);
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		logger.debug("doPost()");
-		// code to make changes to preferences of ego based on checkboxs on screen
-
+		
+        String affiliation = req.getParameter("affiliation");
+        String mostQualified = req.getParameter("mqualified");
+        String foaf = req.getParameter("foaf");
+        String exchange = req.getParameter("exchange");
+        String ftc = req.getParameter("ftc");
+        String boaf = req.getParameter("boaf");
+        String mobilizing = req.getParameter("mobilizing");
+		String lucky = req.getParameter("lucky");
+		String cocitation = req.getParameter("cocitation");
+		
+		HttpSession session = req.getSession();
+		User ego = (User)session.getAttribute("ego");
+		
+		ego.setAffiliation("ON".equals(affiliation));
+		ego.setMostQualified("ON".equals(mostQualified));
+		ego.setFriendOfFriend("ON".equals(foaf));
+		ego.setExchange("ON".equals(exchange));
+		ego.setFollowCrowd("ON".equals(ftc));
+		ego.setBirdsOfFeather("ON".equals(boaf));
+		ego.setMobilizing("ON".equals(mobilizing));
+		ego.setFeelingLucky("ON".equals(lucky));
+		ego.setCitation("ON".equals(cocitation));
 		
 	}  
 }
