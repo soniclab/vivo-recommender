@@ -10,7 +10,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import edu.northwestern.sonic.dataaccess.medline.ArticleArticleCitation;
 import edu.northwestern.sonic.util.ArraysUtil;
-import edu.northwestern.sonic.util.StringUtil;
 /**
  * Wrapper for author-author citation;
  * combines citation data from PubMed with authorship data from VIVO.
@@ -23,36 +22,6 @@ public class AuthorAuthorCitation extends Authorship {
 	private final ArticleArticleCitation medline = new ArticleArticleCitation();
 
 	/**
-	 * authorship;
-	 * get the articles by an author;
-	 * relates VIVO authors to Medline PubMed identifiers;
-	 * the semantic bridge between VIVO and Medline
-	 * 
-	 * @param URI an author 
-	 * @return set of pubmed ids of papers by a particular author
-	 */
-	private Set<Integer> getArticlesSet(URI author) {
-		final String whereClause = 
-			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
-			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid ?X .";
-		return getDistinctSortedIntegers(whereClause);
-	}
-	
-	/**
-	 * authorship;
-	 * get the articles by an author;
-	 * relates VIVO authors to Medline PubMed identifiers;
-	 * the semantic bridge between VIVO and Medline
-	 * 
-	 * @param URI an author 
-	 * @return list of pubmed ids of papers by a particular author
-	 */
-	public int[] getArticles(URI author) {
-		return ArraysUtil.toArrayInt(getArticlesSet(author));
-	}
-	
-	/**
 	 * article author citation;
 	 * get the articles that cite an author
 	 * 
@@ -63,57 +32,6 @@ public class AuthorAuthorCitation extends Authorship {
 		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
 	}
 	
-	/**
-	 * authorship;
-	 * get the set of authors by an article's pmid
-	 * @param pubMedId an article 
-	 * @return set of URIs of authors of a particular paper
-	 * @throws URISyntaxException 
-	 */
-	private Set<URI> getAuthorsSet(int pubMedId) { 
-		final String whereClause =
-			"?X vivo:authorInAuthorship ?cn ." + "\n" +
-			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid '" + pubMedId + "' .";
-		return getDistinctSortedURIs(whereClause);
-	}
-	
-	/**
-	 * authorship;
-	 * get the authors by an article's pmid
-	 * @param pubMedId an article 
-	 * @return list of URIs of authors of a particular paper
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthors(int pubMedId) { 
-		return getAuthorsSet(pubMedId).toArray(new URI[0]);
-	}
-		
-	/**
-	 * authorship;
-	 * get the authors of a list of articles
-	 * @param pubMedIds an article 
-	 * @return set of URIs of authors of articles
-	 * @throws URISyntaxException 
-	 */
-	public Set<URI> getAuthorsSet(int[] pubMedIds) { 
-		TreeSet<URI> returnValue = new TreeSet<URI>();
-		for(int pubMedId : pubMedIds)
-			returnValue.addAll(getAuthorsSet(pubMedId));
-		return returnValue;	
-	}
-		
-	/**
-	 * authorship;
-	 * get the authors of a list of articles
-	 * @param pubMedIds an article 
-	 * @return array of URIs of authors of articles
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthors(int[] pubMedIds) { 
-		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
-	}
-		
 	/**
 	 * author-author citation;
 	 * get the authors cited by an author
@@ -209,16 +127,7 @@ public class AuthorAuthorCitation extends Authorship {
 	}
 
 	/**
-	 * Hirsh index;
-	 * "A scientist has index h if h of his/her N papers have at least h citations each,
-	 * and the other (N - h) papers have no more than h citations each."
-	 * Hirsch, J. E. (15 November 2005). "An index to quantify an individual's scientific research output";
-	 * PNAS 102 (46): 16569–16572;
-	 * arXiv:physics/0508025;
-	 * Bibcode 2005PNAS..10216569H;
-	 * doi:10.1073/pnas.0507655102;
-	 * PMC 1283832;
-	 * PMID 16275915
+	 * Hirsh index; auxiliary function
 	 * 
 	 * @param citations an array of citation counts for an author
 	 * @return h-index
@@ -255,11 +164,31 @@ public class AuthorAuthorCitation extends Authorship {
 		int[] articles = getArticles(author);
 		if(articles.length == 0)
 			return 0; // no articles
-		// array of citation counts
-		int[] citations = new int[articles.length];
+		int[] citations = new int[articles.length]; // array of citation counts
 		for(int i = 0; i < articles.length; i++)
 			citations[i] = medline.getArticleArticleCitationTo(articles[i]).length;
 		return getHIndex(citations);
+	}
+
+	/**
+	 * Hirsh index; qualify the citing as well as the cited papers by a concept
+	 * 
+	 * @param author URI of an author
+	 * @return h-index
+	 */
+	public int getHIndex(URI author, String keyword) {
+		Set<URI> articles = getArticles(author, keyword);
+		if(articles.isEmpty())
+			return 0; // no qualified articles
+		Set<Integer> pubMedIds = getArticles(articles);
+		if(pubMedIds.isEmpty())
+			return 0; // no qualified articles with PubMed identifiers
+		Set<Integer> citations = new TreeSet<Integer>(); // array of citation counts
+		for(Integer pubMedId : pubMedIds)
+			citations.add(medline.getArticleArticleCitationTo(pubMedId).length);
+		if(citations.isEmpty())
+			return 0; // no citations from qualified articles to a qualified article
+		return getHIndex(ArraysUtil.toArrayInt(citations));
 	}
 	
 }
