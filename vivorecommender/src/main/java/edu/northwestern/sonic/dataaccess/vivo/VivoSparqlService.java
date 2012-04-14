@@ -76,7 +76,7 @@ public class VivoSparqlService extends SparqlService {
 			}
 	}
 		
-	public VivoSparqlService(URL url) {
+	public VivoSparqlService(final URL url) {
 		super(url, queryPrefixes);
 	}
 
