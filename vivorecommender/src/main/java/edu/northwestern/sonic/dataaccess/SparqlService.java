@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 
 import com.hp.hpl.jena.query.Query;
@@ -39,9 +40,17 @@ public class SparqlService {
 	 * @param url
 	 * @param queryPrefix
 	 */
-	public SparqlService(final URL url, final String queryPrefix) {
+	public SparqlService(final URL url, final List<ImmutablePair<String, URI>> queryPrefixes) {
 		this.url = url;
-		this.queryPrefix = queryPrefix;
+		StringBuffer queryPrefixBuffer = new StringBuffer();
+		for(ImmutablePair<String,URI> queryPrefix : queryPrefixes) {
+			queryPrefixBuffer.append("PREFIX ");
+			queryPrefixBuffer.append(queryPrefix.getLeft());
+			queryPrefixBuffer.append(": <");
+			queryPrefixBuffer.append(queryPrefix.getRight().toString());
+			queryPrefixBuffer.append(">\n");
+		}
+		this.queryPrefix = queryPrefixBuffer.toString();
 	}
 
 	/**
@@ -70,7 +79,6 @@ public class SparqlService {
 	 */
 	private QueryExecution getQueryExecution(final String queryString) {
 		StringBuffer queryStringBuffer = new StringBuffer(getQueryPrefix());
-		queryStringBuffer.append('\n');
 		queryStringBuffer.append(queryString);
 		String s = queryStringBuffer.toString();
 		LogUtil.printStackTrace();

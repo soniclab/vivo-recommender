@@ -4,8 +4,13 @@
 package edu.northwestern.sonic.dataaccess.medline;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import edu.northwestern.sonic.dataaccess.SparqlService;
 
 /**
@@ -24,16 +29,27 @@ public class MedlineSparqlService extends SparqlService {
 		}
 	}
 	
-	private final static String queryPrefix =
-		"PREFIX ml: <http://research.icts.uiowa.edu/ontology/medline.rdf#>" + "\n" +
-		"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>";
-	
-	public MedlineSparqlService(URL url, String queryPrefix) {
-		super(url, queryPrefix);
+	private final static String[][] queryPrefixDescriptions = {
+		{"ml", "http://research.icts.uiowa.edu/ontology/medline.rdf#"},
+		{"xsd", "http://www.w3.org/2001/XMLSchema#"},
+	};
+	private final static List<ImmutablePair<String, URI>> queryPrefixes = new ArrayList<ImmutablePair<String, URI>>();
+	static {
+		for(String[] queryPrefixDescription : queryPrefixDescriptions) 
+			try {
+				queryPrefixes.add(ImmutablePair.of(queryPrefixDescription[0], new URI(queryPrefixDescription[1])));
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+	}
+		
+	public MedlineSparqlService(final URL url) {
+		super(url, queryPrefixes);
 	}
 
 	public MedlineSparqlService() {
-		super(url, queryPrefix);
+		super(url, queryPrefixes);
 	}
 
 
