@@ -24,7 +24,7 @@ public class Authorship extends Article {
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by a particular author
 	 */
-	public TreeSet<Integer> getArticlesSet(URI author) {
+	public TreeSet<Integer> getArticlesSet(final URI author) {
 		final String whereClause = 
 			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
@@ -38,7 +38,7 @@ public class Authorship extends Article {
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by a particular author
 	 */
-	public int[] getArticles(URI author) {
+	public int[] getArticles(final URI author) {
 		return ArraysUtil.toArrayInt(getArticlesSet(author));
 	}
 	
@@ -49,7 +49,7 @@ public class Authorship extends Article {
 	 * @return set of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	private Set<URI> getAuthorsSet(int pubMedId) { 
+	private Set<URI> getAuthorsSet(final int pubMedId) { 
 		final String whereClause =
 			"?X vivo:authorInAuthorship ?cn ." + "\n" +
 			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
@@ -64,7 +64,7 @@ public class Authorship extends Article {
 	 * @return list of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int pubMedId) { 
+	public URI[] getAuthors(final int pubMedId) { 
 		return getAuthorsSet(pubMedId).toArray(new URI[0]);
 	}
 		
@@ -75,7 +75,7 @@ public class Authorship extends Article {
 	 * @return set of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorsSet(int[] pubMedIds) { 
+	public Set<URI> getAuthorsSet(final int[] pubMedIds) { 
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getAuthorsSet(pubMedId));
@@ -89,7 +89,7 @@ public class Authorship extends Article {
 	 * @return array of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthors(int[] pubMedIds) { 
+	public URI[] getAuthors(final int[] pubMedIds) { 
 		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
 	}
 		
@@ -101,7 +101,7 @@ public class Authorship extends Article {
 	 * @return set of pubmed ids of papers by a particular author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getArticles(URI author, String keyword) {
+	public Set<URI> getArticles(final URI author, final String keyword) {
 		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
 		whereClause.append("vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
@@ -119,7 +119,7 @@ public class Authorship extends Article {
 	 * @param author the VIVO URI of an author
 	 * @return the set of URIs of co-authors of author
 	 */
-	public Set<URI> getCoAuthors(URI author) {
+	public Set<URI> getCoAuthors(final URI author) {
 		StringBuffer whereClause = new StringBuffer("<" + author.toString() + "> vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");

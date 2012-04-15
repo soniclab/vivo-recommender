@@ -19,7 +19,7 @@ public class Article extends VivoSparqlService {
 	 * @param article URI an article in VIVO 
 	 * @return the pubmed id of article, 0 if not found
 	 */
-	public Integer getArticle(URI article) {
+	public Integer getArticle(final URI article) {
 		final StringBuffer whereClause = new StringBuffer(StringUtil.wrap(article));
 		whereClause.append("  bibo:pmid ?X .");
 		Set<Integer> returnValue = getDistinctSortedIntegers(whereClause.toString());
@@ -34,7 +34,7 @@ public class Article extends VivoSparqlService {
 	 * @param articles set of URIs of VIVO articles
 	 * @return set of pubmed ids of articles
 	 */
-	protected Set<Integer> getArticles(Set<URI> articles) {
+	protected Set<Integer> getArticles(final Set<URI> articles) {
 		Set<Integer> returnValue = new TreeSet<Integer>();
 		for(URI article : articles) {
 			Integer pmid = getArticle(article);
@@ -50,7 +50,7 @@ public class Article extends VivoSparqlService {
 	 * @param article a PubMed identifier
 	 * @return the URI of article, null if not found
 	 */
-	public URI getArticle(int article) {
+	public URI getArticle(final int article) {
 		final StringBuffer whereClause = new StringBuffer("?X bibo:pmid '");
 		whereClause.append(article);
 		whereClause.append("'");

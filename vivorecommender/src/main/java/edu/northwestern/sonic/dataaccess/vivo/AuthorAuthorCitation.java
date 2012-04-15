@@ -28,7 +28,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by that cite a particular author
 	 */
-	public Set<Integer> getArticleAuthorCitationTo(URI author) {
+	public Set<Integer> getArticleAuthorCitationTo(final URI author) {
 		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
 	}
 	
@@ -40,7 +40,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cited by an author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCitationFrom(URI author) { 
+	public URI[] getAuthorAuthorCitationFrom(final URI author) { 
 		return getAuthors(medline.getArticleArticleCitationFrom(getArticles(author)));	
 	}
 
@@ -52,7 +52,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cited by an author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCitationFromSet(URI author) { 
+	public Set<URI> getAuthorAuthorCitationFromSet(final URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCitationFrom(getArticles(author)));	
 	}
 
@@ -64,7 +64,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors that cite by an author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCitationTo(URI author) { 
+	public URI[] getAuthorAuthorCitationTo(final URI author) { 
 		return getAuthors(medline.getArticleArticleCitationTo(getArticles(author)));	
 	}
 
@@ -75,7 +75,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param articlesTo set of PubMed ids of articles by the cited author 
 	 * @return set of PubMed ids of articles by authorFrom that cite articlesTo
 	 */
-	public Set<Integer> getAuthorAuthorCitation(URI authorFrom, Set<Integer> articlesTo) {
+	public Set<Integer> getAuthorAuthorCitation(final URI authorFrom, final Set<Integer> articlesTo) {
 		Set<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
 		returnValue.retainAll(getArticlesSet(authorFrom));
 		return returnValue;	
@@ -88,7 +88,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param authorTo URI of an author, the cited author 
 	 * @return set of PubMed ids of articles by authorFrom that cite authorTo
 	 */
-	public Set<Integer> getAuthorAuthorCitation(URI authorFrom, URI authorTo) {
+	public Set<Integer> getAuthorAuthorCitation(final URI authorFrom, final URI authorTo) {
 		return getAuthorAuthorCitation(authorFrom, getArticlesSet(authorTo));	
 	}
 
@@ -100,7 +100,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors that cite by an author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCitationToSet(URI author) { 
+	public Set<URI> getAuthorAuthorCitationToSet(final URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCitationTo(getArticles(author)));	
 	}
 
@@ -111,7 +111,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return array of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCoCitation(URI author) { 
+	public URI[] getAuthorAuthorCoCitation(final URI author) { 
 		return getAuthors(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
@@ -122,7 +122,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCoCitationSet(URI author) { 
+	public Set<URI> getAuthorAuthorCoCitationSet(final URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
@@ -132,7 +132,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param citations an array of citation counts for an author
 	 * @return h-index
 	 */
-	private int getHIndex(int[] citations) {
+	private int getHIndex(final int[] citations) {
 		Arrays.sort(citations); // ascending
 		ArrayUtils.reverse(citations); // descending
 		if(citations[0] == 0)
@@ -159,7 +159,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param author URI of an author
 	 * @return h-index
 	 */
-	public int getHIndex(URI author) {
+	public int getHIndex(final URI author) {
 		// array of article PubMed identifiers
 		int[] articles = getArticles(author);
 		if(articles.length == 0)
@@ -176,7 +176,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param author URI of an author
 	 * @return h-index
 	 */
-	public int getHIndex(URI author, String keyword) {
+	public int getHIndex(final URI author, final String keyword) {
 		Set<URI> articles = getArticles(author, keyword);
 		if(articles.isEmpty())
 			return 0; // no qualified articles
@@ -187,7 +187,7 @@ public class AuthorAuthorCitation extends Authorship {
 		for(Integer pubMedId : pubMedIds)
 			citations.add(medline.getArticleArticleCitationTo(pubMedId).length);
 		if(citations.isEmpty())
-			return 0; // no citations from qualified articles to a qualified article
+			return 0; // no citations to a qualified article
 		return getHIndex(ArraysUtil.toArrayInt(citations));
 	}
 	

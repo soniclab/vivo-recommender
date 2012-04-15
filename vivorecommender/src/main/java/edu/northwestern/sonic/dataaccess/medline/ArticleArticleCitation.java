@@ -23,7 +23,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param queryString
 	 * @return sorted set of pubmed ids
 	 */
-	private Set<Integer> getArticleArticleCitation(String queryString) {
+	private Set<Integer> getArticleArticleCitation(final String queryString) {
 		return getDistinctSortedIntegers(queryString);
 	}
 	
@@ -36,7 +36,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationFromSet(int pubMedId) {
+	private Set<Integer> getArticleArticleCitationFromSet(final int pubMedId) {
 		final String queryString = 
 			"?a ml:article_pmid '" + pubMedId + "'^^xsd:int . " +  "\n" + // source
 			"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
@@ -52,7 +52,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationFromSet(int[] pubMedIds) {
+	private Set<Integer> getArticleArticleCitationFromSet(final int[] pubMedIds) {
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getArticleArticleCitationFromSet(pubMedId));
@@ -66,7 +66,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationFromSet(Set<Integer> pubMedIds) {
+	private Set<Integer> getArticleArticleCitationFromSet(final Set<Integer> pubMedIds) {
 		return getArticleArticleCitationFromSet(ArraysUtil.toArrayInt(pubMedIds));
 	}
 		
@@ -77,7 +77,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers cited by the papers in pubMedIds
 	 */
-	public int[] getArticleArticleCitationFrom(int[] pubMedIds) {
+	public int[] getArticleArticleCitationFrom(final int[] pubMedIds) {
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getArticleArticleCitationFromSet(pubMedId));
@@ -91,7 +91,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	public int[] getArticleArticleCitationFrom(int pubMedId) {
+	public int[] getArticleArticleCitationFrom(final int pubMedId) {
 		return ArraysUtil.toArrayInt(getArticleArticleCitationFromSet(pubMedId));
 	}
 	
@@ -104,7 +104,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers that cite pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationToSet(int pubMedId) {
+	private Set<Integer> getArticleArticleCitationToSet(final int pubMedId) {
 		final String queryString = 
 			"?cc ml:comments_corrections_ref_pmid '" + pubMedId + "'^^xsd:int . " +  "\n" + //destination
 			"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
@@ -120,7 +120,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers that cite pubMedId
 	 */
-	public int[] getArticleArticleCitationTo(int pubMedId) {
+	public int[] getArticleArticleCitationTo(final int pubMedId) {
 		return ArraysUtil.toArrayInt(getArticleArticleCitationToSet(pubMedId));
 	}
 	
@@ -131,7 +131,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
-	public Set<Integer> getArticleArticleCitationToSet(int[] pubMedIds) {
+	public Set<Integer> getArticleArticleCitationToSet(final int[] pubMedIds) {
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getArticleArticleCitationToSet(pubMedId));
@@ -145,7 +145,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
-	public Set<Integer> getArticleArticleCitationToSet(Set<Integer> pubMedIds) {
+	public Set<Integer> getArticleArticleCitationToSet(final Set<Integer> pubMedIds) {
 		return getArticleArticleCitationToSet(ArraysUtil.toArrayInt((pubMedIds)));	
 	}
 	
@@ -156,7 +156,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
-	public int[] getArticleArticleCitationTo(int[] pubMedIds) {
+	public int[] getArticleArticleCitationTo(final int[] pubMedIds) {
 		return ArraysUtil.toArrayInt(getArticleArticleCitationToSet(pubMedIds));	
 	}
 	
@@ -169,7 +169,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers co-cited with pubMedId
 	 */
-	private Set<Integer> getArticleArticleCoCitationSet(int pubMedId) {
+	private Set<Integer> getArticleArticleCoCitationSet(final int pubMedId) {
 		Set<Integer> returnValue = getArticleArticleCitationFromSet(getArticleArticleCitationToSet(pubMedId));
 		returnValue.remove(pubMedId);
 		return returnValue;
@@ -181,7 +181,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted array of pubmed ids of papers co-cited with pubMedId
 	 */
-	public int[] getArticleArticleCoCitation(int pubMedId) {
+	public int[] getArticleArticleCoCitation(final int pubMedId) {
 		return ArraysUtil.toArrayInt(getArticleArticleCoCitationSet(pubMedId));
 	}
 
@@ -191,7 +191,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, a list of Pubmed ids
 	 * @return sorted array of pubmed ids of papers co-cited with the pubMedIds
 	 */
-	public int[] getArticleArticleCoCitation(int[] pubMedIds) {
+	public int[] getArticleArticleCoCitation(final int[] pubMedIds) {
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getArticleArticleCoCitationSet(pubMedId));
@@ -209,7 +209,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId1, pubMedId1 Pubmed ids
 	 * @return cardinality of intersection of citation sets
 	 */
-	public int getArticleArticleCoCitationFrequency(int pubMedId1, int pubMedId2) {
+	public int getArticleArticleCoCitationFrequency(final int pubMedId1, final int pubMedId2) {
 		Set<Integer> set1 = getArticleArticleCitationToSet(pubMedId1);
 		Set<Integer> set2 = getArticleArticleCitationToSet(pubMedId2);
 		Set<Integer> intersection = new TreeSet<Integer>(set1);
@@ -230,17 +230,22 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId1, pubMedId1 Pubmed ids
 	 * @return cardinality of intersection of citation sets
 	 */
-	public double getArticleArticleCoCitationRelativeFrequency(int pubMedId1, int pubMedId2) {
+	public double getArticleArticleCoCitationRelativeFrequency(final int pubMedId1, final int pubMedId2) {
 		Set<Integer> set1 = getArticleArticleCitationToSet(pubMedId1);
+		if(set1.isEmpty())
+			return 0.0;
 		Set<Integer> set2 = getArticleArticleCitationToSet(pubMedId2);
+		if(set2.isEmpty())
+			return 0.0;
 		Set<Integer> union = new TreeSet<Integer>(set1);
 		union.addAll(set2);
-		int unionCardinality = union.size();
-		if(unionCardinality == 0)
+		if(union.isEmpty())
 			return 0.0;
 		Set<Integer> intersection = new TreeSet<Integer>(set1);
 		intersection.retainAll(set2);
-		return (double) intersection.size() / (double) unionCardinality;
+		if(intersection.isEmpty())
+			return 0.0;
+		return (double) intersection.size() / (double) union.size();
 	}
 
 }

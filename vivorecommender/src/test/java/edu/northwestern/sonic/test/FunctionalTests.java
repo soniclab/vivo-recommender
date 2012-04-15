@@ -5,6 +5,7 @@ import org.junit.runners.Suite;
 
 import edu.northwestern.sonic.dataaccess.medline.test.ArticleArticleCitationTest;
 import edu.northwestern.sonic.dataaccess.medline.test.MedlineSparqlServiceTest;
+import edu.northwestern.sonic.dataaccess.vivo.test.ArticleTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.AuthorAuthorCitationTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.AuthorshipTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.IdentificationTest;
@@ -25,6 +26,7 @@ import edu.northwestern.sonic.model.test.RecommendTest;
 	MedlineSparqlServiceTest.class,
 	VivoSparqlServiceTest.class,
 	ArticleArticleCitationTest.class,
+	ArticleTest.class,
 	AuthorAuthorCitationTest.class,
 	AuthorshipTest.class,
 	ResearcherTest.class,

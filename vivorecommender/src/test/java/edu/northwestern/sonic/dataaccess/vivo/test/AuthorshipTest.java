@@ -25,7 +25,7 @@ public class AuthorshipTest {
 	private static final Authorship authorship = new Authorship();
 
 	@Test
-	public void testGetArticles() throws URISyntaxException {
+	public void testGetArticles() {
 		int[] actual = authorship.getArticles(Katritzky.VIVO_URI);
 		assertEquals("number of articles", Katritzky.PMIDS.length, actual.length);
 		assertArrayEquals("articles", Katritzky.PMIDS, actual);
@@ -64,7 +64,7 @@ public class AuthorshipTest {
 		assertArrayEquals("authors", expected, authors);
 	}
 
-	@Test 
+	@Test
 	public void testGetCoAuthors() throws URISyntaxException {
 		final User user = researcher.getUser("stephen.grobmyer@surgery.ufl.edu");
 		assertEquals("Number of CoAuthors", 20, authorship.getCoAuthors(user.getUri()).size());

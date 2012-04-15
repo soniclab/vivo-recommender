@@ -109,13 +109,4 @@ public class AuthorAuthorCitationTest {
 		assertEquals("h index", 1, authorAuthorCitation.getHIndex(Katritzky.VIVO_URI, "organic"));
 	}
 
-	@Test
-	public void testGetArticle() throws URISyntaxException {
-		final URI authorUri = new URI("http://vivo.ufl.edu/individual/n368979405");
-		assertEquals("article not found by URI", 0, authorAuthorCitation.getArticle(new URI("http://www.example.com/")).intValue());
-		assertEquals("article not found by PubMed id", null, authorAuthorCitation.getArticle(0));
-		assertEquals("article by VIVO URI", 12790603, authorAuthorCitation.getArticle(authorUri).intValue());
-		assertEquals("article by PubMed id", authorUri, authorAuthorCitation.getArticle(12790603));
-	}
-
 }

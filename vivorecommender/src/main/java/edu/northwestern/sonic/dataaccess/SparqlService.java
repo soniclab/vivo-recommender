@@ -67,7 +67,7 @@ public class SparqlService {
 		return queryPrefix;
 	}
 
-	private QueryExecution getQueryExecution(Query query) {
+	private QueryExecution getQueryExecution(final Query query) {
 		return QueryExecutionFactory.sparqlService(getUrl().toString(), query);
 	}
 	
