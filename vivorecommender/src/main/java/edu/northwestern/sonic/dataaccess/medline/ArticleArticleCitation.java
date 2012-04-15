@@ -3,6 +3,7 @@ package edu.northwestern.sonic.dataaccess.medline;
 import java.util.Set;
 import java.util.TreeSet;
 
+import edu.northwestern.sonic.dataaccess.ListFilter;
 import edu.northwestern.sonic.util.ArraysUtil;
 /**
  * Wrapper for citation data;
@@ -30,22 +31,6 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	// FROM citation
 	
 	/**
-	 * get the citations FROM a pubmed article
-	 * get the articles cited by an article
-	 * A -> X, given the left-hand side, find the right-hand side 
-	 * @param pubMedId, a Pubmed id
-	 * @return sorted set of pubmed ids of papers cited by pubMedId
-	 */
-	private Set<Integer> getArticleArticleCitationFromSet(final int pubMedId) {
-		final String queryString = 
-			"?a ml:article_pmid '" + pubMedId + "'^^xsd:int . " +  "\n" + // source
-			"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
-			"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
-			"?cc ml:comments_corrections_ref_pmid ?X . " +  "\n"; //destination
-		return getArticleArticleCitation(queryString);
-	}
-		
-	/**
 	 * get the citations FROM a list of pubmed articles
 	 * get the articles cited by any of a list of articles
 	 * A -> X, given the left-hand side, find the right-hand side 
@@ -53,10 +38,25 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
 	private Set<Integer> getArticleArticleCitationFromSet(final int[] pubMedIds) {
-		TreeSet<Integer> returnValue = new TreeSet<Integer>();
-		for(int pubMedId : pubMedIds)
-			returnValue.addAll(getArticleArticleCitationFromSet(pubMedId));
-		return returnValue;	
+		final StringBuffer queryStringBuffer = new StringBuffer( 
+				"?a ml:article_pmid ?Y . " +  "\n" + // source
+				"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
+				"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
+				"?cc ml:comments_corrections_ref_pmid ?X . " +  "\n" //destination
+				);
+		queryStringBuffer.append(ListFilter.filter(pubMedIds, "Y"));
+		return getArticleArticleCitation(queryStringBuffer.toString());
+	}
+		
+	/**
+	 * get the citations FROM a pubmed article
+	 * get the articles cited by an article
+	 * A -> X, given the left-hand side, find the right-hand side 
+	 * @param pubMedId, a Pubmed id
+	 * @return sorted set of pubmed ids of papers cited by pubMedId
+	 */
+	private Set<Integer> getArticleArticleCitationFromSet(final int pubMedId) {
+		return getArticleArticleCitationFromSet(new int[]{pubMedId});
 	}
 		
 	/**
@@ -78,10 +78,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @return list of pubmed ids of papers cited by the papers in pubMedIds
 	 */
 	public int[] getArticleArticleCitationFrom(final int[] pubMedIds) {
-		TreeSet<Integer> returnValue = new TreeSet<Integer>();
-		for(int pubMedId : pubMedIds)
-			returnValue.addAll(getArticleArticleCitationFromSet(pubMedId));
-		return ArraysUtil.toArrayInt(returnValue);	
+		return ArraysUtil.toArrayInt(getArticleArticleCitationFromSet(pubMedIds));	
 	}
 	
 	/**
@@ -98,6 +95,24 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	// TO citation
 	
 	/**
+	 * get the articles that cite the articles in a list;
+	 * get the articles that cite any of the article in a list;
+	 * X -> A, given the right-hand side, find the left-hand side 
+	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
+	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
+	 */
+	private Set<Integer> getArticleArticleCitationToSet(final int[] pubMedIds) {
+		final StringBuffer queryStringBuffer = new StringBuffer( 
+				"?cc ml:comments_corrections_ref_pmid ?Y . " +  "\n" + //destination
+				"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
+				"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
+				"?a ml:article_pmid ?X . " +  "\n" // source
+				);
+		queryStringBuffer.append(ListFilter.filter(pubMedIds, "Y"));
+		return getArticleArticleCitation(queryStringBuffer.toString());
+	}
+	
+	/**
 	 * get the citations TO a pubmed article;
 	 * get the set of articles that cite an article;
 	 * X -> A, given the right-hand side, find the left-hand side 
@@ -105,12 +120,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @return sorted set of pubmed ids of papers that cite pubMedId
 	 */
 	private Set<Integer> getArticleArticleCitationToSet(final int pubMedId) {
-		final String queryString = 
-			"?cc ml:comments_corrections_ref_pmid '" + pubMedId + "'^^xsd:int . " +  "\n" + //destination
-			"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
-			"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
-			"?a ml:article_pmid ?X . " +  "\n"; // source
-		return getArticleArticleCitation(queryString);
+		return getArticleArticleCitationToSet(new int[]{pubMedId});
 	}
 	
 	/**
@@ -122,20 +132,6 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 */
 	public int[] getArticleArticleCitationTo(final int pubMedId) {
 		return ArraysUtil.toArrayInt(getArticleArticleCitationToSet(pubMedId));
-	}
-	
-	/**
-	 * get the articles that cite the articles in a list;
-	 * get the articles that cite any of the article in a list;
-	 * X -> A, given the right-hand side, find the left-hand side 
-	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
-	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
-	 */
-	public Set<Integer> getArticleArticleCitationToSet(final int[] pubMedIds) {
-		TreeSet<Integer> returnValue = new TreeSet<Integer>();
-		for(int pubMedId : pubMedIds)
-			returnValue.addAll(getArticleArticleCitationToSet(pubMedId));
-		return returnValue;	
 	}
 	
 	/**
@@ -170,19 +166,13 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @return sorted set of pubmed ids of papers co-cited with pubMedId
 	 */
 	private Set<Integer> getArticleArticleCoCitationSet(final int pubMedId) {
-		Set<Integer> returnValue = getArticleArticleCitationFromSet(getArticleArticleCitationToSet(pubMedId));
+		Set<Integer> returnValue = new TreeSet<Integer>();
+		Set<Integer> pubMedIds = getArticleArticleCitationToSet(pubMedId);
+		if(pubMedIds.isEmpty()) // no citations
+			return returnValue; // empty
+		returnValue = getArticleArticleCitationFromSet(pubMedIds);
 		returnValue.remove(pubMedId);
 		return returnValue;
-	}
-
-	/**
-	 * get the articles co-cited with an article;
-	 * get the articles that cite an article, then get all the articles cited by those articles
-	 * @param pubMedId, a Pubmed id
-	 * @return sorted array of pubmed ids of papers co-cited with pubMedId
-	 */
-	public int[] getArticleArticleCoCitation(final int pubMedId) {
-		return ArraysUtil.toArrayInt(getArticleArticleCoCitationSet(pubMedId));
 	}
 
 	/**
@@ -197,6 +187,18 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 			returnValue.addAll(getArticleArticleCoCitationSet(pubMedId));
 		return ArraysUtil.toArrayInt(returnValue);	
 	}
+
+	/**
+	 * get the articles co-cited with an article;
+	 * get the articles that cite an article, then get all the articles cited by those articles
+	 * @param pubMedId, a Pubmed id
+	 * @return sorted array of pubmed ids of papers co-cited with pubMedId
+	 */
+	public int[] getArticleArticleCoCitation(final int pubMedId) {
+		return getArticleArticleCoCitation(new int[]{pubMedId});
+	}
+	
+	// Co-citation metrics
 
 	/**
 	 * get the co-citation frequency of two articles;
@@ -239,8 +241,6 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 			return 0.0;
 		Set<Integer> union = new TreeSet<Integer>(set1);
 		union.addAll(set2);
-		if(union.isEmpty())
-			return 0.0;
 		Set<Integer> intersection = new TreeSet<Integer>(set1);
 		intersection.retainAll(set2);
 		if(intersection.isEmpty())

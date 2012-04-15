@@ -100,7 +100,7 @@ public class SparqlService {
 	/**
 	 * get the results of a single free variable query as Integers
 	 * @param whereClause
-	 * @return sorted set of results as Integers
+	 * @return sorted set of results as Integers, empty set if not found
 	 */
 	public TreeSet<Integer> getDistinctSortedIntegers(final String whereClause) {
 		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
@@ -117,7 +117,7 @@ public class SparqlService {
 	/**
 	 * get the results of a single free variable query as URIs
 	 * @param whereClause
-	 * @return sorted set of results as URIs
+	 * @return sorted set of results as URIs, empty set if not found
 	 */
 	public TreeSet<URI> getDistinctSortedURIs(final String whereClause) {
 		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));

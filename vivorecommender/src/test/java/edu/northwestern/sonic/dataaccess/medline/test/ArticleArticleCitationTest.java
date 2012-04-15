@@ -34,6 +34,8 @@ public class ArticleArticleCitationTest {
 	public static void classSetUp()  {
 		Arrays.sort(CITED_BY_21145524);
 	}
+	
+	// Citation
 
 	@Test
 	public void testGetArticleArticleCitationFromNone() {
@@ -76,6 +78,8 @@ public class ArticleArticleCitationTest {
 		assertEquals("number of citations", CITES_814844.length, actual.length);
 		assertArrayEquals("list of citations", CITES_814844, actual);
 	}
+	
+	// Co-citation
 
 	@Test
 	public void testArticleArticleCoCitationNone() {
