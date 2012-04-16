@@ -36,6 +36,10 @@ body {
 	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
 </head>
 <body>
+<%
+		HttpSession ses = (HttpSession) request.getSession();
+		User ego = (User) ses.getAttribute("ego");
+	%>
 	<div class="navbar navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
@@ -45,23 +49,44 @@ body {
 				</a> <a class="brand" href="http://sonic.northwestern.edu/">SONIC</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li class="active"><a href="/"><i
+						<li class="active"><a href="index.jsp"><i
 								class="icon-home icon-white"></i> Home</a></li>
 						<li><a href="about"><i class="icon-star-empty icon-white"></i>
 								About</a></li>
 					</ul>
-					<% HttpSession ses = (HttpSession) request.getSession();
-					   User ego = (User) ses.getAttribute("ego");
-					   if(ego!=null){%>
+					<% if(ego!=null){%>
 					<ul class="nav pull-right">
 						<li class="dropdown"><a href="#" class="dropdown-toggle"
-							data-toggle="dropdown">My Account <b class="caret"></b></a>
+							data-toggle="dropdown"><%= ego.getName()%> <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="preference"><i class="icon-cog icon-black"></i>
-										Preferences</a></li>
+								<li>
+									<table class="table">
+										<tr>
+											<td><img class="thumbnail" alt=""
+												src="<%= ego.getImageUrl() %>" width="75px" height="75px"></td>
+											<td>
+												<table class="table">
+													<tr>
+														<th><label><%= ego.getName() %></label>
+															<center><%=ego.getEmail()%></center></th>
+													</tr>
+													<tr>
+														<td><a href="<%=ego.getUri().toString()%>"><button
+																	type="submit" class="btn btn-mini btn-primary">VIVO
+																	Profile</button></a></td>
+													</tr>
+													<tr>
+														<td><a href="preference"><i
+																class="icon-cog icon-black"></i> Preferences</a></td>
+													</tr>
+												</table>
+											</td>
+										</tr>
+									</table>
+								</li>
 								<li class="divider"></li>
-								<li><a href="logout"><i class="icon-off icon-black"></i>
-										Logout</a></li>
+								<li><a href="logout" class="pull right"><i
+										class="icon-off icon-black"></i> Logout</a></li>
 							</ul></li>
 					</ul>
 					<% } %>

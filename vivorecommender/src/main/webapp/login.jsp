@@ -44,7 +44,7 @@ body {
 				</a> <a class="brand" href="http://sonic.northwestern.edu/">SONIC</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li><a href="/"><i
+						<li><a href="index.jsp"><i
 								class="icon-home icon-white"></i> Home</a></li>
 						<li><a href="about"><i
 								class="icon-star-empty icon-white"></i> About</a></li>

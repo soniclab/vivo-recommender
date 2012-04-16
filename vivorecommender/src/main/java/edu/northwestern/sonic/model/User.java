@@ -25,6 +25,7 @@ public class User {
 	private boolean mobilizing = true;
 	private boolean feelingLucky = true;
 	private double bofScore;
+	private String imageUrl;
 	
 	public boolean isAffiliation() {
 		return affiliation;
@@ -133,6 +134,12 @@ public class User {
 	}
 	public void setBofScore(double bofScore) {
 		this.bofScore = bofScore;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 	
