@@ -25,11 +25,11 @@ public class Authorship extends Article {
 	 * @return list of pubmed ids of papers by a particular author
 	 */
 	public TreeSet<Integer> getArticlesSet(final URI author) {
-		final String whereClause = 
-			StringUtil.wrap(author) + " vivo:authorInAuthorship ?cn ." + "\n" +
-			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid ?X .";
-		return getDistinctSortedIntegers(whereClause);
+		final StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
+		whereClause.append(" vivo:authorInAuthorship ?cn .\n");
+		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
+		whereClause.append("?pub bibo:pmid ?X .");
+		return getDistinctSortedIntegers(whereClause.toString());
 	}
 	
 	/**
@@ -50,11 +50,12 @@ public class Authorship extends Article {
 	 * @throws URISyntaxException 
 	 */
 	private Set<URI> getAuthorsSet(final int pubMedId) { 
-		final String whereClause =
-			"?X vivo:authorInAuthorship ?cn ." + "\n" +
-			"?cn vivo:linkedInformationResource ?pub ." + "\n" +
-			"?pub bibo:pmid '" + pubMedId + "' .";
-		return getDistinctSortedURIs(whereClause);
+		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
+		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
+		whereClause.append("?pub bibo:pmid '");
+		whereClause.append(pubMedId);
+		whereClause.append("' .");
+		return getDistinctSortedURIs(whereClause.toString());
 	}
 	
 	/**
