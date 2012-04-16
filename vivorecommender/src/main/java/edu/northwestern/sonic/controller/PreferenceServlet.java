@@ -20,17 +20,18 @@ import edu.northwestern.sonic.model.User;
 public class PreferenceServlet extends HttpServlet{
 	private Logger logger = Logger.getLogger(this.getClass());
 	private RequestDispatcher preferenceJsp;
+	private RequestDispatcher index;
+	ServletContext context;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
-		ServletContext context = config.getServletContext();
-		preferenceJsp = context.getRequestDispatcher("/preference.jsp");
+		context = config.getServletContext();
 	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		logger.debug("doGet()");
-		
+		preferenceJsp = context.getRequestDispatcher("/preference.jsp");
 		HttpSession session = req.getSession();
 		User ego = (User)session.getAttribute("ego");
 		
@@ -50,7 +51,7 @@ public class PreferenceServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		logger.debug("doPost()");
-		
+		index = context.getRequestDispatcher("/index.jsp");
         String affiliation = req.getParameter("affiliation");
         String mostQualified = req.getParameter("mqualified");
         String foaf = req.getParameter("foaf");
@@ -64,15 +65,16 @@ public class PreferenceServlet extends HttpServlet{
 		HttpSession session = req.getSession();
 		User ego = (User)session.getAttribute("ego");
 		
-		ego.setAffiliation("ON".equals(affiliation));
-		ego.setMostQualified("ON".equals(mostQualified));
-		ego.setFriendOfFriend("ON".equals(foaf));
-		ego.setExchange("ON".equals(exchange));
-		ego.setFollowCrowd("ON".equals(ftc));
-		ego.setBirdsOfFeather("ON".equals(boaf));
-		ego.setMobilizing("ON".equals(mobilizing));
-		ego.setFeelingLucky("ON".equals(lucky));
-		ego.setCitation("ON".equals(cocitation));
-		
+		ego.setAffiliation("affiliation".equals(affiliation));
+		ego.setMostQualified("mqualified".equals(mostQualified));
+		ego.setFriendOfFriend("foaf".equals(foaf));
+		ego.setExchange("exchange".equals(exchange));
+		ego.setFollowCrowd("ftc".equals(ftc));
+		ego.setBirdsOfFeather("boaf".equals(boaf));
+		ego.setMobilizing("mobilizing".equals(mobilizing));
+		ego.setFeelingLucky("lucky".equals(lucky));
+		ego.setCitation("cocitation".equals(cocitation));
+	
+		index.forward(req, resp);
 	}  
 }

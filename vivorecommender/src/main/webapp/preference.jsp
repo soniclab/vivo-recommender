@@ -69,8 +69,7 @@
 </div><!-- /.navbar -->
     <div class="container">
 
-      <!-- Main hero unit for a primary marketing message or call to action -->
-      <div class="well">
+      <form class="well" method="POST" action="preference">
 			  <div class="row">
 				<div class="span12">
 					  <center>
@@ -105,7 +104,7 @@
 				 					</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" name="affiliation" id="affiliation" checked="<%= request.getParameter("affiliation") %>">
+										<input type="checkbox" name="affiliation" id="affiliation" value ="affiliation" checked="<%= request.getParameter("affiliation") %>">
 									</label>
 									</td>
 				 			</tr>
@@ -118,7 +117,7 @@
 				 					</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="mqualified" name="mqualified" checked="<%= request.getParameter("mqualified") %>">
+										<input type="checkbox" id="mqualified" name="mqualified" value="mqualified" checked="<%= request.getParameter("mqualified") %>">
 
 									</label>
 								</td>
@@ -135,7 +134,7 @@
 
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="foaf" name="foaf" checked="<%= request.getParameter("foaf") %>">
+										<input type="checkbox" id="foaf" name="foaf" value="foaf" checked="<%= request.getParameter("foaf") %>">
 									</label>
 								</td>
 								
@@ -150,7 +149,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="exchange" name="exchange" checked="<%= request.getParameter("exchange") %>">
+										<input type="checkbox" id="exchange" name="exchange" value="exchange" checked="<%= request.getParameter("exchange") %>">
 									</label>
 								</td>
 
@@ -167,7 +166,7 @@
 				 				<td>
 
 				 					<label class="checkbox">
-										<input type="checkbox" id="ftc" name="ftc" checked="<%= request.getParameter("ftc") %>">
+										<input type="checkbox" id="ftc" name="ftc" value="ftc" checked="<%= request.getParameter("ftc") %>">
 									</label>
 								</td>
 								
@@ -184,7 +183,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="boaf" name="boaf" checked="<%= request.getParameter("boaf") %>">
+										<input type="checkbox" id="boaf" name="boaf" value="boaf" checked="<%= request.getParameter("boaf") %>">
 									</label>
 								</td>
 								
@@ -199,7 +198,7 @@
 				 				<td>
 				 					<label class="checkbox">
 
-										<input type="checkbox" id="mobilizing" name="mobilizing" checked="<%= request.getParameter("mobilizing") %>">
+										<input type="checkbox" id="mobilizing" name="mobilizing" value="mobilizing" checked="<%= request.getParameter("mobilizing") %>">
 									</label>
 								</td>
 								
@@ -215,7 +214,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="lucky" name="lucky" checked="<%= request.getParameter("lucky") %>">
+										<input type="checkbox" id="lucky" name="lucky" value="lucky" checked="<%= request.getParameter("lucky") %>">
 									</label>
 								</td>
 								
@@ -231,7 +230,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="cocitation" name="cocitation" checked="<%= request.getParameter("cocitation") %>">
+										<input type="checkbox" id="cocitation" name="cocitation" value="cocitation" checked="<%= request.getParameter("cocitation") %>">
 									</label>
 								</td>
 								
@@ -240,7 +239,8 @@
 				 	</table>
 				 </div>
 			 </div>
-      </div> <!-- hero-unit -->
+			<center><button type="submit" class="btn btn-primary">Submit my preferences</button></center>
+      </form>
       <footer>
       </footer>
 
