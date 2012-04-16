@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import="edu.northwestern.sonic.model.User" %>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -46,22 +47,26 @@
       <div class="nav-collapse">
 					<ul class="nav">
 
-						<li><a href="#"><i
+						<li><a href="/"><i
 								class="icon-home icon-white"></i> Home</a></li>
 						<li><a href="about"><i class="icon-star-empty icon-white"></i>
 								About</a></li>
 					</ul>
+					<% HttpSession ses = (HttpSession) request.getSession();
+					   User ego = (User) ses.getAttribute("ego");
+					   if(ego!=null){%>
 					<ul class="nav pull-right">
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Account <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="preference"><i class="icon-cog icon-black"></i> Preferences</a></li>
-
-              <li class="divider"></li>
-              <li><a href="logout"><i class="icon-off icon-black"></i> Logout</a></li>
-            </ul>
-          </li>
-          </ul>
+						<li class="dropdown"><a href="#" class="dropdown-toggle"
+							data-toggle="dropdown">My Account <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="preference"><i class="icon-cog icon-black"></i>
+										Preferences</a></li>
+								<li class="divider"></li>
+								<li><a href="logout"><i class="icon-off icon-black"></i>
+										Logout</a></li>
+							</ul></li>
+					</ul>
+					<% } %>
       </div><!-- /.nav-collapse -->
     </div><!-- /.container -->
   </div><!-- /.navbar-inner -->
