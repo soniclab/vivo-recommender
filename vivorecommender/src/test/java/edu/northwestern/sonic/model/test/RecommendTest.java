@@ -50,11 +50,11 @@ public class RecommendTest {
 		assertEquals("List size : ", affListSize, affList.size());
 	}
 	
-	@Test
+	/*@Test
 	public void testBirdsOfFeather() throws URISyntaxException{
 		List<User> bof = recommend.birdsOfFeather(experts, ego);
 		assertEquals("List size : ",13,bof.size());
-	}
+	}*/
 	
 	@Test
 	public void testCocitation() throws URISyntaxException {
