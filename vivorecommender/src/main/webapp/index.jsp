@@ -121,7 +121,7 @@ body {
 						<form class="form-search" method="GET" action="recommend">
 							<input id="search" name="search" data-provide="typeahead"
 								data-items="4" type="text" placeholder="Research Topic"
-								class="search-query">
+								class="search-query" autocomplete="off">
 							<button type="submit" class="btn btn-primary">Recommend</button>
 						</form>
 					</center>
