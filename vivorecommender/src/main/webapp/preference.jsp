@@ -134,7 +134,7 @@
 				 					</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" name="affiliation" id="affiliation" value ="affiliation" checked="<%= request.getParameter("affiliation") %>">
+										<input type="checkbox" name="affiliation" id="affiliation" value ="affiliation" <%if(ego.isAffiliation()){%> checked="checked" <%} %>>
 									</label>
 									</td>
 				 			</tr>
@@ -147,7 +147,7 @@
 				 					</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="mqualified" name="mqualified" value="mqualified" checked="<%= request.getParameter("mqualified") %>">
+										<input type="checkbox" id="mqualified" name="mqualified" value="mqualified" <%if(ego.isMostQualified()){%> checked="checked" <%} %>>
 
 									</label>
 								</td>
@@ -164,7 +164,7 @@
 
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="foaf" name="foaf" value="foaf" checked="<%= request.getParameter("foaf") %>">
+										<input type="checkbox" id="foaf" name="foaf" value="foaf" <%if(ego.isFriendOfFriend()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 								
@@ -179,7 +179,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="exchange" name="exchange" value="exchange" checked="<%= request.getParameter("exchange") %>">
+										<input type="checkbox" id="exchange" name="exchange" value="exchange" <%if(ego.isExchange()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 
@@ -196,7 +196,7 @@
 				 				<td>
 
 				 					<label class="checkbox">
-										<input type="checkbox" id="ftc" name="ftc" value="ftc" checked="<%= request.getParameter("ftc") %>">
+										<input type="checkbox" id="ftc" name="ftc" value="ftc" <%if(ego.isFollowCrowd()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 								
@@ -213,7 +213,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="boaf" name="boaf" value="boaf" checked="<%= request.getParameter("boaf") %>">
+										<input type="checkbox" id="boaf" name="boaf" value="boaf" <%if(ego.isBirdsOfFeather()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 								
@@ -228,7 +228,7 @@
 				 				<td>
 				 					<label class="checkbox">
 
-										<input type="checkbox" id="mobilizing" name="mobilizing" value="mobilizing" checked="<%= request.getParameter("mobilizing") %>">
+										<input type="checkbox" id="mobilizing" name="mobilizing" value="mobilizing" <%if(ego.isMobilizing()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 								
@@ -244,7 +244,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="lucky" name="lucky" value="lucky" checked="<%= request.getParameter("lucky") %>">
+										<input type="checkbox" id="lucky" name="lucky" value="lucky" <%if(ego.isFeelingLucky()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 								
@@ -260,7 +260,7 @@
 				 				</td>	
 				 				<td>
 				 					<label class="checkbox">
-										<input type="checkbox" id="cocitation" name="cocitation" value="cocitation" checked="<%= request.getParameter("cocitation") %>">
+										<input type="checkbox" id="cocitation" name="cocitation" value="cocitation" <%if(ego.isCitation()){%> checked="checked" <%} %>>
 									</label>
 								</td>
 								

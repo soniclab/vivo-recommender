@@ -50,18 +50,16 @@ public class RecommendServlet extends HttpServlet {
 				return;
 			}
 		}
-		Researcher researcher = new Researcher();
 		User ego;
 		try {
-			ego = (User)req.getSession().getAttribute("ego");
-			String imageUrl = researcher.getImage(ego.getUri());
+			HttpSession session = req.getSession();
+			ego = (User)session.getAttribute("ego");
 			Map<String,List<String>> experts = getRecommendations(researchTopic,ego);
 			logger.debug("Forwarding to recommend.jsp");
-			String[] egoDetails = new String[]{ego.getUri().toString(),ego.getName(),imageUrl};
+			String[] egoDetails = new String[]{ego.getUri().toString(),ego.getName(),ego.getImageUrl()};
 			req.setAttribute("egoDetails", egoDetails);
 			req.setAttribute("experts", experts);
 			req.setAttribute("researchTopic",researchTopic);
-			HttpSession session = req.getSession();
 			session.setAttribute("experts", experts);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
@@ -76,9 +74,18 @@ public class RecommendServlet extends HttpServlet {
 		Recommend recommend = new Recommend();
 		List<List<User>> combinedList = new ArrayList<List<User>>();
 		identifiedExperts = identification.identifyExpertsByResearchArea(researchTopic);
-		List<User> affList = recommend.affiliation(identifiedExperts, ego);
-		List<User> fofList = recommend.friendOfFriend(identifiedExperts, ego);
-		List<User> bofList = recommend.birdsOfFeather(identifiedExperts, ego);
+		
+		List<User> affList = null;
+		List<User> fofList = null;
+		List<User> bofList = null;
+		
+		if(ego.isAffiliation())
+		affList = recommend.affiliation(identifiedExperts, ego);
+		if(ego.isFriendOfFriend())
+		fofList = recommend.friendOfFriend(identifiedExperts, ego);
+		if(ego.isBirdsOfFeather())
+		bofList = recommend.birdsOfFeather(identifiedExperts, ego);
+		
 		List<String> heuristics = new ArrayList<String>();
 		if(affList !=null && affList.size() > 0){
 			combinedList.add(affList);

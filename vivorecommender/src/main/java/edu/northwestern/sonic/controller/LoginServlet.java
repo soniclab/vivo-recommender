@@ -62,8 +62,6 @@ public class LoginServlet extends HttpServlet {
 			String userURI = ego.getUri().toString();
 			String imageUrl = new Researcher().getImage(ego.getUri());
 			ego.setImageUrl(imageUrl);
-			//session.setAttribute("userURI", userURI);
-			//session.setAttribute("userEmail", userEmail);
 			session.setAttribute("ego", ego);
 		}
 		

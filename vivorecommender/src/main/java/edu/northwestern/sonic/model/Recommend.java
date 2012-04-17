@@ -176,7 +176,7 @@ public class Recommend {
 			}
 			totalLen = egoLength*expertLength;
 			if(totalLen == 0){
-				bof.get(i-1).setBofScore(0);
+				bof.remove(i-1);
 			}else{
 				bof.get(i-1).setBofScore(dotProd/totalLen);
 			}
