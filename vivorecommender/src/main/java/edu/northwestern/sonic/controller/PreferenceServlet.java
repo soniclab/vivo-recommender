@@ -20,7 +20,6 @@ import edu.northwestern.sonic.model.User;
 public class PreferenceServlet extends HttpServlet{
 	private Logger logger = Logger.getLogger(this.getClass());
 	private RequestDispatcher preferenceJsp;
-	private RequestDispatcher index;
 	ServletContext context;
 	
 	@Override
@@ -32,26 +31,12 @@ public class PreferenceServlet extends HttpServlet{
 			throws ServletException, IOException {
 		logger.debug("doGet()");
 		preferenceJsp = context.getRequestDispatcher("/preference.jsp");
-		HttpSession session = req.getSession();
-		User ego = (User)session.getAttribute("ego");
-		
-		req.setAttribute("affiliation", ego.isAffiliation());
-		req.setAttribute("mqualified", ego.isMostQualified());
-		req.setAttribute("foaf",ego.isFriendOfFriend());
-		req.setAttribute("exchange", ego.isExchange());
-		req.setAttribute("ftc", ego.isFollowCrowd());
-		req.setAttribute("boaf",ego.isBirdsOfFeather());
-		req.setAttribute("mobilizing",ego.isMobilizing());
-		req.setAttribute("lucky", ego.isFeelingLucky());
-		req.setAttribute("cocitation", ego.isCitation());
-	
 		preferenceJsp.forward(req, resp);
 	}
 	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		logger.debug("doPost()");
-		index = context.getRequestDispatcher("/index.jsp");
         String affiliation = req.getParameter("affiliation");
         String mostQualified = req.getParameter("mqualified");
         String foaf = req.getParameter("foaf");
@@ -74,7 +59,7 @@ public class PreferenceServlet extends HttpServlet{
 		ego.setMobilizing("mobilizing".equals(mobilizing));
 		ego.setFeelingLucky("lucky".equals(lucky));
 		ego.setCitation("cocitation".equals(cocitation));
-	
-		index.forward(req, resp);
+		
+		resp.sendRedirect("recommend");
 	}  
 }
