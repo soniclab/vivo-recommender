@@ -1,6 +1,7 @@
 package edu.northwestern.sonic.dataaccess.vivo;
 
 import java.net.URI;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -34,8 +35,8 @@ public class Article extends VivoSparqlService {
 	 * @param articles set of URIs of VIVO articles
 	 * @return set of pubmed ids of articles
 	 */
-	protected Set<Integer> getArticles(final Set<URI> articles) {
-		Set<Integer> returnValue = new TreeSet<Integer>();
+	protected NavigableSet<Integer> getArticles(final Set<URI> articles) {
+		NavigableSet<Integer> returnValue = new TreeSet<Integer>();
 		for(URI article : articles) {
 			Integer pmid = getArticle(article);
 			if(pmid != null)

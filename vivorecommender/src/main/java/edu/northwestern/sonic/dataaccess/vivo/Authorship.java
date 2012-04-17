@@ -2,7 +2,7 @@ package edu.northwestern.sonic.dataaccess.vivo;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Set;
+import java.util.NavigableSet;
 import java.util.TreeSet;
 
 import edu.northwestern.sonic.util.ArraysUtil;
@@ -24,7 +24,7 @@ public class Authorship extends Article {
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by a particular author
 	 */
-	public TreeSet<Integer> getArticlesSet(final URI author) {
+	public NavigableSet<Integer> getArticlesSet(final URI author) {
 		final StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
 		whereClause.append(" vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
@@ -49,7 +49,7 @@ public class Authorship extends Article {
 	 * @return set of URIs of authors of a particular paper
 	 * @throws URISyntaxException 
 	 */
-	private Set<URI> getAuthorsSet(final int pubMedId) { 
+	private NavigableSet<URI> getAuthorsSet(final int pubMedId) { 
 		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub bibo:pmid '");
@@ -76,7 +76,7 @@ public class Authorship extends Article {
 	 * @return set of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorsSet(final int[] pubMedIds) { 
+	public NavigableSet<URI> getAuthorsSet(final int[] pubMedIds) { 
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		for(int pubMedId : pubMedIds)
 			returnValue.addAll(getAuthorsSet(pubMedId));
@@ -86,7 +86,7 @@ public class Authorship extends Article {
 	/**
 	 * authorship;
 	 * get the authors of a list of articles
-	 * @param pubMedIds an article 
+	 * @param pubMedIds array of PubMed identifiers of articles 
 	 * @return array of URIs of authors of articles
 	 * @throws URISyntaxException 
 	 */
@@ -102,7 +102,7 @@ public class Authorship extends Article {
 	 * @return set of pubmed ids of papers by a particular author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getArticles(final URI author, final String keyword) {
+	public NavigableSet<URI> getArticles(final URI author, final String keyword) {
 		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
 		whereClause.append("vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
@@ -120,7 +120,7 @@ public class Authorship extends Article {
 	 * @param author the VIVO URI of an author
 	 * @return the set of URIs of co-authors of author
 	 */
-	public Set<URI> getCoAuthors(final URI author) {
+	public NavigableSet<URI> getCoAuthors(final URI author) {
 		StringBuffer whereClause = new StringBuffer("<" + author.toString() + "> vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");

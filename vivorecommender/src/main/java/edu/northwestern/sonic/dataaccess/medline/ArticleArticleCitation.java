@@ -1,5 +1,6 @@
 package edu.northwestern.sonic.dataaccess.medline;
 
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -24,7 +25,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param queryString
 	 * @return sorted set of pubmed ids
 	 */
-	private Set<Integer> getArticleArticleCitation(final String queryString) {
+	private NavigableSet<Integer> getArticleArticleCitation(final String queryString) {
 		return getDistinctSortedIntegers(queryString);
 	}
 	
@@ -37,7 +38,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationFromSet(final int[] pubMedIds) {
+	private NavigableSet<Integer> getArticleArticleCitationFromSet(final int[] pubMedIds) {
 		final StringBuffer queryStringBuffer = new StringBuffer( 
 				"?a ml:article_pmid ?Y . " +  "\n" + // source
 				"?cc ml:comments_corrections_pmid ?a . " +  "\n" +
@@ -55,7 +56,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationFromSet(final int pubMedId) {
+	private NavigableSet<Integer> getArticleArticleCitationFromSet(final int pubMedId) {
 		return getArticleArticleCitationFromSet(new int[]{pubMedId});
 	}
 		
@@ -66,7 +67,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationFromSet(final Set<Integer> pubMedIds) {
+	private NavigableSet<Integer> getArticleArticleCitationFromSet(final Set<Integer> pubMedIds) {
 		return getArticleArticleCitationFromSet(ArraysUtil.toArrayInt(pubMedIds));
 	}
 		
@@ -101,7 +102,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
-	private Set<Integer> getArticleArticleCitationToSet(final int[] pubMedIds) {
+	private NavigableSet<Integer> getArticleArticleCitationToSet(final int[] pubMedIds) {
 		final StringBuffer queryStringBuffer = new StringBuffer( 
 				"?cc ml:comments_corrections_ref_pmid ?Y . " +  "\n" + //destination
 				"?cc ml:comments_corrections_ref_type 'Cites' . " +  "\n" +
@@ -119,7 +120,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers that cite pubMedId
 	 */
-	private Set<Integer> getArticleArticleCitationToSet(final int pubMedId) {
+	private NavigableSet<Integer> getArticleArticleCitationToSet(final int pubMedId) {
 		return getArticleArticleCitationToSet(new int[]{pubMedId});
 	}
 	
@@ -141,7 +142,7 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedIds, an array of pubmed ids, for example, a list of articles by one particular author
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
-	public Set<Integer> getArticleArticleCitationToSet(final Set<Integer> pubMedIds) {
+	public NavigableSet<Integer> getArticleArticleCitationToSet(final Set<Integer> pubMedIds) {
 		return getArticleArticleCitationToSet(ArraysUtil.toArrayInt((pubMedIds)));	
 	}
 	
@@ -165,8 +166,8 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @param pubMedId, a Pubmed id
 	 * @return sorted set of pubmed ids of papers co-cited with pubMedId
 	 */
-	private Set<Integer> getArticleArticleCoCitationSet(final int pubMedId) {
-		Set<Integer> returnValue = new TreeSet<Integer>();
+	private NavigableSet<Integer> getArticleArticleCoCitationSet(final int pubMedId) {
+		NavigableSet<Integer> returnValue = new TreeSet<Integer>();
 		Set<Integer> pubMedIds = getArticleArticleCitationToSet(pubMedId);
 		if(pubMedIds.isEmpty()) // no citations
 			return returnValue; // empty

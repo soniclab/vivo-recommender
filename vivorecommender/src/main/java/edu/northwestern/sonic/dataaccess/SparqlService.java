@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -89,8 +90,8 @@ public class SparqlService {
 
 	private static String distinctQuery(final String whereClause) {
 		final String DISTINCT_PREFIX =
-				"SELECT DISTINCT ?X " +  "\n" +
-				"WHERE { " +  "\n";
+				"SELECT DISTINCT ?X\n" +
+				"WHERE {\n";
 		StringBuffer queryStringBuffer = new StringBuffer(DISTINCT_PREFIX);
 		queryStringBuffer.append(whereClause);
 		queryStringBuffer.append("\n}");
@@ -102,7 +103,7 @@ public class SparqlService {
 	 * @param whereClause
 	 * @return sorted set of results as Integers, empty set if not found
 	 */
-	public TreeSet<Integer> getDistinctSortedIntegers(final String whereClause) {
+	public NavigableSet<Integer> getDistinctSortedIntegers(final String whereClause) {
 		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
@@ -119,7 +120,7 @@ public class SparqlService {
 	 * @param whereClause
 	 * @return sorted set of results as URIs, empty set if not found
 	 */
-	public TreeSet<URI> getDistinctSortedURIs(final String whereClause) {
+	public NavigableSet<URI> getDistinctSortedURIs(final String whereClause) {
 		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<URI> returnValue = new TreeSet<URI>();
