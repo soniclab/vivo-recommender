@@ -53,7 +53,7 @@ public class RecommendTest {
 	@Test
 	public void testBirdsOfFeather() throws URISyntaxException{
 		List<User> bof = recommend.birdsOfFeather(experts, ego);
-		assertEquals("List size : ",17,bof.size());
+		assertEquals("List size : ",13,bof.size());
 	}
 	
 	@Test
