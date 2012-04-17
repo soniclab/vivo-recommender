@@ -26,7 +26,7 @@ body {
 
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon"
-	href="http://twitter.github.com/bootstrap/assets/ico/favicon.ico">
+	href="/img/sonic.ico">
 <link rel="apple-touch-icon-precomposed" sizes="114x114"
 	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72"
