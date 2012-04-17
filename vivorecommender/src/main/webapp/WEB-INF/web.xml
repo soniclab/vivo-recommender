@@ -73,6 +73,12 @@
    </filter>
    <filter-mapping>
       <filter-name>security-filter</filter-name>
-      <url-pattern>/*</url-pattern>
+      <url-pattern>/index.jsp</url-pattern>
+      <url-pattern>/recommend</url-pattern>
+      <url-pattern>/about</url-pattern>
+      <url-pattern>/preference</url-pattern>
+      <url-pattern>/login</url-pattern>
+      <url-pattern>/logout</url-pattern>
+      <url-pattern>/datareq</url-pattern>
    </filter-mapping>
 </web-app>
