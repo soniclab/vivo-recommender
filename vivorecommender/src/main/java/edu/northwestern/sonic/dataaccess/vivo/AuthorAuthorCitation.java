@@ -3,6 +3,7 @@ package edu.northwestern.sonic.dataaccess.vivo;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -28,7 +29,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param URI an author 
 	 * @return list of pubmed ids of papers by that cite a particular author
 	 */
-	public Set<Integer> getArticleAuthorCitationTo(final URI author) {
+	public NavigableSet<Integer> getArticleAuthorCitationTo(final URI author) {
 		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
 	}
 	
@@ -52,7 +53,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cited by an author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCitationFromSet(final URI author) { 
+	public NavigableSet<URI> getAuthorAuthorCitationFromSet(final URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCitationFrom(getArticles(author)));	
 	}
 
@@ -75,8 +76,8 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param articlesTo set of PubMed ids of articles by the cited author 
 	 * @return set of PubMed ids of articles by authorFrom that cite articlesTo
 	 */
-	public Set<Integer> getAuthorAuthorCitation(final URI authorFrom, final Set<Integer> articlesTo) {
-		Set<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
+	public NavigableSet<Integer> getAuthorAuthorCitation(final URI authorFrom, final Set<Integer> articlesTo) {
+		NavigableSet<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
 		returnValue.retainAll(getArticlesSet(authorFrom));
 		return returnValue;	
 	}
@@ -88,7 +89,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @param authorTo URI of an author, the cited author 
 	 * @return set of PubMed ids of articles by authorFrom that cite authorTo
 	 */
-	public Set<Integer> getAuthorAuthorCitation(final URI authorFrom, final URI authorTo) {
+	public NavigableSet<Integer> getAuthorAuthorCitation(final URI authorFrom, final URI authorTo) {
 		return getAuthorAuthorCitation(authorFrom, getArticlesSet(authorTo));	
 	}
 
@@ -100,7 +101,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors that cite by an author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCitationToSet(final URI author) { 
+	public NavigableSet<URI> getAuthorAuthorCitationToSet(final URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCitationTo(getArticles(author)));	
 	}
 
@@ -122,7 +123,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return list of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
-	public Set<URI> getAuthorAuthorCoCitationSet(final URI author) { 
+	public NavigableSet<URI> getAuthorAuthorCoCitationSet(final URI author) { 
 		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
 	}
 
