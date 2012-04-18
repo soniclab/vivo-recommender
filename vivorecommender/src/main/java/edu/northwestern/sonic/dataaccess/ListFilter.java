@@ -1,6 +1,6 @@
 package edu.northwestern.sonic.dataaccess;
 /**
- * SPARQL FILTER clase from a list
+ * SPARQL FILTER class from a list
  *
  * @author Hugh
  *
