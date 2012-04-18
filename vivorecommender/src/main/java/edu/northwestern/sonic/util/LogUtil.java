@@ -14,7 +14,7 @@ public final class LogUtil {
 	public static void printStackTrace() {
 		log.info("STACK:");
 		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
-		for(int i = 2; i < stes.length && i < 10; i++) {
+		for(int i = 2; i < stes.length && i < 12; i++) {
 			log.info(stes[i].toString());
 		}
 	}

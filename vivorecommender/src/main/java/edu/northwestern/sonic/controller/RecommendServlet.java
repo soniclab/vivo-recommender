@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -68,23 +69,38 @@ public class RecommendServlet extends HttpServlet {
 		recommendJsp.forward(req, resp);
 	}
 	
+	/**
+	 * @author Anup
+	 * @param researchTopic
+	 * @param ego
+	 * @return Map of uris with list of details for recommended experts.
+	 * @throws URISyntaxException
+	 */
 	private Map<String,List<String>> getRecommendations(String researchTopic, User ego) throws URISyntaxException{
 		Identification identification = new Identification();
-		Set<URI> identifiedExperts;
+		Set<URI> identifiedExperts = new HashSet<URI>();
 		Recommend recommend = new Recommend();
 		List<List<User>> combinedList = new ArrayList<List<User>>();
-		identifiedExperts = identification.identifyExpertsByResearchArea(researchTopic);
-		
+		Set<URI> identifiedSet = identification.identifyExpertsByResearchArea(researchTopic);
+		if(identifiedSet!=null)
+			identifiedExperts.addAll(identifiedSet);
+		identifiedSet = identification.identifyExpertsByKeyword(researchTopic);
+		if(identifiedSet!=null)
+			identifiedExperts.addAll(identifiedSet);
+
 		List<User> affList = null;
 		List<User> fofList = null;
 		List<User> bofList = null;
+		List<User> cocitList = null;
 		
 		if(ego.isAffiliation())
-		affList = recommend.affiliation(identifiedExperts, ego);
+			affList = recommend.affiliation(identifiedExperts, ego);
 		if(ego.isFriendOfFriend())
-		fofList = recommend.friendOfFriend(identifiedExperts, ego);
+			fofList = recommend.friendOfFriend(identifiedExperts, ego);
 		if(ego.isBirdsOfFeather())
-		bofList = recommend.birdsOfFeather(identifiedExperts, ego);
+			bofList = recommend.birdsOfFeather(identifiedExperts, ego);
+		if(ego.isCitation())
+			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());
 		
 		List<String> heuristics = new ArrayList<String>();
 		if(affList !=null && affList.size() > 0){
@@ -99,9 +115,20 @@ public class RecommendServlet extends HttpServlet {
 			combinedList.add(bofList);
 			heuristics.add("'Birds of Feather'");
 		}
+		if(cocitList !=null && cocitList.size() > 0){
+			combinedList.add(cocitList);
+			heuristics.add("'Co-citation'");
+		}
 		return makeFinalList(combinedList,heuristics);
 	}
 	
+	/**
+	 * @author Anup
+	 * @param combinedList
+	 * @param heuristics
+	 * @return Map of uris with list of details for recommended experts.
+	 * @throws URISyntaxException
+	 */
 	private Map<String,List<String>> makeFinalList(List<List<User>> combinedList, List<String> heuristics) throws URISyntaxException{
 		Map<String,List<String>> experts = Collections.synchronizedMap(new HashMap<String,List<String>>());
 		Researcher researcher = new Researcher();

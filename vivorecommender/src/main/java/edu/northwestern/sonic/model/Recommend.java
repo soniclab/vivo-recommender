@@ -50,12 +50,12 @@ public class Recommend {
 	 * @return set of URIs of qualified experts, who are co-cited with ego, but not coauthors of ego
 	 * @throws URISyntaxException
 	 */
-	public Set<URI> cocitation(Set<URI> experts, URI ego) throws URISyntaxException {
+	public List<User> cocitation(Set<URI> experts, URI ego) throws URISyntaxException {
 		Set<URI> returnValue = new TreeSet<URI>(experts); // copy constructor
 		returnValue.removeAll(authorAuthorCitation.getCoAuthors(ego)); // disqualify previous coauthors
 		returnValue.retainAll(authorAuthorCitation.getAuthorAuthorCoCitationSet(ego)); // must be co-cited
 		returnValue.remove(ego); // should not be in expert list
-		return returnValue;
+		return new Researcher().getUsers(returnValue);
 	}
 
 	/*
@@ -110,6 +110,13 @@ public class Recommend {
 		return returnValue;
 	}
 	
+	/**
+	 * @author Anup
+	 * @param experts
+	 * @param ego
+	 * @return List of experts that are selected through 'Friend of a Friend' heuristic.
+	 * @throws URISyntaxException
+	 */
 	public List<User> friendOfFriend(Set<URI> experts, User ego) throws URISyntaxException{
 		Set<URI> fOFList = new HashSet<URI>();
 		experts.add(ego.getUri());

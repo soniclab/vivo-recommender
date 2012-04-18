@@ -59,8 +59,9 @@ public class RecommendTest {
 	public void testCocitation() throws URISyntaxException {
 		final URI BENNER_URI = new URI("http://vivo.ufl.edu/individual/n794607081"); // Steven Albert Benner (stub)
 		final Set<URI> experts = identification.identifyExpertsByKeyword("organic");
-		Set<URI> actual = recommend.cocitation(experts, Katritzky.VIVO_URI);
+		List<User> actual = recommend.cocitation(experts, Katritzky.VIVO_URI);
 		assertEquals("count", 1, actual.size());
-		assertTrue("uri", actual.contains(BENNER_URI));
+		User expert = new Researcher().getUser(BENNER_URI);
+		assertEquals("uri",expert.getUri().toString(),actual.get(0).getUri().toString());
 	}
 }

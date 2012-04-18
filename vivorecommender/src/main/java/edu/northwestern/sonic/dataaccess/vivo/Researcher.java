@@ -54,8 +54,6 @@ public class Researcher extends VivoSparqlService {
 		query.append(" ?X vivo:personInPosition ?P .");
 		query.append(" ?P vivo:positionInOrganization ?D .");
 		query.append(" ?D a vivo:AcademicDepartment .");
-		query.append(" ?P vivo:dateTimeInterval ?dti .");
-		query.append(" FILTER NOT EXISTS {?dti vivo:end ?edti}");
 		query.append(" ?D rdfs:label ?l .");
 		query.append(" OPTIONAL {?X vitro:moniker ?m .}");
 	    query.append(" } LIMIT 1");
