@@ -1,4 +1,9 @@
 package edu.northwestern.sonic.dataaccess;
+
+import java.net.URI;
+
+import edu.northwestern.sonic.util.ArraysUtil;
+
 /**
  * SPARQL FILTER clase from a list
  *
@@ -7,32 +12,80 @@ package edu.northwestern.sonic.dataaccess;
  */
 public class ListFilter {
 	
+	private static final String DEFAULT_VARIABLE_NAME = "X";
+	
 	private static String filter(String s){
 		return (new StringBuffer("FILTER(")).append(s).append(")").toString();
 	}
 	
+	private static String filterAuxiliary(Object[] objects, String var, String prefix, String suffix){
+		StringBuffer returnValue = new StringBuffer();
+		String sparqlVar = (new StringBuffer("?")).append(var).append("=").append(prefix).toString();
+		for(int i=0; i < objects.length; i++) {
+			returnValue.append(sparqlVar).append(objects[i]).append(suffix);
+			if(i < objects.length - 1)
+				returnValue.append("||");			
+		}
+		return filter(returnValue.toString());		
+	}
+	
+	private static String filterAuxiliary(Object[] objects, String var, String delimiter){
+		return filterAuxiliary(objects, var, delimiter, delimiter);		
+	}
+	
+	private static String filterAuxiliary(Object[] objects, String var){
+		return filterAuxiliary(objects, var, "", "");		
+	}
+	
 	/**
 	 * build a FILTER clause from a list
-	 * @param <E>
-	 * @param list a list
-	 * @return a SPARQL fragment to filter results by a list of URIs
+	 * @param ints a list of ints
+	 * @param var a variable name
+	 * @return a SPARQL fragment to filter results by a list of ints
 	 */
 	public static String filter(int[] ints, String var) {
-		StringBuffer buf = new StringBuffer();
-		String sparqlVar = "?" + var + "=";
-		for(int i=0; i < ints.length; i++) {
-			buf.append(sparqlVar).append(ints[i]);
-			if(i < ints.length - 1)
-				buf.append("||");			
-		}
-		return filter(buf.toString());
+		return filterAuxiliary(ArraysUtil.toString(ints), var);
 	}
 
 	/**
 	 * default variable name is X
 	 */
 	public static String filter(int[] ints) {
-		return filter(ints, "X");
+		return filter(ints, DEFAULT_VARIABLE_NAME);
+	}
+
+	/**
+	 * build a FILTER clause from a list
+	 * @param strings a list of string values of var
+	 * @param var a variable name
+	 * @return a SPARQL fragment to filter results by a list of strings
+	 */
+	public static String filter(String[] strings, String var) {
+		return filterAuxiliary(strings, var, "'");
+	}
+
+	/**
+	 * default variable name is X
+	 */
+	public static String filter(String[] strings) {
+		return filter(strings, DEFAULT_VARIABLE_NAME);
+	}
+
+	/**
+	 * build a FILTER clause from a list
+	 * @param strings a list of URIs
+	 * @param var a variable name
+	 * @return a SPARQL fragment to filter results by a list of strings
+	 */
+	public static String filter(URI[] uris, String var) {
+		return filterAuxiliary(uris, var, "<", ">");
+	}
+
+	/**
+	 * default variable name is X
+	 */
+	public static String filter(URI[] uris) {
+		return filter(uris, DEFAULT_VARIABLE_NAME);
 	}
 
 }

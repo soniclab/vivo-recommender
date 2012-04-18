@@ -18,11 +18,12 @@ public class ArticleTest {
 	
 	@Test
 	public void testGetArticle() throws URISyntaxException {
-		final URI authorUri = new URI("http://vivo.ufl.edu/individual/n368979405");
+		final URI articleUri = new URI("http://vivo.ufl.edu/individual/n368979405");
+		final int articlePubMedId = 12790603;
 		assertEquals("article not found by URI", 0, article.getArticle(new URI("http://www.example.com/")).intValue());
 		assertEquals("article not found by PubMed id", null, article.getArticle(0));
-		assertEquals("article by VIVO URI", 12790603, article.getArticle(authorUri).intValue());
-		assertEquals("article by PubMed id", authorUri, article.getArticle(12790603));
+		assertEquals("article by VIVO URI", articlePubMedId, article.getArticle(articleUri).intValue());
+		assertEquals("article by PubMed id", articleUri, article.getArticle(articlePubMedId));
 	}
 
 }

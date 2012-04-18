@@ -1,10 +1,9 @@
 package edu.northwestern.sonic.dataaccess.vivo;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.NavigableSet;
-import java.util.TreeSet;
 
+import edu.northwestern.sonic.dataaccess.Bindings;
 import edu.northwestern.sonic.util.ArraysUtil;
 import edu.northwestern.sonic.util.StringUtil;
 /**
@@ -33,74 +32,11 @@ public class Authorship extends Article {
 	}
 	
 	/**
-	 * authorship;
-	 * get the PubMed identifiers of VIVO articles by an author
-	 * @param URI an author 
-	 * @return list of pubmed ids of papers by a particular author
-	 */
-	public int[] getArticles(final URI author) {
-		return ArraysUtil.toArrayInt(getArticlesSet(author));
-	}
-	
-	/**
-	 * authorship;
-	 * get the set of authors by an article's pmid
-	 * @param pubMedId an article 
-	 * @return set of URIs of authors of a particular paper
-	 * @throws URISyntaxException 
-	 */
-	private NavigableSet<URI> getAuthorsSet(final int pubMedId) { 
-		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
-		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
-		whereClause.append("?pub bibo:pmid '");
-		whereClause.append(pubMedId);
-		whereClause.append("' .");
-		return getDistinctSortedURIs(whereClause.toString());
-	}
-	
-	/**
-	 * authorship;
-	 * get the authors by an article's pmid
-	 * @param pubMedId an article 
-	 * @return list of URIs of authors of a particular paper
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthors(final int pubMedId) { 
-		return getAuthorsSet(pubMedId).toArray(new URI[0]);
-	}
-		
-	/**
-	 * authorship;
-	 * get the authors of a list of articles
-	 * @param pubMedIds an article 
-	 * @return set of URIs of authors of articles
-	 * @throws URISyntaxException 
-	 */
-	public NavigableSet<URI> getAuthorsSet(final int[] pubMedIds) { 
-		TreeSet<URI> returnValue = new TreeSet<URI>();
-		for(int pubMedId : pubMedIds)
-			returnValue.addAll(getAuthorsSet(pubMedId));
-		return returnValue;	
-	}
-		
-	/**
-	 * authorship;
-	 * get the authors of a list of articles
-	 * @param pubMedIds array of PubMed identifiers of articles 
-	 * @return array of URIs of authors of articles
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthors(final int[] pubMedIds) { 
-		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
-	}
-		
-	/**
 	 * authorship qualified by a concept;
 	 * get the VIVO URIs of articles by an author with a keyword
 	 * @param URI an author 
 	 * @param keyword a concept
 	 * @return set of pubmed ids of papers by a particular author
-	 * @throws URISyntaxException 
 	 */
 	public NavigableSet<URI> getArticles(final URI author, final String keyword) {
 		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
@@ -113,6 +49,59 @@ public class Authorship extends Article {
 		return getDistinctSortedURIs(whereClause.toString());
 	}
 	
+	/**
+	 * authorship;
+	 * get the PubMed identifiers of VIVO articles by an author
+	 * @param URI an author 
+	 * @return list of pubmed ids of papers by a particular author
+	 */
+	public int[] getArticles(final URI author) {
+		return ArraysUtil.toArrayInt(getArticlesSet(author));
+	}
+	
+	/**
+	 * authorship;
+	 * get the authors of a list of articles
+	 * @param pubMedIds an article 
+	 * @return set of URIs of authors of articles
+	 */
+	public NavigableSet<URI> getAuthorsSet(final int[] pubMedIds) { 
+		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
+		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
+		whereClause.append("?pub bibo:pmid ?Y .\n");
+		return getDistinctSortedURIs(whereClause.toString(), Bindings.bindings(ArraysUtil.toString(pubMedIds), "Y"));
+	}
+		
+	/**
+	 * authorship;
+	 * get the set of authors by an article's pmid
+	 * @param pubMedId an article 
+	 * @return set of URIs of authors of a particular paper
+	 */
+	private NavigableSet<URI> getAuthorsSet(final int pubMedId) { 
+		return getAuthorsSet(new int[]{pubMedId});	
+	}
+	
+	/**
+	 * authorship;
+	 * get the authors of a list of articles
+	 * @param pubMedIds array of PubMed identifiers of articles 
+	 * @return array of URIs of authors of articles
+	 */
+	public URI[] getAuthors(final int[] pubMedIds) { 
+		return getAuthorsSet(pubMedIds).toArray(new URI[0]);	
+	}
+		
+	/**
+	 * authorship;
+	 * get the authors of an article by an article's pmid
+	 * @param pubMedId an article 
+	 * @return array of URIs of authors of a particular paper
+	 */
+	public URI[] getAuthors(final int pubMedId) { 
+		return getAuthorsSet(pubMedId).toArray(new URI[0]);
+	}
+		
 	// Co-authorship
 	
 	/**
@@ -125,7 +114,9 @@ public class Authorship extends Article {
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");
 		whereClause.append("?cn2 vivo:linkedAuthor ?X .\n");
-		whereClause.append("FILTER (<" + author.toString() + "> != ?X)");
+		whereClause.append("FILTER (");
+		whereClause.append(StringUtil.wrap(author.toString()));
+		whereClause.append(" != ?X)");
 		return getDistinctSortedURIs(whereClause.toString());
 	}
 

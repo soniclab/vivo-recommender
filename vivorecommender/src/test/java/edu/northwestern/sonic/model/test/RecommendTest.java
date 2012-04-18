@@ -7,8 +7,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Set;
-import java.util.Iterator;
-
 import org.junit.*;
 
 import edu.northwestern.sonic.dataaccess.test.Katritzky;
@@ -53,7 +51,7 @@ public class RecommendTest {
 	@Test
 	public void testBirdsOfFeather() throws URISyntaxException{
 		List<User> bof = recommend.birdsOfFeather(experts, ego);
-		assertEquals("List size : ",17,bof.size());
+		assertEquals("List size : ", 13, bof.size());
 	}
 	
 	@Test
