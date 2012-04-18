@@ -3,9 +3,8 @@ package edu.northwestern.sonic.dataaccess.vivo;
 import java.net.URI;
 import java.util.NavigableSet;
 import java.util.Set;
-import java.util.TreeSet;
 
-import edu.northwestern.sonic.util.StringUtil;
+import edu.northwestern.sonic.dataaccess.Bindings;
 /**
  * Accessors for VIVO article data;
  *
@@ -14,19 +13,17 @@ import edu.northwestern.sonic.util.StringUtil;
  */
 public class Article extends VivoSparqlService {
 	
+	// VIVO article URI to PubMed identifier
+	
 	/**
-	 * get the PubMed Id for a VIVO article
+	 * get the PubMed Ids for the VIVO articles in a list
 	 * 
-	 * @param article URI an article in VIVO 
-	 * @return the pubmed id of article, 0 if not found
+	 * @param articles set of URIs of VIVO articles
+	 * @return set of pubmed ids of articles
 	 */
-	public Integer getArticle(final URI article) {
-		final StringBuffer whereClause = new StringBuffer(StringUtil.wrap(article));
-		whereClause.append("  bibo:pmid ?X .");
-		Set<Integer> returnValue = getDistinctSortedIntegers(whereClause.toString());
-		if(returnValue.size()==0)
-			return new Integer(0);
-		return returnValue.iterator().next(); // first (only)
+	protected NavigableSet<Integer> getArticles(final URI[] articles) {
+		final StringBuffer whereClause = new StringBuffer("?Y  bibo:pmid ?X .\n");
+		return getDistinctSortedIntegers(whereClause.toString(), Bindings.bindings(articles, "Y"));
 	}
 	
 	/**
@@ -36,14 +33,23 @@ public class Article extends VivoSparqlService {
 	 * @return set of pubmed ids of articles
 	 */
 	protected NavigableSet<Integer> getArticles(final Set<URI> articles) {
-		NavigableSet<Integer> returnValue = new TreeSet<Integer>();
-		for(URI article : articles) {
-			Integer pmid = getArticle(article);
-			if(pmid != null)
-				returnValue.add(pmid);			
-		}
-		return returnValue;
+		return getArticles(articles.toArray(new URI[0]));
 	}
+	
+	/**
+	 * get the PubMed Id for a VIVO article
+	 * 
+	 * @param article URI an article in VIVO 
+	 * @return the pubmed id of article, 0 if not found
+	 */
+	public Integer getArticle(final URI article) {
+		Set<Integer> returnValue = getArticles(new URI[]{article});
+		if(returnValue.isEmpty())
+			return new Integer(0);
+		return returnValue.iterator().next(); // first (only)
+	}
+	
+	// PubMed identifier to VIVO article URI
 	
 	/**
 	 * get the VIVO URI for a PubMed article
@@ -56,7 +62,7 @@ public class Article extends VivoSparqlService {
 		whereClause.append(article);
 		whereClause.append("'");
 		Set<URI> returnValue = getDistinctSortedURIs(whereClause.toString());
-		if(returnValue.size()==0)
+		if(returnValue.isEmpty())
 			return null;
 		return returnValue.iterator().next(); // first (only)
 	}

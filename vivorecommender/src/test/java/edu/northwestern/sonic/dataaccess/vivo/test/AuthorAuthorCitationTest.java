@@ -49,7 +49,9 @@ public class AuthorAuthorCitationTest {
 
 	@Test
 	public void testGetAuthorAuthorCoCitation() throws URISyntaxException {
+		@SuppressWarnings("unused")
 		final URI[] expected = {
+			// authors co-cited with Katritzky (including Katritzky co-authors)
 			new URI("http://vivo.ufl.edu/individual/n1036139417"),
 			new URI("http://vivo.ufl.edu/individual/n1059068413"), 
 			new URI("http://vivo.ufl.edu/individual/n1086632404"),
@@ -93,10 +95,16 @@ public class AuthorAuthorCitationTest {
 			new URI("http://vivo.ufl.edu/individual/n87195454"),
 			new URI("http://vivo.ufl.edu/individual/n874722241")
 		};
-		URI[] authors;
-		authors = authorAuthorCitation.getAuthorAuthorCoCitation(Katritzky.VIVO_URI);
-		assertEquals("number of authors", expected.length, authors.length);
-		assertArrayEquals("authors", expected, authors);
+		final URI[] expected2 = {
+			// authors co-cited with Katritzky (NOT including Katritzky co-authors)
+			new URI("http://vivo.ufl.edu/individual/n1581616190"),
+			new URI("http://vivo.ufl.edu/individual/n215189951"), 
+			new URI("http://vivo.ufl.edu/individual/n662572311"), 
+			new URI("http://vivo.ufl.edu/individual/n794607081")
+		};
+		URI[] actual = authorAuthorCitation.getAuthorAuthorCoCitation(Katritzky.VIVO_URI);
+		assertEquals("number of authors", expected2.length, actual.length);
+		assertArrayEquals("authors", expected2, actual);
 	}
 
 	@Test

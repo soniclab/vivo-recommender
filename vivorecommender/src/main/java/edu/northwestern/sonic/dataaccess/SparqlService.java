@@ -88,13 +88,17 @@ public class SparqlService {
 		return getQueryExecution(query);
 	}
 
-	private static String distinctQuery(final String whereClause) {
+	private static String distinctQuery(final String whereClause, final String bindings) {
 		final String DISTINCT_PREFIX =
 				"SELECT DISTINCT ?X\n" +
 				"WHERE {\n";
 		StringBuffer queryStringBuffer = new StringBuffer(DISTINCT_PREFIX);
 		queryStringBuffer.append(whereClause);
 		queryStringBuffer.append("\n}");
+		if(!bindings.isEmpty()) {
+			queryStringBuffer.append("\n");
+			queryStringBuffer.append(bindings);
+		}
 		return queryStringBuffer.toString();
 	}
 
@@ -103,8 +107,8 @@ public class SparqlService {
 	 * @param whereClause
 	 * @return sorted set of results as Integers, empty set if not found
 	 */
-	public NavigableSet<Integer> getDistinctSortedIntegers(final String whereClause) {
-		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
+	public NavigableSet<Integer> getDistinctSortedIntegers(final String whereClause, final String bindings) {
+		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause, bindings));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		while(resultSet.hasNext()) {
@@ -116,12 +120,21 @@ public class SparqlService {
 	}
 	
 	/**
+	 * get the results of a single free variable query as Integers
+	 * @param whereClause
+	 * @return sorted set of results as Integers, empty set if not found
+	 */
+	public NavigableSet<Integer> getDistinctSortedIntegers(final String whereClause) {
+		return getDistinctSortedIntegers(whereClause, "");
+	}
+	
+	/**
 	 * get the results of a single free variable query as URIs
 	 * @param whereClause
 	 * @return sorted set of results as URIs, empty set if not found
 	 */
-	public NavigableSet<URI> getDistinctSortedURIs(final String whereClause) {
-		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause));
+	public NavigableSet<URI> getDistinctSortedURIs(final String whereClause, final String bindings) {
+		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause, bindings));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<URI> returnValue = new TreeSet<URI>();
 		while(resultSet.hasNext()) {
@@ -138,6 +151,15 @@ public class SparqlService {
 			returnValue.add(uri);
 	    }
 		return returnValue;
+	}
+
+	/**
+	 * get the results of a single free variable query as URIs
+	 * @param whereClause
+	 * @return sorted set of results as URIs, empty set if not found
+	 */
+	public NavigableSet<URI> getDistinctSortedURIs(final String whereClause) {
+		return getDistinctSortedURIs(whereClause, "");
 	}
 
 	/**

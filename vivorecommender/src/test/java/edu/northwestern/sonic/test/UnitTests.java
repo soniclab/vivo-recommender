@@ -3,6 +3,7 @@ package edu.northwestern.sonic.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import edu.northwestern.sonic.dataaccess.test.BindingsTest;
 import edu.northwestern.sonic.dataaccess.test.ListFilterTest;
 import edu.northwestern.sonic.network.test.NetworkTest;
 import edu.northwestern.sonic.util.test.ArraysUtilTest;
@@ -22,6 +23,7 @@ import edu.northwestern.sonic.util.test.StringUtilTest;
 	ArraysUtilTest.class,
 	NetworkTest.class,
 	ListFilterTest.class,
+	BindingsTest.class,
 	})
 	
 public class UnitTests {
