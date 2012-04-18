@@ -104,22 +104,27 @@ public class AuthorAuthorCitation extends Authorship {
 	 * author-author co-citation;
 	 * get the authors of a list of articles
 	 * @param uri URI of an author 
-	 * @return array of URIs of authors cocited with author
+	 * @return set of URIs of authors co-cited with author, empty if no citations
 	 * @throws URISyntaxException 
 	 */
-	public URI[] getAuthorAuthorCoCitation(final URI author) { 
-		return getAuthors(medline.getArticleArticleCoCitation(getArticles(author)));	
+	public NavigableSet<URI> getAuthorAuthorCoCitationSet(final URI author) { 
+		NavigableSet<URI> returnValue = new TreeSet<URI>();
+		int[] articles = getArticles(author);
+		if(articles.length==0) // no articles with PubMed identifiers?
+			return returnValue; // no citations
+		returnValue = getAuthorsSet(medline.getArticleArticleCoCitation(articles));	
+		return returnValue;	
 	}
 
 	/**
 	 * author-author co-citation;
 	 * get the authors of a list of articles
 	 * @param uri URI of an author 
-	 * @return set of URIs of authors cocited with author
+	 * @return array of URIs of authors co-cited with author
 	 * @throws URISyntaxException 
 	 */
-	public NavigableSet<URI> getAuthorAuthorCoCitationSet(final URI author) { 
-		return getAuthorsSet(medline.getArticleArticleCoCitation(getArticles(author)));	
+	public URI[] getAuthorAuthorCoCitation(final URI author) { 
+		return getAuthorAuthorCoCitationSet(author).toArray(new URI[0]);
 	}
 
 	/**

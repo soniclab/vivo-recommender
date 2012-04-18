@@ -21,10 +21,12 @@ import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 public class AuthorAuthorCitationTest {
 	
 	private final static AuthorAuthorCitation authorAuthorCitation = new AuthorAuthorCitation();
+	private static URI notFoundUri = null;
 	
 	@BeforeClass
 	public static void setUp() throws URISyntaxException  {
 		Arrays.sort(Katritzky.PMIDS);
+		notFoundUri = new URI("http://www.example.com/");
 	}
 
 	@Test
@@ -41,14 +43,12 @@ public class AuthorAuthorCitationTest {
 
 	@Test
 	public void testGetAuthorAuthorCitationFromNone() throws URISyntaxException {
-		URI notFoundUri = new URI("http://www.example.com/");
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationFrom(notFoundUri);
 		assertEquals("number of authors", 0, actual.length);
 	}
 
 	@Test
 	public void testGetAuthorAuthorCitationToNone() throws URISyntaxException {
-		URI notFoundUri = new URI("http://www.example.com/");
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationTo(notFoundUri);
 		assertEquals("number of authors", 0, actual.length);
 	}
@@ -119,6 +119,12 @@ public class AuthorAuthorCitationTest {
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCoCitation(Katritzky.VIVO_URI);
 		assertEquals("number of authors", expected2.length, actual.length);
 		assertArrayEquals("authors", expected2, actual);
+	}
+
+	@Test
+	public void testGetAuthorAuthorCoCitationNone() throws URISyntaxException {
+		URI[] actual = authorAuthorCitation.getAuthorAuthorCoCitation(notFoundUri);
+		assertEquals("number of authors", 0, actual.length);
 	}
 
 	@Test
