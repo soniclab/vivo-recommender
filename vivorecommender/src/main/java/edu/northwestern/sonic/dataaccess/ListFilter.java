@@ -5,7 +5,7 @@ import java.net.URI;
 import edu.northwestern.sonic.util.ArraysUtil;
 
 /**
- * SPARQL FILTER clase from a list
+ * SPARQL FILTER class from a list
  *
  * @author Hugh
  *
