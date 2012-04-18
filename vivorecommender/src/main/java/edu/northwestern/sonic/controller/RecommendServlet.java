@@ -78,29 +78,33 @@ public class RecommendServlet extends HttpServlet {
 	 */
 	private Map<String,List<String>> getRecommendations(String researchTopic, User ego) throws URISyntaxException{
 		Identification identification = new Identification();
-		Set<URI> identifiedExperts = new HashSet<URI>();
 		Recommend recommend = new Recommend();
 		List<List<User>> combinedList = new ArrayList<List<User>>();
-		Set<URI> identifiedSet = identification.identifyExpertsByResearchArea(researchTopic);
-		if(identifiedSet!=null)
-			identifiedExperts.addAll(identifiedSet);
-		identifiedSet = identification.identifyExpertsByKeyword(researchTopic);
-		if(identifiedSet!=null)
-			identifiedExperts.addAll(identifiedSet);
-
+		
+		Set<URI> identifiedExperts = identification.identifyExpertsByResearchArea(researchTopic);
+		Set<URI> identifiedByK = identification.identifyExpertsByKeyword(researchTopic);
+		
+		identifiedExperts.addAll(identifiedByK);
+		
 		List<User> affList = null;
 		List<User> fofList = null;
 		List<User> bofList = null;
 		List<User> cocitList = null;
+		List<User> exchangeList = null;
+		List<User> mquaList = null;
 		
-		if(ego.isAffiliation())
+		/*if(ego.isAffiliation())
 			affList = recommend.affiliation(identifiedExperts, ego);
 		if(ego.isFriendOfFriend())
 			fofList = recommend.friendOfFriend(identifiedExperts, ego);
 		if(ego.isBirdsOfFeather())
 			bofList = recommend.birdsOfFeather(identifiedExperts, ego);
 		if(ego.isCitation())
-			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());
+			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());*/
+		if(ego.isMostQualified())
+			mquaList = recommend.mostQualified(identifiedExperts, ego,researchTopic);
+		//if(ego.isExchange())
+			//exchangeList = recommend.exchange(identifiedExperts, ego);
 		
 		List<String> heuristics = new ArrayList<String>();
 		if(affList !=null && affList.size() > 0){
@@ -118,6 +122,14 @@ public class RecommendServlet extends HttpServlet {
 		if(cocitList !=null && cocitList.size() > 0){
 			combinedList.add(cocitList);
 			heuristics.add("'Co-citation'");
+		}
+		if(exchangeList !=null && exchangeList.size() > 0){
+			combinedList.add(exchangeList);
+			heuristics.add("'Social Exchange'");
+		}
+		if(mquaList !=null && mquaList.size() > 0){
+			combinedList.add(mquaList);
+			heuristics.add("'Most Qualified'");
 		}
 		return makeFinalList(combinedList,heuristics);
 	}

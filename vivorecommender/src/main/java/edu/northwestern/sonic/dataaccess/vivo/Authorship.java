@@ -40,7 +40,7 @@ public class Authorship extends Article {
 	 */
 	public NavigableSet<URI> getArticles(final URI author, final String keyword) {
 		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
-		whereClause.append("vivo:authorInAuthorship ?cn .\n");
+		whereClause.append(" vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
 		whereClause.append("?X vivo:freetextKeyword ?keyword .\n");
 		whereClause.append("FILTER (regex(?keyword, \"");

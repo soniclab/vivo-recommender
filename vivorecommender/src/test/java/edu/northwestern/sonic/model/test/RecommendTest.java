@@ -19,7 +19,7 @@ public class RecommendTest {
 	static Researcher researcher;
 	static Identification identification;
 	private final int fofListSize = 4;
-	private final int affListSize = 1;
+	private final int affListSize = 9;
 	private Set<URI> experts = null;
 	private User ego = null;
 	private Recommend recommend = null;

@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Map;
-
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+
 import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
+import edu.northwestern.sonic.dataaccess.vivo.Authorship;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.Network;
 
@@ -33,13 +34,14 @@ public class Recommend {
 		URI expertURI = null;
 		Set<URI> affiliationList = null;
 		Iterator<URI> itr = experts.iterator();
+		affiliationList = new HashSet<URI>();
 		while(itr.hasNext()){
-			affiliationList = new HashSet<URI>();
 			expertURI = itr.next();
 			if(researcher.shouldAffiliate(ego.getUri(), expertURI, ego.getDepartmentURI())){
 				affiliationList.add(expertURI);
 			}
 		}
+		affiliationList.remove(ego.getUri());
 		return new Researcher().getUsers(affiliationList);
 	}
 	
@@ -142,6 +144,7 @@ public class Recommend {
 	 * @throws URISyntaxException
 	 */
 	public List<User> birdsOfFeather(Set<URI> experts, User ego) throws URISyntaxException{
+
 		
 		if(experts.contains(ego.getUri())){
 			experts.remove(ego.getUri());
@@ -208,6 +211,46 @@ public class Recommend {
 		return bof;
 	}
 	
+	
+	public List<User> exchange(Set<URI> experts, User ego) throws URISyntaxException{
+		Set<URI> exchangeList = new HashSet<URI>();
+		
+		Authorship authorship = new Authorship();
+		AuthorAuthorCitation autautCit = new AuthorAuthorCitation();
+		Set<Integer> pubmedIds = authorship.getArticlesSet(ego.getUri());
+		Iterator<URI> itr = experts.iterator();
+		Set<Integer> numCit;
+		URI expertURI;
+		while(itr.hasNext()){
+			expertURI = itr.next();
+			numCit =  autautCit.getAuthorAuthorCitation(expertURI,pubmedIds);
+			if(numCit.size() > 0){
+				exchangeList.add(expertURI);
+			}
+		}
+		exchangeList.remove(ego.getUri());
+		return new Researcher().getUsers(exchangeList);
+	}
+	
+	public List<User> mostQualified(Set<URI> experts, User ego,String keyword) throws URISyntaxException{
+		Set<URI> mostQualifiedList = new HashSet<URI>();
+		AuthorAuthorCitation autautCit = new AuthorAuthorCitation();
+		Iterator<URI> itr = experts.iterator();
+		int hIndex = 0;
+		URI expertURI;
+		while(itr.hasNext()){
+			expertURI = itr.next();
+			hIndex = autautCit.getHIndex(expertURI,keyword);
+			if(hIndex > 0){
+				mostQualifiedList.add(expertURI);
+			}
+		}
+		mostQualifiedList.remove(ego.getUri());
+		return new Researcher().getUsers(mostQualifiedList);
+	}
+	
+
+
 	private Map<String,List<Integer>> formDictionary(User ego) throws URISyntaxException{
 
 		Map<String,List<Integer>> dictionary = Collections.synchronizedMap(new TreeMap<String,List<Integer>>());
