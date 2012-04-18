@@ -23,50 +23,57 @@ public class AuthorAuthorCitation extends Authorship {
 	private final ArticleArticleCitation medline = new ArticleArticleCitation();
 
 	/**
-	 * article author citation;
-	 * get the articles that cite an author
-	 * 
-	 * @param URI an author 
-	 * @return list of pubmed ids of papers by that cite a particular author
-	 */
-	public NavigableSet<Integer> getArticleAuthorCitationTo(final URI author) {
-		return medline.getArticleArticleCitationToSet(getArticlesSet(author));
-	}
-	
-	/**
 	 * author-author citation;
-	 * get the authors cited by an author
+	 * get the authors cited by an author;
 	 * A -> X, given the left-hand side, find the right-hand side 
 	 * @param uri URI of an author 
-	 * @return list of URIs of authors cited by an author
-	 * @throws URISyntaxException 
-	 */
-	public URI[] getAuthorAuthorCitationFrom(final URI author) { 
-		return getAuthors(medline.getArticleArticleCitationFrom(getArticles(author)));	
-	}
-
-	/**
-	 * author-author citation;
-	 * get the authors cited by an author
-	 * A -> X, given the left-hand side, find the right-hand side 
-	 * @param uri URI of an author 
-	 * @return list of URIs of authors cited by an author
-	 * @throws URISyntaxException 
+	 * @return set of URIs of authors cited by an author, empty if no citations
 	 */
 	public NavigableSet<URI> getAuthorAuthorCitationFromSet(final URI author) { 
-		return getAuthorsSet(medline.getArticleArticleCitationFrom(getArticles(author)));	
+		NavigableSet<URI> returnValue = new TreeSet<URI>();
+		int[] articles = getArticles(author);
+		if(articles.length==0) // no articles with PubMed identifiers?
+			return returnValue; // no citations
+		returnValue = getAuthorsSet(medline.getArticleArticleCitationFrom(articles));	
+		return returnValue;	
 	}
 
 	/**
 	 * author-author citation;
-	 * get the authors that cite an author
+	 * get the authors cited by an author;
+	 * A -> X, given the left-hand side, find the right-hand side 
+	 * @param uri URI of an author 
+	 * @return array of URIs of authors cited by an author, empty if no citations
+	 */
+	public URI[] getAuthorAuthorCitationFrom(final URI author) { 
+		return getAuthorAuthorCitationFromSet(author).toArray(new URI[0]);
+	}
+
+	/**
+	 * author-author citation;
+	 * get the authors that cite an author;
 	 * X -> A, given the right-hand side, find the left-hand side 
 	 * @param uri URI of an author 
-	 * @return list of URIs of authors that cite by an author
-	 * @throws URISyntaxException 
+	 * @return set of URIs of authors that cite an author, empty if no citations
+	 */
+	public NavigableSet<URI> getAuthorAuthorCitationToSet(final URI author) { 
+		NavigableSet<URI> returnValue = new TreeSet<URI>();
+		int[] articles = getArticles(author);
+		if(articles.length==0) // no articles with PubMed identifiers?
+			return returnValue; // no citations
+		returnValue = getAuthorsSet(medline.getArticleArticleCitationTo(articles));	
+		return returnValue;	
+	}
+
+	/**
+	 * author-author citation;
+	 * get the authors that cite an author;
+	 * X -> A, given the right-hand side, find the left-hand side 
+	 * @param uri URI of an author 
+	 * @return array of URIs of authors that cite an author, empty if no citations
 	 */
 	public URI[] getAuthorAuthorCitationTo(final URI author) { 
-		return getAuthors(medline.getArticleArticleCitationTo(getArticles(author)));	
+		return getAuthorAuthorCitationToSet(author).toArray(new URI[0]);
 	}
 
 	/**
@@ -94,19 +101,7 @@ public class AuthorAuthorCitation extends Authorship {
 	}
 
 	/**
-	 * author-author citation;
-	 * get the authors that cite an author
-	 * X -> A, given the right-hand side, find the left-hand side 
-	 * @param uri URI of an author 
-	 * @return list of URIs of authors that cite by an author
-	 * @throws URISyntaxException 
-	 */
-	public NavigableSet<URI> getAuthorAuthorCitationToSet(final URI author) { 
-		return getAuthorsSet(medline.getArticleArticleCitationTo(getArticles(author)));	
-	}
-
-	/**
-	 * author-author cocitation;
+	 * author-author co-citation;
 	 * get the authors of a list of articles
 	 * @param uri URI of an author 
 	 * @return array of URIs of authors cocited with author
@@ -117,10 +112,10 @@ public class AuthorAuthorCitation extends Authorship {
 	}
 
 	/**
-	 * author-author cocitation;
+	 * author-author co-citation;
 	 * get the authors of a list of articles
 	 * @param uri URI of an author 
-	 * @return list of URIs of authors cocited with author
+	 * @return set of URIs of authors cocited with author
 	 * @throws URISyntaxException 
 	 */
 	public NavigableSet<URI> getAuthorAuthorCoCitationSet(final URI author) { 

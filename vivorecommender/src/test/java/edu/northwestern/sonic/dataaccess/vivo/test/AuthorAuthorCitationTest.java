@@ -40,6 +40,20 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
+	public void testGetAuthorAuthorCitationFromNone() throws URISyntaxException {
+		URI notFoundUri = new URI("http://www.example.com/");
+		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationFrom(notFoundUri);
+		assertEquals("number of authors", 0, actual.length);
+	}
+
+	@Test
+	public void testGetAuthorAuthorCitationToNone() throws URISyntaxException {
+		URI notFoundUri = new URI("http://www.example.com/");
+		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationTo(notFoundUri);
+		assertEquals("number of authors", 0, actual.length);
+	}
+
+	@Test
 	public void testGetAuthorAuthorCitation() {
 		final Set<Integer> expected = new TreeSet<Integer>(Arrays.asList(new Integer[]{18508970}));
 		Set<Integer> articles = authorAuthorCitation.getAuthorAuthorCitation(Katritzky.VIVO_URI, Katritzky.VIVO_URI);
