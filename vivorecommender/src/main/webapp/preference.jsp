@@ -27,7 +27,7 @@
     <![endif]-->
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="/img/sonic.ico">
+    <link rel="shortcut icon" href="img/sonic.ico">
 
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
@@ -269,8 +269,20 @@
 				 	</table>
 				 </div>
 			 </div>
-			<center><button type="submit" class="btn btn-primary">Submit my preferences</button></center>
-      </form>
+			<center><button type="submit" class="btn btn-primary" <%if(ego!=null){ %>onclick="loadModal()"<%}%>>Submit my preferences</button></center>
+			<div class="modal hide fade" id="waitModal">
+				<div class="modal-body">
+					<center>
+						<p>
+						<h3>
+							<img src="img/wait.gif" /> Please wait while we process your
+							query...
+						</h3>
+						</p>
+					</center>
+				</div>
+			</div>
+		</form>
       <footer>
       </footer>
 
@@ -293,6 +305,10 @@
             $('#hr8').popover({animation:true, placement:'right', trigger:'hover', delay:0});
             $('#hr9').popover({animation:true, placement:'right', trigger:'hover', delay:0});
         });
+        function loadModal() {
+			$('#waitModal').modal({show: true, 
+		        backdrop: 'static'});
+		}
     </script>
 </body>
 </html>

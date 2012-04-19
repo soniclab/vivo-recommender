@@ -27,7 +27,7 @@ body {
 
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon"
-	href="/img/sonic.ico">
+	href="img/sonic.ico">
 <link rel="apple-touch-icon-precomposed" sizes="114x114"
 	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72"
@@ -122,13 +122,19 @@ body {
 							<input id="search" name="search" data-provide="typeahead"
 								data-items="4" type="text" placeholder="Research Topic"
 								class="search-query" autocomplete="off">
-							<button type="submit" class="btn btn-primary">Recommend</button>
+							<button type="submit" class="btn btn-primary" <%if(ego!=null){ %>onclick="loadModal()"<%}%>>Recommend</button>
 						</form>
 					</center>
 				</div>
 			</div>
 		</div>
-		
+		<div class="modal hide fade" id="waitModal" style="position: relative; top: auto; left: auto; margin: 0 auto">
+			<div class="modal-body">
+				<center><p>
+					<h3><img src="img/wait.gif" />  Please wait while we process your query...</h3>
+				</p></center>
+			</div>
+		</div>
 		<footer> </footer>
 
 	</div>
@@ -148,6 +154,10 @@ body {
 		});
 	});
 	
+	function loadModal() {
+		$('#waitModal').modal({show: true, 
+	        backdrop: 'static'});
+	}
 </script>
 </body>
 </html>

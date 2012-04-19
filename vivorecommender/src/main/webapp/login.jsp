@@ -26,7 +26,7 @@ body {
 
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon"
-	href="/img/sonic.ico">
+	href="img/sonic.ico">
 <link rel="apple-touch-icon-precomposed" sizes="114x114"
 	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72"
@@ -68,21 +68,27 @@ body {
 					<span class="help-inline">Helps provide better
 						recommendations.</span>
 				</p>
+				<button type="submit" class="btn btn-primary" onclick="loadModal()">Submit</button>
 				<%
 					String message = (String) request.getAttribute("message");
 				%>
 				<%
 					if (message != null) {
 				%><p>
-					<span class="help-inline"><%=message%></span>
+				    <div class="alert alert-error"><%=message%></div>
 				</p>
 				<%
 					}
 				%>
-				<button type="submit" class="btn btn-primary">Submit</button>
 			</form>
 		</center>
-
+		<div class="modal hide fade" id="waitModal" style="position: relative; top: auto; left: auto; margin: 0 auto">
+			<div class="modal-body">
+				<center><p>
+					<h3><img src="img/wait.gif" />  Please wait while we process your query...</h3>
+				</p></center>
+			</div>
+		</div>
 		<footer> </footer>
 
 	</div>
@@ -93,6 +99,14 @@ body {
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="js/jquery.js"></script>
 	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	   
+		function loadModal() {
+			$('#waitModal').modal({show: true, 
+		        backdrop: 'static'});
+		}
+		
+	</script>
 </body>
 
 </html>

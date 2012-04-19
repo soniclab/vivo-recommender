@@ -92,6 +92,7 @@ public class RecommendServlet extends HttpServlet {
 		List<User> cocitList = null;
 		List<User> exchangeList = null;
 		List<User> mquaList = null;
+		List<User> ftcList = null;
 		
 		if(ego.isAffiliation())
 			affList = recommend.affiliation(identifiedExperts, ego);
@@ -103,8 +104,10 @@ public class RecommendServlet extends HttpServlet {
 			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());
 		if(ego.isMostQualified())
 			mquaList = recommend.mostQualified(identifiedExperts, ego,researchTopic);
-		//if(ego.isExchange())
-			//exchangeList = recommend.exchange(identifiedExperts, ego);
+		/*if(ego.isExchange())
+			exchangeList = recommend.exchange(identifiedExperts, ego);
+		if(ego.isFollowCrowd())
+			ftcList = recommend.followTheCrowd(identifiedExperts, ego);*/
 		
 		List<String> heuristics = new ArrayList<String>();
 		if(affList !=null && affList.size() > 0){
@@ -130,6 +133,10 @@ public class RecommendServlet extends HttpServlet {
 		if(mquaList !=null && mquaList.size() > 0){
 			combinedList.add(mquaList);
 			heuristics.add("'Most Qualified'");
+		}
+		if(ftcList !=null && ftcList.size() > 0){
+			combinedList.add(ftcList);
+			heuristics.add("'Follow the Crowd'");
 		}
 		return makeFinalList(combinedList,heuristics);
 	}

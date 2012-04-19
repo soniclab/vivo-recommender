@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
 		if (ego == null)
 		{
 			logger.debug("authentication failed: bad e-mail id");
-			req.setAttribute("message", "Sorry ! We could not identify you.");
+			req.setAttribute("message", "Sorry ! We could not identify you. Please try again with your VIVO UFL email-id.");
 			jsp.forward(req, resp);
 			return;
 		}else {

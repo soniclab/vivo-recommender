@@ -33,6 +33,7 @@ public class Recommend {
 	public List<User> affiliation(Set<URI> experts, User ego) throws URISyntaxException{
 		URI expertURI = null;
 		Set<URI> affiliationList = null;
+		experts.remove(ego.getUri());
 		Iterator<URI> itr = experts.iterator();
 		affiliationList = new HashSet<URI>();
 		while(itr.hasNext()){
@@ -41,7 +42,6 @@ public class Recommend {
 				affiliationList.add(expertURI);
 			}
 		}
-		affiliationList.remove(ego.getUri());
 		return new Researcher().getUsers(affiliationList);
 	}
 	
@@ -110,6 +110,30 @@ public class Recommend {
 				returnValue.add(uriString, citedAuthor.toString());
 		}
 		return returnValue;
+	}
+	
+	/**
+	 * combine the indegree of citation network and coauthorship network;
+	 * return the experts with higher indegree in the combined network;
+	 * @param experts
+	 * @param ego
+	 * @return List of experts with higher indegree in combined network
+	 * @throws URISyntaxException
+	 */
+	public List<User> followTheCrowd(Set<URI> experts, User ego) throws URISyntaxException{
+		Set<URI> ftcList = new HashSet<URI>();
+		Network citationNet = getCitation(experts);
+		Network coauthorNet = getCoAuthorship(experts);
+		experts.remove(ego.getUri());
+		Iterator<URI> itr = experts.iterator();
+		URI expert;
+		while(itr.hasNext()){
+			expert = itr.next();
+			if((citationNet.getInDegree(expert.toString()) + coauthorNet.getInDegree(expert.toString())) > 0){
+				ftcList.add(expert);
+			}
+		}
+		return new Researcher().getUsers(ftcList);
 	}
 	
 	/**
@@ -212,29 +236,45 @@ public class Recommend {
 	}
 	
 	
+	/**
+	 * @param experts
+	 * @param ego
+	 * @return List of experts selected through social exchange heuristic
+	 * @throws URISyntaxException
+	 */
 	public List<User> exchange(Set<URI> experts, User ego) throws URISyntaxException{
 		Set<URI> exchangeList = new HashSet<URI>();
 		
 		Authorship authorship = new Authorship();
 		AuthorAuthorCitation autautCit = new AuthorAuthorCitation();
-		Set<Integer> pubmedIds = authorship.getArticlesSet(ego.getUri());
+		Set<Integer> pubmedIds = authorship.getArticlesSet(ego.getUri()); // get all the pubmedIds of ego
+		experts.remove(ego.getUri());
 		Iterator<URI> itr = experts.iterator();
 		Set<Integer> numCit;
 		URI expertURI;
-		while(itr.hasNext()){
-			expertURI = itr.next();
-			numCit =  autautCit.getAuthorAuthorCitation(expertURI,pubmedIds);
-			if(numCit.size() > 0){
-				exchangeList.add(expertURI);
+		if(pubmedIds.size() > 0){
+			while(itr.hasNext()){
+				expertURI = itr.next();
+				numCit =  autautCit.getAuthorAuthorCitation(expertURI,pubmedIds); // number of times ego cited by the expert
+				if(numCit.size() > 0){
+					exchangeList.add(expertURI);
+				}
 			}
 		}
-		exchangeList.remove(ego.getUri());
 		return new Researcher().getUsers(exchangeList);
 	}
 	
+	/**
+	 * @param experts
+	 * @param ego
+	 * @param keyword
+	 * @return List of experts selected as most qualified.
+	 * @throws URISyntaxException
+	 */
 	public List<User> mostQualified(Set<URI> experts, User ego,String keyword) throws URISyntaxException{
 		Set<URI> mostQualifiedList = new HashSet<URI>();
 		AuthorAuthorCitation autautCit = new AuthorAuthorCitation();
+		experts.remove(ego.getUri());
 		Iterator<URI> itr = experts.iterator();
 		int hIndex = 0;
 		URI expertURI;
@@ -245,7 +285,6 @@ public class Recommend {
 				mostQualifiedList.add(expertURI);
 			}
 		}
-		mostQualifiedList.remove(ego.getUri());
 		return new Researcher().getUsers(mostQualifiedList);
 	}
 	

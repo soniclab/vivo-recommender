@@ -30,7 +30,7 @@ body {
 
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon"
-	href="/img/sonic.ico">
+	href="img/sonic.ico">
 <link rel="apple-touch-icon-precomposed" sizes="114x114"
 	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
 <link rel="apple-touch-icon-precomposed" sizes="72x72"
@@ -166,28 +166,6 @@ body {
 			</div>
 		</div>
 	</div>
-
-	<div class="modal hide fade" id="rankdet">
-		<div class="modal-header">
-			<a class="close" data-dismiss="modal">×</a>
-			<h3>Ranking details</h3>
-		</div>
-		<div class="modal-body">
-			<dl class="dl-horizontal">
-				<dt>Score</dt>
-				<dd>xxxxxxxxxxxxxxxxxxxxxxxxx</dd>
-				<dt>Indegree centrality</dt>
-				<dd>xxxxxxxxxxxxxxxxxxxxxxxxx</dd>
-				<dt>Ranked through
-				<dt>
-				<dd>xxxxxxxxxxxxxxxxxxxxxxxxx</dd>
-			</dl>
-		</div>
-		<div class="modal-footer">
-			<a href="#" class="btn secondary" onclick="closeDialog ();">Close</a>
-		</div>
-	</div>
-
 	<footer> </footer>
 
 	</div>
