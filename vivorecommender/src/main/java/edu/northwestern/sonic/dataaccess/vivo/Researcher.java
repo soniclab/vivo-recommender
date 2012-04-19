@@ -108,8 +108,8 @@ public class Researcher extends VivoSparqlService {
 	}
 	
 	public String getLabel(URI uri){
-		StringBuffer query = new StringBuffer("SELECT ?Name WHERE " + "{");
-		query.append("<" + uri.toString() + "> rdfs:label ?Name .");
+		StringBuffer query = new StringBuffer("SELECT (str(?n) AS ?Name) WHERE " + "{");
+		query.append("<" + uri.toString() + "> rdfs:label ?n .");
 	    query.append(" }");
 	    
 	    List<String[]> results = getStrings(query.toString(),new String[]{"Name"});
