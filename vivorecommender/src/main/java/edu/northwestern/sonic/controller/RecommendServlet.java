@@ -93,14 +93,14 @@ public class RecommendServlet extends HttpServlet {
 		List<User> exchangeList = null;
 		List<User> mquaList = null;
 		
-		/*if(ego.isAffiliation())
+		if(ego.isAffiliation())
 			affList = recommend.affiliation(identifiedExperts, ego);
 		if(ego.isFriendOfFriend())
 			fofList = recommend.friendOfFriend(identifiedExperts, ego);
 		if(ego.isBirdsOfFeather())
 			bofList = recommend.birdsOfFeather(identifiedExperts, ego);
 		if(ego.isCitation())
-			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());*/
+			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());
 		if(ego.isMostQualified())
 			mquaList = recommend.mostQualified(identifiedExperts, ego,researchTopic);
 		//if(ego.isExchange())
