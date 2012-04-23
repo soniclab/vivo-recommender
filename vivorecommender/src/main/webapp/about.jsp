@@ -100,107 +100,29 @@ body {
 	<!-- /.navbar -->
 
 	<div class="container">
-	<div class="row">
+	<div class="well">
+		<h1>About Us</h1>
+		<p>
+		<h4>Principal Investigator</h4>
+		<ul class="unstyled">
+		<li>Dr. Noshir Contractor</li>
+		</ul>
 		
-				 <div class="span4 offset4">
-				 	<table class="table table-striped table-bordered pull-right">
-				 		<thead>
-				 			<tr>
-				 				<th><center>Team</center></th>
-				 			</tr>
-				 		</thead>
-				 		<tbody>
-				 			<tr>
-				 				
-				 				<td>
-				 				            <center>
-				 				            <blockquote>
-				 				            <p>Dr. Noshir Contractor</p>
-				 				            <small>Jane S. & William J. White Professor of Behavioral Sciences</small>
-				 				            </blockquote>
-				 				            </center>
-					                        <dl class="dl-horizontal">
-												<dt>Email</dt>
-												<dd>nosh@northwestern.edu</dd>
-												<dt>Website</dt>
-												<dd>http://nosh.northwestern.edu</dd>
-											</dl>
-											
-				 					</td>	
-				 			</tr>
-				 			<tr>
-				 				<td>
-				 				            <center>
-				 				            <blockquote>
-				 				            <p>Dr. Willem Pieterson</p>
-				 				            <small>General Manager of the SONIC Research Group</small>
-				 				            </blockquote>
-				 				            </center>
-					                        <dl class="dl-horizontal">
-												<dt>Email</dt>
-												<dd>wpieterson@gmail.com</dd>
-												<dt>Phone</dt>
-												<dd>847-532-0625</dd>
-											</dl>
-											
-				 					</td>	
-				 			</tr>
-				 			<tr>
-				 				<td>
-				 				            <center>
-				 				            <blockquote>
-				 				            <p>Dr. Hugh Devlin</p>
-				 				            <small>Postdoctoral Fellow</small>
-				 				            </blockquote>
-				 				            </center>
-					                        <dl class="dl-horizontal">
-												<dt>Email</dt>
-												<dd>hdevlin@northwestern.edu</dd>
-												<dt>Phone</dt>
-												<dd>847-467-2196</dd>
-											</dl>
-											
-				 					</td>	
-				 			</tr>
-				 			<tr>
-				 				<td>
-				 				            <center>
-				 				            <blockquote>
-				 				            <p>Anup Sawant</p>
-				 				            <small>Research Programmer</small>
-				 				            </blockquote>
-				 				            </center>
-					                        <dl class="dl-horizontal">
-												<dt>Email</dt>
-												<dd>anup.sawant@northwestern.edu</dd>
-												<dt>Phone</dt>
-												<dd>864-650-6368</dd>
-											</dl>
-											
-				 					</td>	
-				 			</tr>
-				 			<tr>
-				 				<td>
-				 				            <center>
-				 				            <blockquote>
-				 				            <p>Joe Gilborne</p>
-				 				            <small>Research Programmer</small>
-				 				            </blockquote>
-				 				            </center>
-					                        <dl class="dl-horizontal">
-												<dt>Email</dt>
-												<dd>jgilborne@gmail.com</dd>
-												<dt>Phone</dt>
-												<dd>847-467-2565</dd>
-											</dl>
-											
-				 					</td>	
-				 			</tr>
-				 		</tbody>
-				 	</table>
-				 </div>
-			 </div>
-
+		<h4>Project team</h4>
+		<ul class="unstyled">
+		<li>Dr. Hugh Devlin</li>
+		<li>Anup Sawant</li>
+		<li>Joe Gilborne</li>
+		</ul>
+		
+		<h4>The project team acknowledges comments and suggestions of:</h4>
+		<ul class="unstyled">
+		<li>York Yao</li>
+		<li>Jinling Li</li>
+		<li>Dr. Willem Pieterson</li>
+		</ul>
+		</p>
+	</div>
 		<footer><p>NSF Grant no. : XXXXXXX</p> </footer>
 
 	</div>
