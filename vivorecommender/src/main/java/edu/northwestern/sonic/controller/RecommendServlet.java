@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
 
+@SuppressWarnings("serial")
 public class RecommendServlet extends HttpServlet {
 
 	private Logger logger = Logger.getLogger(this.getClass());
@@ -63,7 +63,6 @@ public class RecommendServlet extends HttpServlet {
 			req.setAttribute("researchTopic",researchTopic);
 			session.setAttribute("experts", experts);
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			logger.error(e, e);
 		}
 		recommendJsp.forward(req, resp);
@@ -177,5 +176,23 @@ public class RecommendServlet extends HttpServlet {
 			count++;
 		}
 		return experts;
+	}
+	
+	/* (non-Javadoc)
+	 * @see javax.servlet.GenericServlet#destroy()
+	 */
+	@Override
+	public void destroy() {
+		logger.info("RecommendServlet destroy method called.");
+		super.destroy();
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#finalize()
+	 */
+	@Override
+	protected void finalize() throws Throwable {
+		logger.info("RecommendServlet finalize method called.");
+		super.finalize();
 	}
 }
