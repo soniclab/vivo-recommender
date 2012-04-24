@@ -112,8 +112,8 @@
 						<form class="form-search" method="GET" action="recommend">
 							<input id="search" name="search" data-provide="typeahead"
 								data-items="4" type="text" placeholder="Research Topic"
-								class="search-query pull-left" autocomplete="off" value="<%= researchTopic%>">
-							<button type="submit" class="btn btn-primary pull-right" <%if(ego!=null){ %>
+								class="search-query" autocomplete="off" value="<%= researchTopic%>">
+							<button type="submit" class="btn btn-primary" <%if(ego!=null){ %>
 								onclick="loadModal()" <%}%>>Recommend</button>
 						</form>
 					</center>
@@ -184,8 +184,8 @@
 						<form class="form-search" method="GET" action="recommend">
 							<input id="search" name="search" data-provide="typeahead"
 								data-items="4" type="text" placeholder="Research Topic"
-								class="search-query pull-left" autocomplete="off" value="<%= researchTopic%>">
-							<button type="submit" class="btn btn-primary pull-right" <%if(ego!=null){ %>
+								class="search-query" autocomplete="off" value="<%= researchTopic%>">
+							<button type="submit" class="btn btn-primary" <%if(ego!=null){ %>
 								onclick="loadModal()" <%}%>>Recommend</button>
 						</form>
 					</center>
