@@ -18,4 +18,16 @@ public final class LogUtil {
 			log.info(stes[i].toString());
 		}
 	}
+	
+	/**
+	 * logger for jar versions
+	 * @param name module name
+	 * @param version module version
+	 * @param date module build date
+	 */
+	public static void logVersion(String name, String version, String date){
+		log.info(name + " version " + version + " built " + date);		
+	}
+
+
 }
