@@ -6,6 +6,11 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>C-IKnow VIVO Semantic Recommender</display-name>
   
+  <listener>
+    <listener-class>
+    	edu.northwestern.sonic.controller.ServletContextListener
+	</listener-class>
+  </listener>
   
   <servlet>
     <servlet-name>RecommendServlet</servlet-name>
