@@ -14,14 +14,9 @@
 
 <link href="datareq" type="application/json" rel="exhibit/data" />
 
-<!-- Le styles -->
+<!-- vivorec styles -->
 <link href="css/vivorec.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px; /* When using the navbar-top-fixed */
-}
-</style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
+ <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>

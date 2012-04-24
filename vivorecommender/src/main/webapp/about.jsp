@@ -11,14 +11,9 @@
 <meta name="description" content="">
 <meta name="author" content="">
 
-<!-- Le styles -->
+<!-- vivorec styles -->
 <link href="css/vivorec.css" rel="stylesheet">
-<style>
-body {
-	padding-top: 60px; /* When using the navbar-top-fixed */
-}
-</style>
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
+ <link href="css/bootstrap-responsive.css" rel="stylesheet">
 
 <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
@@ -115,7 +110,7 @@ body {
 		<li>Joe Gilborne</li>
 		</ul>
 		
-		<h4>The project team acknowledges comments and suggestions of:</h4>
+		<h4>Developer support</h4>
 		<ul class="unstyled">
 		<li>York Yao</li>
 		<li>Jinling Li</li>

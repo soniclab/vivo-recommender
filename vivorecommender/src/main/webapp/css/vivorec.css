@@ -8,13 +8,11 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
-
 .navbar-inner {
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;
 }
-
 .row {
 	padding: 20px 0px;
 }
