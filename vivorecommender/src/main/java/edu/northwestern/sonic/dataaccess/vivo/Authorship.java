@@ -9,6 +9,7 @@ import edu.northwestern.sonic.util.StringUtil;
 /**
  * Authorship and co-authorship accessors;
  * combines citation data from PubMed with authorship data from VIVO.
+ * Methods returning sets do the real work, methods returning arrays are for convenience
  *
  * @author Hugh
  * 
