@@ -62,7 +62,7 @@ public class RecommendServlet extends HttpServlet {
 			req.setAttribute("experts", experts);
 			req.setAttribute("researchTopic",researchTopic);
 			session.setAttribute("experts", experts);
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			logger.error(e, e);
 		}
 		recommendJsp.forward(req, resp);
