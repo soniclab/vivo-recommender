@@ -42,13 +42,13 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
-	public void testGetAuthorAuthorCitationFromNone() throws URISyntaxException {
+	public void testGetAuthorAuthorCitationFromNone() {
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationFrom(notFoundUri);
 		assertEquals("number of authors", 0, actual.length);
 	}
 
 	@Test
-	public void testGetAuthorAuthorCitationToNone() throws URISyntaxException {
+	public void testGetAuthorAuthorCitationToNone() {
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationTo(notFoundUri);
 		assertEquals("number of authors", 0, actual.length);
 	}
@@ -59,6 +59,14 @@ public class AuthorAuthorCitationTest {
 		Set<Integer> articles = authorAuthorCitation.getAuthorAuthorCitation(Katritzky.VIVO_URI, Katritzky.VIVO_URI);
 		assertEquals("number of articles", expected.size(), articles.size());
 		assertEquals("articles", expected, articles);
+	}
+
+	@Test
+	public void testGetAuthorAuthorCitationNone() {
+		Set<Integer> articlesFrom = authorAuthorCitation.getAuthorAuthorCitation(notFoundUri, Katritzky.VIVO_URI);
+		assertEquals("number of articles from not found", 0, articlesFrom.size());
+		Set<Integer> articlesTo = authorAuthorCitation.getAuthorAuthorCitation(Katritzky.VIVO_URI, notFoundUri);
+		assertEquals("number of articles to not found", 0, articlesTo.size());
 	}
 
 	@Test
@@ -122,7 +130,7 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
-	public void testGetAuthorAuthorCoCitationNone() throws URISyntaxException {
+	public void testGetAuthorAuthorCoCitationNone() {
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCoCitation(notFoundUri);
 		assertEquals("number of authors", 0, actual.length);
 	}

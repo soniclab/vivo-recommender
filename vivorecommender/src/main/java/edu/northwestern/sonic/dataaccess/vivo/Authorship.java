@@ -9,6 +9,7 @@ import edu.northwestern.sonic.util.StringUtil;
 /**
  * Authorship and co-authorship accessors;
  * combines citation data from PubMed with authorship data from VIVO.
+ * Methods returning sets do the real work, methods returning arrays are for convenience
  *
  * @author Hugh
  * 
@@ -40,7 +41,7 @@ public class Authorship extends Article {
 	 */
 	public NavigableSet<URI> getArticles(final URI author, final String keyword) {
 		StringBuffer whereClause = new StringBuffer(StringUtil.wrap(author));
-		whereClause.append("vivo:authorInAuthorship ?cn .\n");
+		whereClause.append(" vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?X .\n");
 		whereClause.append("?X vivo:freetextKeyword ?keyword .\n");
 		whereClause.append("FILTER (regex(?keyword, \"");

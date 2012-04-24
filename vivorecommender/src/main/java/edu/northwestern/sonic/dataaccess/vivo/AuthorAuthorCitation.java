@@ -14,6 +14,7 @@ import edu.northwestern.sonic.util.ArraysUtil;
 /**
  * Wrapper for author-author citation;
  * combines citation data from PubMed with authorship data from VIVO.
+ * Methods returning sets do the real work, methods returning arrays are for convenience
  *
  * @author Hugh
  * 
@@ -84,7 +85,12 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return set of PubMed ids of articles by authorFrom that cite articlesTo
 	 */
 	public NavigableSet<Integer> getAuthorAuthorCitation(final URI authorFrom, final Set<Integer> articlesTo) {
+		NavigableSet<Integer> authorFromArticles = getArticlesSet(authorFrom);
+		if(authorFromArticles.isEmpty()) // no articles by authorFrom
+			return authorFromArticles;
 		NavigableSet<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
+		if(returnValue.isEmpty()) // no articles that cite any articles in the articleTo list
+			return returnValue;
 		returnValue.retainAll(getArticlesSet(authorFrom));
 		return returnValue;	
 	}
@@ -97,7 +103,11 @@ public class AuthorAuthorCitation extends Authorship {
 	 * @return set of PubMed ids of articles by authorFrom that cite authorTo
 	 */
 	public NavigableSet<Integer> getAuthorAuthorCitation(final URI authorFrom, final URI authorTo) {
-		return getAuthorAuthorCitation(authorFrom, getArticlesSet(authorTo));	
+		NavigableSet<Integer> returnValue = new TreeSet<Integer>();
+		NavigableSet<Integer> authorToArticles = getArticlesSet(authorTo);
+		if(authorToArticles.isEmpty()) // no articles by authorTo
+			return returnValue; // no citations
+		return getAuthorAuthorCitation(authorFrom, authorToArticles);	
 	}
 
 	/**
