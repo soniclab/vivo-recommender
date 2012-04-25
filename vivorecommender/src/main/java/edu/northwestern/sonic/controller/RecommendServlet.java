@@ -62,7 +62,7 @@ public class RecommendServlet extends HttpServlet {
 			req.setAttribute("experts", experts);
 			req.setAttribute("researchTopic",researchTopic);
 			session.setAttribute("experts", experts);
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			logger.error(e, e);
 		}
 		recommendJsp.forward(req, resp);
@@ -75,7 +75,7 @@ public class RecommendServlet extends HttpServlet {
 	 * @return Map of uris with list of details for recommended experts.
 	 * @throws URISyntaxException
 	 */
-	private Map<String,List<String>> getRecommendations(String researchTopic, User ego) throws URISyntaxException{
+	private Map<String,List<String>> getRecommendations(String researchTopic, User ego) {
 		Identification identification = new Identification();
 		Recommend recommend = new Recommend();
 		List<List<User>> combinedList = new ArrayList<List<User>>();
@@ -147,7 +147,7 @@ public class RecommendServlet extends HttpServlet {
 	 * @return Map of uris with list of details for recommended experts.
 	 * @throws URISyntaxException
 	 */
-	private Map<String,List<String>> makeFinalList(List<List<User>> combinedList, List<String> heuristics) throws URISyntaxException{
+	private Map<String,List<String>> makeFinalList(List<List<User>> combinedList, List<String> heuristics) {
 		Map<String,List<String>> experts = Collections.synchronizedMap(new HashMap<String,List<String>>());
 		Researcher researcher = new Researcher();
 		List<User> list = null;

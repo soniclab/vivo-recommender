@@ -1,25 +1,25 @@
 package edu.northwestern.sonic.dataaccess.vivo;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import edu.northwestern.sonic.model.User;
+import edu.northwestern.sonic.util.UriUtil;
 
 public class Researcher extends VivoSparqlService {
 	
-	public User read(List<String[]> results, String email) throws URISyntaxException {
+	public User read(List<String[]> results, String email) {
 		User user = null;
 		if(results!=null && results.size() > 0){
 			user = new User();
 			user.setEmail(email);
 			String[] details = results.get(0);
-			user.setUri(new URI(details[0]));
+			user.setUri(UriUtil.safeUriFactory(details[0]));
 			user.setName(details[1]);
 			user.setDepartment(details[2]);
-			user.setDepartmentURI(new URI(details[3]));
+			user.setDepartmentURI(UriUtil.safeUriFactory(details[3]));
 			if(details[4]!=null){
 				user.setMoniker(details[4]);
 			}
@@ -27,7 +27,7 @@ public class Researcher extends VivoSparqlService {
 		return user;
 	}
 	
-	public User read(List<String[]> results, URI uri) throws URISyntaxException {
+	public User read(List<String[]> results, URI uri) {
 		User user = null;
 		if(results!=null && results.size() > 0){
 			user = new User();
@@ -39,14 +39,14 @@ public class Researcher extends VivoSparqlService {
 			if(details[2]!=null)
 				user.setDepartment(details[2]);
 			if(details[3]!=null)
-				user.setDepartmentURI(new URI(details[3]));
+				user.setDepartmentURI(UriUtil.safeUriFactory(details[3]));
 			if(details[4]!=null)
 				user.setMoniker(details[4]);
 		}
 		return user;
 	}
 		
-	public User getUser(String email) throws URISyntaxException{
+	public User getUser(String email) {
 		StringBuffer query = new StringBuffer("SELECT DISTINCT ?X (str(?name) AS ?Y) (str(?l) AS ?Z) ?D (str(?m) AS ?M) WHERE " + "{");
 		query.append(" ?X a vivo:FacultyMember .");
 		query.append(" ?X vivo:primaryEmail \"" + email + "\".");
@@ -62,7 +62,7 @@ public class Researcher extends VivoSparqlService {
 	    return read(results,email);
 	} 
 	
-	public User getUser(URI uri) throws URISyntaxException{
+	public User getUser(URI uri) {
 
 		StringBuffer query = new StringBuffer("SELECT (str(?email) AS ?E) (str(?name) AS ?Y) (str(?l) AS ?Z) ?D (str(?m) AS ?M) WHERE " + "{");
 		query.append("<"+ uri.toString() +"> rdfs:label ?name .");
@@ -82,7 +82,7 @@ public class Researcher extends VivoSparqlService {
 	    return read(results,uri);
 	} 
 	
-	public List<User> getUsers(Set<URI> experts) throws URISyntaxException{
+	public List<User> getUsers(Set<URI> experts) {
 		List<User> expertObjs = new ArrayList<User>();
 		Iterator<URI> itr = experts.iterator();
 		while(itr.hasNext()){
@@ -97,7 +97,7 @@ public class Researcher extends VivoSparqlService {
 	 * @return list containing major fields and gradschools of the expert.
 	 * @throws URISyntaxException
 	 */
-	public List<String[]> getEducationalBackground(URI uri) throws URISyntaxException{
+	public List<String[]> getEducationalBackground(URI uri) {
 		StringBuffer query = new StringBuffer("SELECT (str(?f) AS ?F) ?O WHERE {");
 		query.append("<" + uri.toString() +"> vivo:educationalTraining ?Y .");
 		query.append("OPTIONAL {?Y vivo:majorField ?f .}");

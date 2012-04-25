@@ -1,7 +1,6 @@
 package edu.northwestern.sonic.dataaccess;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +23,7 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 import edu.northwestern.sonic.util.LogUtil;
+import edu.northwestern.sonic.util.UriUtil;
 /**
  * Thin wrapper for Jena SPARQL endpoints;
  * provides prefixes
@@ -140,15 +140,9 @@ public class SparqlService {
 		while(resultSet.hasNext()) {
 			QuerySolution querySolution = resultSet.nextSolution();
 			Resource resource = querySolution.getResource("X");
-			URI uri = null;
-			try {
-				uri = new URI(resource.getURI());
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-				log.info("Malformed URI" + resource.getURI());
-				continue; // log, skip malformed URIs
-			}
-			returnValue.add(uri);
+			URI uri = UriUtil.safeUriFactory(resource.getURI()); // log parse errors
+			if(uri != null)
+				returnValue.add(uri);
 	    }
 		return returnValue;
 	}

@@ -1,8 +1,6 @@
 package edu.northwestern.sonic.controller;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -19,6 +17,7 @@ import edu.northwestern.sonic.model.User;
 /*
  * author Anup 
  */
+@SuppressWarnings("serial")
 public class LoginServlet extends HttpServlet {
 	private Logger logger = Logger.getLogger(this.getClass());
 	private RequestDispatcher jsp;
@@ -44,12 +43,7 @@ public class LoginServlet extends HttpServlet {
 		logger.debug("doPost()");
 
 		String userEmail = req.getParameter("userEmail");
-		User ego = null;
-		try {
-			ego = new Researcher().getUser(userEmail);
-		} catch (URISyntaxException e) {
-			logger.error(e,e);
-		}
+		User ego = new Researcher().getUser(userEmail);
 		HttpSession session = req.getSession();
 		
 		if (ego == null)
