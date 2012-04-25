@@ -17,6 +17,7 @@ import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 import edu.northwestern.sonic.dataaccess.vivo.Authorship;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.Network;
+import edu.northwestern.sonic.util.UriUtil;
 
 public class Recommend {
 	
@@ -30,7 +31,7 @@ public class Recommend {
 	 * @param seeker
 	 * @return list of experts working in same department as ego but never worked with ego.
 	 */
-	public List<User> affiliation(Set<URI> experts, User ego) throws URISyntaxException{
+	public List<User> affiliation(Set<URI> experts, User ego) {
 		URI expertURI = null;
 		Set<URI> affiliationList = null;
 		experts.remove(ego.getUri());
@@ -52,7 +53,7 @@ public class Recommend {
 	 * @return set of URIs of qualified experts, who are co-cited with ego, but not coauthors of ego
 	 * @throws URISyntaxException
 	 */
-	public List<User> cocitation(Set<URI> experts, URI ego) throws URISyntaxException {
+	public List<User> cocitation(Set<URI> experts, URI ego) {
 		Set<URI> returnValue = new TreeSet<URI>(experts); // copy constructor
 		returnValue.removeAll(authorAuthorCitation.getCoAuthors(ego)); // disqualify previous coauthors
 		returnValue.retainAll(authorAuthorCitation.getAuthorAuthorCoCitationSet(ego)); // must be co-cited
@@ -65,7 +66,7 @@ public class Recommend {
 	 * @params uris a set of author URIs
 	 * @return combined ego networks (radius 1)
 	 */
-	public Network getCoAuthorship(Set<URI> uris) throws URISyntaxException {
+	public Network getCoAuthorship(Set<URI> uris) {
 		Network returnValue = new Network(false);
 		for(URI uri : uris) {
 			String uriString = uri.toString();
@@ -81,7 +82,7 @@ public class Recommend {
 	 * @params uris a set of author URIs
 	 * @return combined cocitation networks (radius 1)
 	 */
-	public Network getCoCitation(Set<URI> uris) throws URISyntaxException {
+	public Network getCoCitation(Set<URI> uris) {
 		Network returnValue = new Network(false);
 		for(URI uri : uris) {
 			String uriString = uri.toString();
@@ -97,7 +98,7 @@ public class Recommend {
 	 * @params uris a set of author URIs
 	 * @return combined citation networks (radius 1)
 	 */
-	public Network getCitation(Set<URI> uris) throws URISyntaxException {
+	public Network getCitation(Set<URI> uris) {
 		Network returnValue = new Network(false);
 		Set<URI> citedAuthors = new TreeSet<URI>();
 		for(URI uri : uris) {
@@ -120,7 +121,7 @@ public class Recommend {
 	 * @return List of experts with higher indegree in combined network
 	 * @throws URISyntaxException
 	 */
-	public List<User> followTheCrowd(Set<URI> experts, User ego) throws URISyntaxException{
+	public List<User> followTheCrowd(Set<URI> experts, User ego) {
 		Set<URI> ftcList = new HashSet<URI>();
 		Network citationNet = getCitation(experts);
 		Network coauthorNet = getCoAuthorship(experts);
@@ -143,7 +144,7 @@ public class Recommend {
 	 * @return List of experts that are selected through 'Friend of a Friend' heuristic.
 	 * @throws URISyntaxException
 	 */
-	public List<User> friendOfFriend(Set<URI> experts, User ego) throws URISyntaxException{
+	public List<User> friendOfFriend(Set<URI> experts, User ego) {
 		Set<URI> fOFList = new HashSet<URI>();
 		experts.add(ego.getUri());
 		Network coauthorshipNet = getCoAuthorship(experts); // putting experts and their coauthors in network.
@@ -167,7 +168,7 @@ public class Recommend {
 	 * moniker, work department, gradSchool and major field of study.
 	 * @throws URISyntaxException
 	 */
-	public List<User> birdsOfFeather(Set<URI> experts, User ego) throws URISyntaxException{
+	public List<User> birdsOfFeather(Set<URI> experts, User ego) {
 
 		
 		if(experts.contains(ego.getUri())){
@@ -242,7 +243,7 @@ public class Recommend {
 	 * @return List of experts selected through social exchange heuristic
 	 * @throws URISyntaxException
 	 */
-	public List<User> exchange(Set<URI> experts, User ego) throws URISyntaxException{
+	public List<User> exchange(Set<URI> experts, User ego) {
 		Set<URI> exchangeList = new HashSet<URI>();
 		
 		Authorship authorship = new Authorship();
@@ -271,7 +272,7 @@ public class Recommend {
 	 * @return List of experts selected as most qualified.
 	 * @throws URISyntaxException
 	 */
-	public List<User> mostQualified(Set<URI> experts, User ego,String keyword) throws URISyntaxException{
+	public List<User> mostQualified(Set<URI> experts, User ego,String keyword) {
 		Set<URI> mostQualifiedList = new HashSet<URI>();
 		AuthorAuthorCitation autautCit = new AuthorAuthorCitation();
 		experts.remove(ego.getUri());
@@ -290,7 +291,7 @@ public class Recommend {
 	
 
 
-	private Map<String,List<Integer>> formDictionary(User ego) throws URISyntaxException{
+	private Map<String,List<Integer>> formDictionary(User ego) {
 
 		Map<String,List<Integer>> dictionary = Collections.synchronizedMap(new TreeMap<String,List<Integer>>());
 		List<Integer> scale;
@@ -317,7 +318,7 @@ public class Recommend {
 		return dictionary;
 	}
 	
-	private void updateDictionary(User expert, Map<String,List<Integer>> dictionary) throws URISyntaxException{
+	private void updateDictionary(User expert, Map<String,List<Integer>> dictionary) {
 		Set<String> details = getDetails(expert);
 		Iterator<String> itr = dictionary.keySet().iterator();
 		String key;
@@ -334,14 +335,14 @@ public class Recommend {
 		}
 	}
 	
-	private void updateDictionary(List<User> expertObjs, Map<String,List<Integer>> dictionary)throws URISyntaxException{
+	private void updateDictionary(List<User> expertObjs, Map<String,List<Integer>> dictionary) {
 		Iterator<User> itr = expertObjs.iterator();
 		while(itr.hasNext()){
 			updateDictionary(itr.next(),dictionary);
 		}
 	}
 	
-	private Set<String> getDetails(User expert) throws URISyntaxException{
+	private Set<String> getDetails(User expert) {
 		Set<String> details = new HashSet<String>();
 	    if(expert.getMoniker()!=null && !expert.getMoniker().equals("")){
 	    		details.add(expert.getMoniker());
@@ -375,7 +376,7 @@ public class Recommend {
 		dictionary.put(key, scale);
 	}
 	
-	private void setEducationBackground(User expert) throws URISyntaxException{
+	private void setEducationBackground(User expert) {
 		Researcher researcher = new Researcher();
 		List<String[]> educationBackground = researcher.getEducationalBackground(expert.getUri());
 		if(educationBackground!=null && educationBackground.size() > 0){
@@ -389,7 +390,7 @@ public class Recommend {
 					fields.add(eduDetails[0]);
 				}
 				if(eduDetails[1]!=null && !eduDetails[1].equals("")){
-					gradSchools.add(new URI(eduDetails[1]));
+					gradSchools.add(UriUtil.safeUriFactory(eduDetails[1]));
 				}
 			}
 			expert.setMajorField(fields);
@@ -397,7 +398,7 @@ public class Recommend {
 		}
 	}
 	
-	private void setEducationBackground(List<User> expertObjs) throws URISyntaxException{
+	private void setEducationBackground(List<User> expertObjs) {
 
 		Iterator<User> itr = expertObjs.iterator();
 		int count =0;
