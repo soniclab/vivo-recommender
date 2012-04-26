@@ -20,14 +20,19 @@ import edu.northwestern.sonic.dataaccess.SparqlService;
  */
 public class VivoSparqlService extends SparqlService {
 	
+	private static final String urlString = "http://ciknow1.northwestern.edu:3030/UF-VIVO/query";
 	private static URL url = null;
 	static {
 		try {
-			url = new URL("http://ciknow1.northwestern.edu:3030/UF-VIVO/query");
+			url = new URL(urlString);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			System.exit(0);
 		}
+	}
+	
+	public static void setUrl(URL url) {
+		VivoSparqlService.url = url;
 	}
 	
 	private final static String[][] queryPrefixDescriptions = {
