@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import edu.northwestern.sonic.dataaccess.ListFilter;
 import edu.northwestern.sonic.util.ArraysUtil;
+import edu.northwestern.sonic.util.SetUtil;
 /**
  * Wrapper for citation data;
  * served by the University of Iowa Medline endpoint.
@@ -247,18 +248,8 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 */
 	public double getArticleArticleCoCitationRelativeFrequency(final int pubMedId1, final int pubMedId2) {
 		Set<Integer> set1 = getArticleArticleCitationToSet(pubMedId1);
-		if(set1.isEmpty())
-			return 0.0;
 		Set<Integer> set2 = getArticleArticleCitationToSet(pubMedId2);
-		if(set2.isEmpty())
-			return 0.0;
-		Set<Integer> union = new TreeSet<Integer>(set1);
-		union.addAll(set2);
-		Set<Integer> intersection = new TreeSet<Integer>(set1);
-		intersection.retainAll(set2);
-		if(intersection.isEmpty())
-			return 0.0;
-		return (double) intersection.size() / (double) union.size();
+		return SetUtil.jaccard(set1, set2);
 	}
 
 }
