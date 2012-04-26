@@ -7,6 +7,7 @@ import edu.northwestern.sonic.dataaccess.test.BindingsTest;
 import edu.northwestern.sonic.dataaccess.test.ListFilterTest;
 import edu.northwestern.sonic.network.test.NetworkTest;
 import edu.northwestern.sonic.util.test.ArraysUtilTest;
+import edu.northwestern.sonic.util.test.SetUtilTest;
 import edu.northwestern.sonic.util.test.StringUtilTest;
 import edu.northwestern.sonic.util.test.UriUtilTest;
 
@@ -22,6 +23,7 @@ import edu.northwestern.sonic.util.test.UriUtilTest;
 @Suite.SuiteClasses( { 
 	StringUtilTest.class,
 	ArraysUtilTest.class,
+	SetUtilTest.class,
 	UriUtilTest.class,
 	NetworkTest.class,
 	ListFilterTest.class,
