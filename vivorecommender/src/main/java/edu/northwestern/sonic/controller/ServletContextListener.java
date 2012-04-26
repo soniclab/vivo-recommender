@@ -1,7 +1,3 @@
-/**
- * C-IKnow Recommendation Servlet Context Listener
- * 2011-05-16 HJD initial implementation
- */
 package edu.northwestern.sonic.controller;
 
 import javax.servlet.ServletContextEvent;
@@ -13,6 +9,9 @@ import com.hp.hpl.jena.query.ARQ;
 import edu.northwestern.sonic.util.LogUtil;
 
 /**
+ * Servlet Context Listener
+ * 2011-05-16 HJD initial implementation
+ *
  * @author Hugh
  * 
  */
@@ -20,11 +19,11 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
 	private static Logger log = LogUtil.log;
 
 	/**
-	 * Create the SPARQL data engine once on application start-up
+	 * called once on application start-up
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		log.info("Ready to recommend!");
+		log.info("contextInitialized method called");
 		LogUtil.logVersion(Jena.NAME, Jena.VERSION, Jena.BUILD_DATE);
 		LogUtil.logVersion(ARQ.NAME, ARQ.VERSION, ARQ.BUILD_DATE);
 	}
