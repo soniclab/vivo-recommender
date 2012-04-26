@@ -22,8 +22,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import edu.northwestern.sonic.dataaccess.vivo.Identification;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
+import edu.northwestern.sonic.model.Identification;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
 

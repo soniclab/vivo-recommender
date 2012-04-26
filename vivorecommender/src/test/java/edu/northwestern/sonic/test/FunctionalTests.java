@@ -8,9 +8,9 @@ import edu.northwestern.sonic.dataaccess.medline.test.MedlineSparqlServiceTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.ArticleTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.AuthorAuthorCitationTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.AuthorshipTest;
-import edu.northwestern.sonic.dataaccess.vivo.test.IdentificationTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.ResearcherTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.VivoSparqlServiceTest;
+import edu.northwestern.sonic.model.test.IdentificationTest;
 import edu.northwestern.sonic.model.test.RecommendTest;
 
 /**

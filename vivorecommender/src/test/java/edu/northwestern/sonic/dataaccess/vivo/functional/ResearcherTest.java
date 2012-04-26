@@ -12,8 +12,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.northwestern.sonic.dataaccess.vivo.Identification;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
+import edu.northwestern.sonic.model.Identification;
 import edu.northwestern.sonic.model.User;
 
 /*

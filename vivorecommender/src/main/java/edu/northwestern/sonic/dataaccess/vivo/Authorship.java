@@ -12,7 +12,7 @@ import edu.northwestern.sonic.util.StringUtil;
  * Methods returning sets do the real work, methods returning arrays are for convenience
  *
  * @author Hugh
- * 
+ * HJD 2012-04-26 add accessors for authors for identification
  */
 public class Authorship extends Article {
 	
@@ -120,5 +120,67 @@ public class Authorship extends Article {
 		whereClause.append(" != ?X)");
 		return getDistinctSortedURIs(whereClause.toString());
 	}
+
+	// identification phase support
+	// get authors by keywords
+	
+	/**
+	 * case-insensitive subject filter regular expression
+	 * @param subject
+	 * @return
+	 */
+	private String caseInsensitiveFilter(String subject) {
+		StringBuffer returnValue = new StringBuffer("filter regex(?subject, \"");
+		returnValue.append(subject);
+		returnValue.append("\",\"i\")");
+		return returnValue.toString();
+	}
+	
+	/**
+	 * add subject filter to query
+	 * @param query
+	 * @param subject
+	 * @return set of URIs of qualified experts
+	 */
+	private NavigableSet<URI> getAuthorsBySubject(final StringBuffer query, final String subject) {
+		query.append(caseInsensitiveFilter(subject));
+		return getDistinctSortedURIs(query.toString());		
+	}
+
+	/**
+	 * get authors of articles by research area
+	 * @param subject a research area (MeSH subject heading description)
+	 * @return set of URIs of qualified experts
+	 */
+	public NavigableSet<URI> getAuthorsByResearchArea(final String subject) {
+		StringBuffer query = new StringBuffer("?X vivo:hasResearchArea ?ResearchArea .\n");
+		query.append("?ResearchArea rdfs:label ?subject .\n");
+		return getAuthorsBySubject(query, subject);
+	}
+
+	/**
+	 * get authors of articles with associated free text keywords
+	 * @param subject an article free text keyword
+	 * @return set of URIs of qualified experts
+	 */
+	public NavigableSet<URI> getAuthorsByKeyword(final String subject) {
+		StringBuffer query = new StringBuffer("?X vivo:authorInAuthorship ?pub .\n");
+		query.append("?pub vivo:linkedInformationResource ?keyword .\n");
+		query.append("?keyword vivo:freetextKeyword ?subject .\n");
+		return getAuthorsBySubject(query, subject);
+	}
+	
+	/**
+	 * get authors of articles with associated VIVO subject areas
+	 * @param subject an article subject area
+	 * @return set of URIs of qualified experts
+	 */
+	public NavigableSet<URI> getAuthorsBySubjectArea(final String subject) {
+		StringBuffer query = new StringBuffer("?X vivo:authorInAuthorship ?pub .\n");
+		query.append("?pub vivo:hasSubjectArea ?area .\n");
+		query.append("?area rdfs:label ?subject .\n");
+		return getAuthorsBySubject(query, subject);
+	}
+	
 
 }
