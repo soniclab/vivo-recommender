@@ -50,3 +50,4 @@ logs/
 ###################
 target/
 /.classpath
+/pom.gyao.xml
