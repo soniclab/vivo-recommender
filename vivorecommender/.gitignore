@@ -48,6 +48,6 @@ logs/
 
 # Maven artifacts #
 ###################
-target/
+#target/
 /.classpath
 /pom.gyao.xml
