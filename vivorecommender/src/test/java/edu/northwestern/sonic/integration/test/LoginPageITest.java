@@ -17,10 +17,15 @@ public class LoginPageITest extends ITest {
 	}
 
 	@Test
-	public void testLoginPageNotFound() {
+	public void testLoginPage() {
         assertEquals("title", "VIVO Recommender", ie.getTitle());
         WebElement userEmail = ie.findElement(By.name("userEmail"));
         assertNotNull("e-mail prompt", userEmail);
+	}
+	
+	@Test
+	public void testLoginPageNotFound() {
+        WebElement userEmail = ie.findElement(By.name("userEmail"));
         userEmail.sendKeys("foo@bar.com");
         userEmail.submit();
         assertTrue("Sorry", ie.getPageSource().contains("Sorry"));
@@ -28,9 +33,7 @@ public class LoginPageITest extends ITest {
 
 	@Test
 	public void testLogin() {
-        assertEquals("title", "VIVO Recommender", ie.getTitle());
         WebElement userEmail = ie.findElement(By.name("userEmail"));
-        assertNotNull("e-mail prompt", userEmail);
         userEmail.sendKeys("eabuss@ufl.edu");
         userEmail.submit();
         assertFalse("Sorry", ie.getPageSource().contains("Sorry"));
