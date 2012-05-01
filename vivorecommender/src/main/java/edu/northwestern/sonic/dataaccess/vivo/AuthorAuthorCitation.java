@@ -160,7 +160,7 @@ public class AuthorAuthorCitation extends Authorship {
 	 * "A scientist has index h if h of his/her N papers have at least h citations each,
 	 * and the other (N - h) papers have no more than h citations each."
 	 * Hirsch, J. E. (15 November 2005). "An index to quantify an individual's scientific research output";
-	 * PNAS 102 (46): 16569–16572;
+	 * PNAS 102 (46): 16569Ã±16572;
 	 * arXiv:physics/0508025;
 	 * Bibcode 2005PNAS..10216569H;
 	 * doi:10.1073/pnas.0507655102;
