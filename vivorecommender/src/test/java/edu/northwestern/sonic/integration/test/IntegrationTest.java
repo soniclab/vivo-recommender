@@ -6,16 +6,24 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 
 /**
  * Holder for URL of web application under test
+ * default to IE and the live server on ciknow1
+ * web driver with implicit waiting
  * 
  * @author Hugh
  *
  */
 public abstract class IntegrationTest {
 	private static URL defaultWebAppUrl = null;
+	public static enum WEBDRIVER { 
+		INTERNETEXPLORER,
+		CHROME
+	}
+	private static WEBDRIVER defaultWebDriver = WEBDRIVER.INTERNETEXPLORER;
 	private URL webAppUrl = null;
 	private WebDriver webDriver = null;
 	
@@ -28,6 +36,7 @@ public abstract class IntegrationTest {
 	}
 
 	/**
+	 * constructor
 	 * @param webAppUrl
 	 * @param webDriver
 	 */
@@ -37,6 +46,7 @@ public abstract class IntegrationTest {
 	}
 
 	/**
+	 * constructor
 	 * @param webDriver
 	 */
 	public IntegrationTest(WebDriver webDriver) {
@@ -44,17 +54,33 @@ public abstract class IntegrationTest {
 	}
 
 	/**
+	 * constructor
 	 * @param webAppUrl
 	 */
 	public IntegrationTest(URL webAppUrl) {
-		this(webAppUrl, new InternetExplorerDriver());
+		this(webAppUrl, webDriverFactory());
 	}
 
 	/**
-	 * 
+	 * constructor
 	 */
 	public IntegrationTest() {
-		this(new InternetExplorerDriver());
+		this(defaultWebAppUrl);
+	}
+	
+	private static WebDriver webDriverFactory(WEBDRIVER webDriver) {
+		switch (webDriver) {
+			case INTERNETEXPLORER:
+				return new InternetExplorerDriver();
+			case CHROME:
+				return new ChromeDriver();
+			default:
+				return null;
+		}
+	}
+
+	private static WebDriver webDriverFactory() {
+		return webDriverFactory(defaultWebDriver);
 	}
 
 	/**
@@ -62,8 +88,17 @@ public abstract class IntegrationTest {
 	 * @param webAppUrl as a String
 	 * @throws MalformedURLException
 	 */
-	protected void setWebAppUrl(URL url) {
+	private void setWebAppUrl(URL url) {
 		webAppUrl = url; 
+	}
+
+	/**
+	 * Set the default base application URL
+	 * @param webAppUrl as a String
+	 * @throws MalformedURLException
+	 */
+	public static void setDefaultWebAppUrl(URL url) {
+		IntegrationTest.defaultWebAppUrl = url; 
 	}
 
 	/**
@@ -76,9 +111,16 @@ public abstract class IntegrationTest {
     /**
 	 * @param webDriver the webDriver to set
 	 */
-	protected void setWebDriver(WebDriver webDriver) {
+	private void setWebDriver(WebDriver webDriver) {
 		this.webDriver = webDriver;
 		this.webDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+	}
+
+    /**
+	 * @param webDriver the webDriver to set
+	 */
+	public static void setDefaultWebDriver(WEBDRIVER webDriver) {
+		IntegrationTest.defaultWebDriver = webDriver; 
 	}
 
 	/**
