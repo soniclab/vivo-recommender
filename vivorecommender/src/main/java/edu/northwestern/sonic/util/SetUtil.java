@@ -13,8 +13,8 @@ public class SetUtil {
 	/**
 	 * Jaccard index;
 	 * see http://en.wikipedia.org/wiki/Jaccard_index;
-	 * see Jaccard, Paul (1901), "tude comparative de la distribution florale dans une portion des Alpes et des Jura", 
-	 * Bulletin de la Soci Vaudoise des Sciences Naturelles 37: 547-579
+	 * see Jaccard, Paul (1901), "Etude comparative de la distribution florale dans une portion des Alpes et des Jura", 
+	 * Bulletin de la Societe Vaudoise des Sciences Naturelles 37: 547-579
 	 * 
 	 * @param set1 a set
 	 * @param set2 a set 
