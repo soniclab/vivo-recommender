@@ -4,18 +4,17 @@ import org.junit.BeforeClass;
 
 /**
  * local Chrome test suite
- * run with path to chrome driver
+ * run with path to chrome driver on system path or with parameter to jvm, for example
  * -Dwebdriver.chrome.driver="C:\Program Files (x86)\Google\Chrome\Application\chromedriver.exe"
  * 
  * @author Hugh
  * 
  */
 
-public class ChromeLocalIntegrationTests extends LocalIntegrationTests {
+public class ChromeLocalIntegrationTests extends ChromeIntegrationTests {
 	
 	@BeforeClass
-	public static void beforeClass() {
-		IntegrationTest.setDefaultWebDriver(IntegrationTest.WEBDRIVER.CHROME);
+	public static void beforeClassLocal() {
 		IntegrationTest.setDefaultWebAppUrl(LocalWebApp.getUrl());
 	}
 	

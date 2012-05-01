@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
+import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -62,12 +63,16 @@ public abstract class IntegrationTest {
 	}
 
 	/**
-	 * constructor
+	 * no-argument constructor
 	 */
 	public IntegrationTest() {
 		this(defaultWebAppUrl);
 	}
 	
+	/**
+	 * @param webDriver
+	 * @return web driver based on parameter
+	 */
 	private static WebDriver webDriverFactory(WEBDRIVER webDriver) {
 		switch (webDriver) {
 			case INTERNETEXPLORER:
@@ -79,6 +84,9 @@ public abstract class IntegrationTest {
 		}
 	}
 
+	/**
+	 * @return web driver based on static setting
+	 */
 	private static WebDriver webDriverFactory() {
 		return webDriverFactory(defaultWebDriver);
 	}
@@ -130,9 +138,21 @@ public abstract class IntegrationTest {
 		return webDriver;
 	}
 
+	/**
+	 * set properties from statics
+	 */
+	@Before
+	public void before() {
+		setWebAppUrl(defaultWebAppUrl);
+		setWebDriver(webDriverFactory());
+	}
+
+	/**
+	 * stop web driver
+	 */
 	@After
 	public void after() {
-		getWebDriver().close();
+		getWebDriver().quit();
 	}
 
 }

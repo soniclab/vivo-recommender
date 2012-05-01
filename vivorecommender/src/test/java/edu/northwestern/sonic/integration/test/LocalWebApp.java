@@ -4,7 +4,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * holder for URL of local web app
+ * holder for URL of local web application
  * 
  * @author Hugh
  * 
