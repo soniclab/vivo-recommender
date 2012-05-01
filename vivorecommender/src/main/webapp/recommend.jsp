@@ -25,13 +25,6 @@
 
 <!-- Le fav and touch icons -->
 <link rel="shortcut icon" href="img/sonic.ico">
-<link rel="apple-touch-icon-precomposed" sizes="114x114"
-	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-114-precomposed.png">
-<link rel="apple-touch-icon-precomposed" sizes="72x72"
-	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-72-precomposed.png">
-<link rel="apple-touch-icon-precomposed"
-	href="http://twitter.github.com/bootstrap/assets/ico/apple-touch-icon-57-precomposed.png">
-
 <script src="http://api.simile-widgets.org/exhibit/2.2.0/exhibit-api.js"
 	type="text/javascript"></script>
 </head>
