@@ -9,13 +9,6 @@ import org.openqa.selenium.support.pagefactory.ByChained;
 
 public class HomePageIT extends IntegrationTest {
 
-	/**
-	 * @param webDriver
-	 */
-	public HomePageIT() {
-		super();
-	}
-
 	@Before
 	public void before() {
 		getWebDriver().get(getWebAppUrl().toString());
