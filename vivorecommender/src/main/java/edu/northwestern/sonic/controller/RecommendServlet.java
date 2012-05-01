@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +37,8 @@ public class RecommendServlet extends HttpServlet {
 
 	private Logger logger = Logger.getLogger(this.getClass());
 	private RequestDispatcher recommendJsp;
+	private Recommend recommend;
+	private  Set<URI> expertsURI;
 	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -49,6 +52,7 @@ public class RecommendServlet extends HttpServlet {
 			logger.fatal(e, e);
 		}
 	}
+	
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -63,6 +67,7 @@ public class RecommendServlet extends HttpServlet {
 			}
 		}
 		User ego;
+		 
 		try {
 			HttpSession session = req.getSession();
 			ego = (User)session.getAttribute("ego");
@@ -73,6 +78,12 @@ public class RecommendServlet extends HttpServlet {
 			req.setAttribute("experts", experts);
 			req.setAttribute("researchTopic",researchTopic);
 			session.setAttribute("experts", experts);
+			
+			 //for visualization
+            session.setAttribute("researchTopic", researchTopic);
+            session.setAttribute("expertsURI", expertsURI);
+            session.setAttribute("recommend", recommend);
+            
 		} catch (Exception e) {
 			logger.error(e, e);
 		}
@@ -88,7 +99,7 @@ public class RecommendServlet extends HttpServlet {
 	 */
 	private Map<String,List<String>> getRecommendations(String researchTopic, User ego) {
 		Identification identification = new Identification();
-		Recommend recommend = new Recommend();
+		recommend = new Recommend();
 		List<List<User>> combinedList = new ArrayList<List<User>>();
 		
 		Set<URI> identifiedExperts = identification.identifyExpertsByResearchArea(researchTopic);
@@ -165,6 +176,7 @@ public class RecommendServlet extends HttpServlet {
 		User expert = null;
 		int count = 0;
 		List<String> details;
+		expertsURI = new HashSet<URI>();
 		Iterator<List<User>> combinedItr = combinedList.iterator();
 		while(combinedItr.hasNext()){
 			list = combinedItr.next();
@@ -173,15 +185,18 @@ public class RecommendServlet extends HttpServlet {
 				expert = itr.next();
 				if(!experts.containsKey(expert.getUri().toString())){
 					experts.put(expert.getUri().toString(), new ArrayList<String>());
+					expertsURI.add(expert.getUri());
 					details = experts.get(expert.getUri().toString());
 					details.add(researcher.getLabel(expert.getUri()));
 					details.add(researcher.getImage(expert.getUri()));
 					details.add(heuristics.get(count));
 					experts.put(expert.getUri().toString(), details);
+					expertsURI.add(expert.getUri());
 				}else{
 					details = experts.get(expert.getUri().toString());
 					details.add(heuristics.get(count));
 					experts.put(expert.getUri().toString(), details);
+					expertsURI.add(expert.getUri());
 				}
 			}
 			count++;

@@ -1,0 +1,110 @@
+circle.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+line.link {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+/********************
+ * TOOLTIP CSS
+ */
+
+.nvtooltip {
+    position: absolute;
+    background-color: rgba(255,255,255,1);
+    padding: 10px;
+    border: 1px solid #ddd;
+
+    font-family: Arial;
+    font-size: 13px;
+
+    transition: opacity 500ms linear;
+    -moz-transition: opacity 500ms linear;
+    -webkit-transition: opacity 500ms linear;
+
+    transition-delay: 500ms
+    -moz-transition-delay: 500ms;
+    -webkit-transition-delay: 500ms;
+
+    -moz-box-shadow: 4px 4px 12px rgba(0,0,0,.5);
+    -webkit-box-shadow: 4px 4px 12px rgba(0,0,0,.5);
+    box-shadow: 4px 4px 12px rgba(0,0,0,.5);
+
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
+
+.nvtooltip h3 {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.nvtooltip p {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+.nvtooltip span {
+    display: inline-block;
+    margin: 2px 0;
+}
+
+
+
+
+
+/**********
+*  General SVG CSS
+*/
+
+
+text {
+    font: 12px sans-serif;
+}
+
+
+
+/**********
+*  Legend
+*/
+
+.legend .series {
+    cursor: pointer;
+}
+
+.legend circle {
+    stroke-width: 2px;
+}
+
+.legend .disabled circle {
+    fill-opacity: 0;
+}
+
+
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    z-index: 50;
+    width: 250px;
+    height: auto;
+    padding: 8px;
+    font: 12px sans-serif;
+    background: lightgray;
+    color: black;
+    border: solid 1px #aaa;
+    border-radius: 8px;
+    opacity: 0.9;
+}
+
+
+.lines .point.hover {
+    stroke-width: 20px;
+    stroke-opacity: .5;
+}
+

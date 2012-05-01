@@ -72,6 +72,18 @@
       <url-pattern>/datareq</url-pattern>
    </servlet-mapping>
    
+
+    <servlet>
+    	<servlet-name>visServlet</servlet-name>
+        <servlet-class>edu.northwestern.sonic.vis.VisServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+    	<servlet-name>visServlet</servlet-name>
+        <url-pattern>/vis</url-pattern>
+    </servlet-mapping>
+  
+   
    <filter>
       <filter-name>security-filter</filter-name>
       <filter-class>edu.northwestern.sonic.controller.SecurityFilter</filter-class>
@@ -85,5 +97,6 @@
       <url-pattern>/login</url-pattern>
       <url-pattern>/logout</url-pattern>
       <url-pattern>/datareq</url-pattern>
+      <url-pattern>/vis</url-pattern>
    </filter-mapping>
 </web-app>
