@@ -126,11 +126,11 @@
 							Recommendations for
 							<%=egoDetails[1]%>
 						</h3>
-						<!-- 
-						<h3>
-							<a href="http://localhost:8080/vis.html">Results as graph</a>
-						</h3>
-						 -->
+					 
+						<h5>
+							<a href="vis.html">Results as graph</a>
+						</h5>
+						
 						</hgroup>
 
 					</center>

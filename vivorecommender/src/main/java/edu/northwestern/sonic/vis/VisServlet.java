@@ -4,7 +4,6 @@ package edu.northwestern.sonic.vis;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
-//import edu.northwestern.sonic.semanticrecommender.model.ExpertList;
 import edu.northwestern.sonic.network.Network;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -16,75 +15,54 @@ import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.*;
 
+/**
+ * @author Jinling, Anup
+ * This servlet helps get data relevant to ego such as his cocitation, citation and authorship network with 
+ * identified experts, convert it to json and send it back to view using d3.
+ */
 @SuppressWarnings("serial")
 public class VisServlet extends HttpServlet {
     private static Log logger = LogFactory.getLog(VisServlet.class);
-
     private String uriPrefix;
+    private Network citNet;
+    private Network coAuthorNet;
+    private Network coCitNet;
+    private Recommend recommend;
+    private Researcher researcher;
     final static DecimalFormat df = new DecimalFormat("#0.0##");
+    
+    
+    public void init(ServletConfig config) throws ServletException {
+    	citNet = new Network(); // citation network
+        coAuthorNet = new Network(); // coauthorship network
+        coCitNet = new Network(); // cocitation network
+        recommend = new Recommend();
+        researcher = new Researcher();
+	}
  
     public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
     	 logger.info("start to get data for visualization.");
-        // Get session
-        HttpSession session = req.getSession(false);
+ 
+        HttpSession session = req.getSession(false); // get session
         if (session == null) {
             res.sendRedirect(""); 
             return;
         }
-        User ego = new User();
-
-        Set<URI> expertsURI = new HashSet<URI>();
-       // Set<URI> selectedURI = new HashSet<URI>();
-        Network citNet = new Network();
-        String keyword = "";
-        Network coAuthorNet = new Network();
-        Network coCitNet = new Network();
-
-        try {
-            ego = (User) session.getAttribute("ego");
-            expertsURI = (Set<URI>) session.getAttribute("expertsURI");
-
-            expertsURI.add(ego.getUri());
-            keyword =   (String)session.getAttribute("researchTopic");
-           // expertsURI.add(ego.getUri());
-
-         // combinedList =  (List<List<User>>)session.getAttribute("combinedUsers");
-
-         /*
-            Iterator<Map.Entry<String, List<String>>> expertSet = experts.entrySet().iterator();
-            int m = 0;
-            while (expertSet.hasNext()) {
-                if (m < 20) {
-                    for (URI uri : expertsURI) {
-                        String uri1 = uri.toString().trim();
-                        String uri2 = expertSet.next().getKey().trim();
-                        if (uri1.equalsIgnoreCase(uri2)) {
-
-                            selectedURI.add(uri);
-                        }
-                    }
-                }
-                m++;
-            }   */
-
-            Recommend recommend = (Recommend) session.getAttribute("recommend");
-
-            citNet = recommend.getCitation(expertsURI);
-
-            coAuthorNet = recommend.getCoAuthorship(expertsURI);
-
-            coCitNet = recommend.getCoCitation(expertsURI);
-           
-        } catch (Exception e) {
-            logger.info("exception when performing query for visualization:  " + e);
-        }
         
-        Researcher researcher = new Researcher();
+        User ego = (User) session.getAttribute("ego"); // get the ego
+        Set<URI> expertsURI = (Set<URI>) session.getAttribute("expertsURI"); // get all the identified experts
+        String researchTopic =   (String)session.getAttribute("researchTopic"); // get the research topic
 
+        expertsURI.add(ego.getUri());
+        
         Set<User> users = new LinkedHashSet<User>();
 
         users.add(ego);
-
+        
+        citNet = recommend.getCitation(expertsURI);
+        coAuthorNet = recommend.getCoAuthorship(expertsURI);
+        coCitNet = recommend.getCoCitation(expertsURI);
+        
         // add recommended experts
         for (URI uri : expertsURI) {
             try {
@@ -256,7 +234,6 @@ public class VisServlet extends HttpServlet {
            
             String jedgeSource = "{" + "\"source\"" + ":";
             String jedgeTarget = "\"target\"" + ":";
-            	//   String jedgeType = "\"type\"" + ":";
             String[] edgepairArray = edgepair.split("-");
             Long sIndex = Long.valueOf(edgepairArray[0]) - 1;
             Long tIndex = Long.valueOf(edgepairArray[1]) - 1;
@@ -275,25 +252,9 @@ public class VisServlet extends HttpServlet {
         String jkeyword = "\"keyword\"" + ":";
 
         jnode_prefix = jnode_prefix + "\"" + uriPrefix + "\"" + ",";
-        jkeyword = jkeyword + "\"" + keyword + "\"";
+        jkeyword = jkeyword + "\"" + researchTopic + "\"";
         String otherinfos = jnode_prefix + jkeyword + "},";
         jsonStr.append(otherinfos);
-
-        /*
- /  jsonStr.deleteCharAt(jsonStr.length() - 1);
-    jsonStr.append("],\"nodehoverlabel\": [") ;
-
-    String jscorelabel = "{" + "\"score_label\"" + ":";
-    String jcentralitylabel =  "\"centrality_label\"" + ":";
-    String jotherlabel = "\"otherInfo_label\"" + ":";
-
-    String[] infoBoxLabels = (String[]) INFO_BOX_LABELS.get(motivation);
-
-    jscorelabel = jscorelabel  +"\"" +"Score" + "\"" + ",";
-    jcentralitylabel =jcentralitylabel  +"\"" + infoBoxLabels[0] + "\"" + ",";
-    jotherlabel  = jotherlabel  +"\"" + infoBoxLabels[1] + "\"" ;
-    String labelinfos =  jscorelabel +jcentralitylabel +  jotherlabel + "},";
-    jsonStr.append(labelinfos);    */
 
         jsonStr.deleteCharAt(jsonStr.length() - 1);
         jsonStr.append("],\"nodelegend\": [");
@@ -305,16 +266,7 @@ public class VisServlet extends HttpServlet {
             jsonStr.append(jlegendtype);
         }
 
-        /* jsonStr.deleteCharAt(jsonStr.length() - 1);
-       jsonStr.append("],\"linklegend\": [") ;
-
-       for(String linklegend: linktypeSet){
-           String jlegendtype = "{" + "\"type\"" + ":";
-           jlegendtype  =jlegendtype  +"\"" +  linklegend + "\"" + "},";
-
-           jsonStr.append( jlegendtype);
-       }
-        */
+       
         jsonStr.deleteCharAt(jsonStr.length() - 1);
         jsonStr.append("]");
         jsonStr.append("}");
@@ -325,11 +277,9 @@ public class VisServlet extends HttpServlet {
         res.setCharacterEncoding("UTF-8");
 
         res.getWriter().write(jsonStr.toString());
-     //   logger.info("generated Json file: " + jsonStr.toString());
+    
 
     }
-
-
 }
 
 
