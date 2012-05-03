@@ -48,6 +48,14 @@ public class AuthorAuthorCitationTest {
 	}
 
 	@Test
+	public void testGetAuthorAuthorCitationFromNoCitations() throws URISyntaxException {
+		// An author with articles, and articles with PubMed identifiers,
+		// but no articles cited by those articles
+		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationFrom(new URI("http://vivo.ufl.edu/individual/n646999244"));
+		assertEquals("number of authors", 0, actual.length);
+	}
+
+	@Test
 	public void testGetAuthorAuthorCitationToNone() {
 		URI[] actual = authorAuthorCitation.getAuthorAuthorCitationTo(notFoundUri);
 		assertEquals("number of authors", 0, actual.length);

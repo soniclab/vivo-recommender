@@ -33,9 +33,12 @@ public class AuthorAuthorCitation extends Authorship {
 	public NavigableSet<URI> getAuthorAuthorCitationFromSet(final URI author) { 
 		NavigableSet<URI> returnValue = new TreeSet<URI>();
 		int[] articles = getArticles(author);
-		if(articles.length==0) // no articles with PubMed identifiers?
+		if(articles.length == 0) // no articles with PubMed identifiers?
 			return returnValue; // no citations
-		returnValue = getAuthorsSet(medline.getArticleArticleCitationFrom(articles));	
+		int[] articlesCitedFrom = medline.getArticleArticleCitationFrom(articles);
+		if(articlesCitedFrom.length == 0) // no citations in the PubMed articles?
+			return returnValue; // no citations
+		returnValue = getAuthorsSet(articlesCitedFrom);	
 		return returnValue;	
 	}
 
@@ -62,7 +65,10 @@ public class AuthorAuthorCitation extends Authorship {
 		int[] articles = getArticles(author);
 		if(articles.length==0) // no articles with PubMed identifiers?
 			return returnValue; // no citations
-		returnValue = getAuthorsSet(medline.getArticleArticleCitationTo(articles));	
+		int[] articlesCitedTo = medline.getArticleArticleCitationTo(articles);
+		if(articlesCitedTo.length == 0) // no citations to the PubMed articles?
+			return returnValue; // no citations
+		returnValue = getAuthorsSet(articlesCitedTo);	
 		return returnValue;	
 	}
 
