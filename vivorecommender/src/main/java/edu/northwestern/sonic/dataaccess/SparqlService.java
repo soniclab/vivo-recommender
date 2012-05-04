@@ -101,6 +101,14 @@ public class SparqlService {
 		}
 		return queryStringBuffer.toString();
 	}
+	
+	/**
+	 * log the number of rows in a result set
+	 * @param resultSet
+	 */
+	private void logNumberRows(ResultSet resultSet) {
+		log.info("ResultSet rows = " + (resultSet.getRowNumber() - 1));		
+	}
 
 	/**
 	 * get the results of a single free variable query as Integers
@@ -116,6 +124,7 @@ public class SparqlService {
 			Literal literal = querySolution.getLiteral("X");
 			returnValue.add(new Integer(literal.getInt()));
 	    }
+		logNumberRows(resultSet);
 		return returnValue;
 	}
 	
@@ -144,6 +153,7 @@ public class SparqlService {
 			if(uri != null)
 				returnValue.add(uri);
 	    }
+		logNumberRows(resultSet);
 		return returnValue;
 	}
 
@@ -205,6 +215,7 @@ public class SparqlService {
 	    } finally { 
 	    	queryExecution.close();
 	    } // end try
+		logNumberRows(resultSet);
 		return returnValue;
 	}
 	
