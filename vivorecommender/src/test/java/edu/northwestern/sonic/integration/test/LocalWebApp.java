@@ -10,7 +10,7 @@ import java.net.URL;
  * 
  */
 
-public class LocalWebApp {
+public final class LocalWebApp {
 	private static URL url = null;
 	static {
 		try {
@@ -34,7 +34,7 @@ public class LocalWebApp {
 	/**
 	 * @param url the url to set
 	 */
-	private static void setUrl(URL url) {
+	private static void setUrl(final URL url) {
 		LocalWebApp.url = url;
 	}
 	
