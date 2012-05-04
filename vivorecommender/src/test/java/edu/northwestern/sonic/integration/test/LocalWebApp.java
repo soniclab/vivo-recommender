@@ -20,6 +20,10 @@ public class LocalWebApp {
 		}
 	}
 	
+	private LocalWebApp() {
+		// singleton
+	}
+	
 	/**
 	 * @return the url
 	 */
