@@ -22,7 +22,7 @@ public class Article extends VivoSparqlService {
 	 * @return set of pubmed ids of articles
 	 */
 	protected NavigableSet<Integer> getArticles(final URI[] articles) {
-		final StringBuffer whereClause = new StringBuffer("?Y  bibo:pmid ?X .");
+		final StringBuffer whereClause = new StringBuffer("?Y bibo:pmid ?X .");
 		return getDistinctSortedIntegers(whereClause.toString(), Bindings.bindings(articles, "Y"));
 	}
 	
