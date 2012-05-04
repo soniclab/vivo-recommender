@@ -65,6 +65,11 @@
 			<version>3.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.mycila</groupId>
+			<artifactId>mycila-junit</artifactId>
+			<version>1.4.ga</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>vivorecommender</finalName>
