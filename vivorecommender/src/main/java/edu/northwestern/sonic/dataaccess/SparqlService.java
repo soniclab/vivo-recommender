@@ -95,7 +95,8 @@ public class SparqlService {
 		StringBuffer queryStringBuffer = new StringBuffer(DISTINCT_PREFIX);
 		queryStringBuffer.append(whereClause);
 		queryStringBuffer.append("\n}");
-		if(!bindings.isEmpty()) {
+		if(bindings.length() != 0) {
+			queryStringBuffer.append("\n");
 			queryStringBuffer.append(bindings);
 		}
 		return queryStringBuffer.toString();

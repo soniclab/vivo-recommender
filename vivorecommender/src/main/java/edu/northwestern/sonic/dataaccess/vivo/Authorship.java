@@ -69,7 +69,7 @@ public class Authorship extends Article {
 	public NavigableSet<URI> getAuthorsSet(final int[] pubMedIds) { 
 		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
-		whereClause.append("?pub bibo:pmid ?Y .\n");
+		whereClause.append("?pub bibo:pmid ?Y .");
 		return getDistinctSortedURIs(whereClause.toString(), Bindings.bindings(ArraysUtil.toString(pubMedIds), "Y"));
 	}
 		
