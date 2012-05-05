@@ -13,7 +13,7 @@ public class Katritzky {
 	
 	private final static String VIVO_URI_STRING = "http://vivo.ufl.edu/individual/n3622";
 	
-	private final static String EMAIL_ID = "katritzky@chem.ufl.edu";
+	public final static String EMAIL_ID = "katritzky@chem.ufl.edu";
 	
 	public static URI VIVO_URI = null;
 	static {

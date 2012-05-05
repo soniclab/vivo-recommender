@@ -15,7 +15,7 @@ public class HomePageIT extends IntegrationTest {
 	}
 
 	@Test
-	public void testHomePage() throws InterruptedException {
+	public void testHomePage() {
 		assertEquals("title", "VIVO Recommender", getWebDriver().getTitle());
 		getWebDriver().findElement(By.name("search")).sendKeys("Entomology\t");
 		getWebDriver().findElement(new ByChained(By.className("form-search"), By.tagName("button"))).click();

@@ -66,7 +66,7 @@ public class RecommendTest {
 		assertEquals("count", 0, actual.size());
 	}
 	
-	@Ignore
+	@Test
 	public void testMostQualifiedOrganicKatritzky() throws URISyntaxException {
 		String keyword = "organic";
 		final Set<URI> experts = identification.identifyExpertsByKeyword(keyword);

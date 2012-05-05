@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
-import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -19,15 +18,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
  *
  */
 public abstract class IntegrationTest {
+	private static WEBDRIVER defaultWebDriver = WEBDRIVER.INTERNET_EXPLORER;
 	private static URL defaultWebAppUrl = null;
-	public static enum WEBDRIVER { 
-		INTERNETEXPLORER,
-		CHROME
-	}
-	private static WEBDRIVER defaultWebDriver = WEBDRIVER.INTERNETEXPLORER;
-	private URL webAppUrl = null;
-	private WebDriver webDriver = null;
-	
 	static {
 		try {
 			defaultWebAppUrl = new URL("http://ciknow1.northwestern.edu/vivorecommender/");
@@ -35,13 +27,20 @@ public abstract class IntegrationTest {
 			e.printStackTrace();
 		}
 	}
+	public static enum WEBDRIVER { 
+		INTERNET_EXPLORER,
+		CHROME
+	}
+	private URL webAppUrl = null;
+	private WebDriver webDriver = null;
+	
 
 	/**
 	 * constructor
 	 * @param webAppUrl
 	 * @param webDriver
 	 */
-	public IntegrationTest(URL webAppUrl, WebDriver webDriver) {
+	public IntegrationTest(final URL webAppUrl, final WebDriver webDriver) {
 		setWebAppUrl(webAppUrl);
 		setWebDriver(webDriver);
 	}
@@ -50,7 +49,7 @@ public abstract class IntegrationTest {
 	 * constructor
 	 * @param webDriver
 	 */
-	public IntegrationTest(WebDriver webDriver) {
+	public IntegrationTest(final WebDriver webDriver) {
 		this(defaultWebAppUrl, webDriver);
 	}
 
@@ -58,7 +57,7 @@ public abstract class IntegrationTest {
 	 * constructor
 	 * @param webAppUrl
 	 */
-	public IntegrationTest(URL webAppUrl) {
+	public IntegrationTest(final URL webAppUrl) {
 		this(webAppUrl, webDriverFactory());
 	}
 
@@ -73,9 +72,9 @@ public abstract class IntegrationTest {
 	 * @param webDriver
 	 * @return web driver based on parameter
 	 */
-	private static WebDriver webDriverFactory(WEBDRIVER webDriver) {
+	private static WebDriver webDriverFactory(final WEBDRIVER webDriver) {
 		switch (webDriver) {
-			case INTERNETEXPLORER:
+			case INTERNET_EXPLORER:
 				return new InternetExplorerDriver();
 			case CHROME:
 				return new ChromeDriver();
@@ -96,7 +95,7 @@ public abstract class IntegrationTest {
 	 * @param webAppUrl as a String
 	 * @throws MalformedURLException
 	 */
-	private void setWebAppUrl(URL url) {
+	private void setWebAppUrl(final URL url) {
 		webAppUrl = url; 
 	}
 
@@ -105,21 +104,21 @@ public abstract class IntegrationTest {
 	 * @param webAppUrl as a String
 	 * @throws MalformedURLException
 	 */
-	public static void setDefaultWebAppUrl(URL url) {
+	public static void setDefaultWebAppUrl(final URL url) {
 		IntegrationTest.defaultWebAppUrl = url; 
 	}
 
 	/**
 	 * @return the application webAppUrl
 	 */
-	protected String getWebAppUrl() {
-		return webAppUrl.toString();
+	protected URL getWebAppUrl() {
+		return webAppUrl;
 	}
 
     /**
 	 * @param webDriver the webDriver to set
 	 */
-	private void setWebDriver(WebDriver webDriver) {
+	private void setWebDriver(final WebDriver webDriver) {
 		this.webDriver = webDriver;
 		this.webDriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 	}
@@ -127,7 +126,7 @@ public abstract class IntegrationTest {
     /**
 	 * @param webDriver the webDriver to set
 	 */
-	public static void setDefaultWebDriver(WEBDRIVER webDriver) {
+	public static void setDefaultWebDriver(final WEBDRIVER webDriver) {
 		IntegrationTest.defaultWebDriver = webDriver; 
 	}
 
@@ -139,16 +138,7 @@ public abstract class IntegrationTest {
 	}
 
 	/**
-	 * set properties from statics
-	 */
-	@Before
-	public void before() {
-		setWebAppUrl(defaultWebAppUrl);
-		setWebDriver(webDriverFactory());
-	}
-
-	/**
-	 * stop web driver
+	 * stop the web driver
 	 */
 	@After
 	public void after() {
