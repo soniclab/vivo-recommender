@@ -1,8 +1,6 @@
 package edu.northwestern.sonic.model.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -16,27 +14,24 @@ import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
 
 public class RecommendTest {
-	static Researcher researcher;
-	static Identification identification;
+	private Researcher researcher;
+	private Identification identification;
+	private Recommend recommend = null;
 	private final int fofListSize = 4;
 	private final int affListSize = 9;
 	private Set<URI> experts = null;
 	private User ego = null;
-	private Recommend recommend = null;
+	private String keyword = "Entomology";
 	
 	@Before
 	public void setUp() throws Exception {
 		researcher = new Researcher();
 		identification = new Identification();
-		experts = identification.identifyExpertsByResearchArea("Entomology");
+		experts = identification.identifyExpertsByResearchArea(keyword);
 		ego = researcher.getUser("mahoy@ifas.ufl.edu");
 		recommend = new Recommend();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-	
 	@Test
 	public void testFriendOfFriend() throws URISyntaxException {
 		List<User> fOFList = recommend.friendOfFriend(experts, ego);
@@ -63,5 +58,20 @@ public class RecommendTest {
 		assertEquals("count", 1, actual.size());
 		User expert = new Researcher().getUser(BENNER_URI);
 		assertEquals("uri",expert.getUri().toString(),actual.get(0).getUri().toString());
+	}
+	
+	@Test
+	public void testMostQualified() throws URISyntaxException {
+		List<User> actual = recommend.mostQualified(experts, ego, keyword);
+		assertEquals("count", 0, actual.size());
+	}
+	
+	@Ignore
+	public void testMostQualifiedOrganicKatritzky() throws URISyntaxException {
+		String keyword = "organic";
+		final Set<URI> experts = identification.identifyExpertsByKeyword(keyword);
+		User ego = researcher.getUser(Katritzky.VIVO_URI);
+		List<User> actual = recommend.mostQualified(experts, ego, keyword);
+		assertEquals("count", 54, actual.size());
 	}
 }
