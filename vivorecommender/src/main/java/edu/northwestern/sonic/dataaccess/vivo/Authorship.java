@@ -3,9 +3,9 @@ package edu.northwestern.sonic.dataaccess.vivo;
 import java.net.URI;
 import java.util.NavigableSet;
 
-import edu.northwestern.sonic.dataaccess.Bindings;
 import edu.northwestern.sonic.util.ArraysUtil;
 import edu.northwestern.sonic.util.StringUtil;
+
 /**
  * Authorship and co-authorship accessors;
  * combines citation data from PubMed with authorship data from VIVO.
@@ -70,7 +70,8 @@ public class Authorship extends Article {
 		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub bibo:pmid ?Y .");
-		return getDistinctSortedURIs(whereClause.toString(), Bindings.bindings(ArraysUtil.toString(pubMedIds), "Y"));
+//		return getDistinctSortedURIs(whereClause.toString(), Bindings.bindings(ArraysUtil.toString(pubMedIds), "Y"));
+		return getDistinctSortedURIs(whereClause.toString(), pubMedIds);
 	}
 		
 	/**

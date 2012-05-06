@@ -88,5 +88,4 @@ public class VivoSparqlService extends SparqlService {
 		super(url, queryPrefixes);
 	}
 
-
 }

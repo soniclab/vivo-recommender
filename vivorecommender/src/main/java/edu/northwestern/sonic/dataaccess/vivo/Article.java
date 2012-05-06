@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.NavigableSet;
 import java.util.Set;
 
-import edu.northwestern.sonic.dataaccess.Bindings;
 /**
  * Accessors for VIVO article data;
  *
@@ -22,8 +21,7 @@ public class Article extends VivoSparqlService {
 	 * @return set of pubmed ids of articles
 	 */
 	protected NavigableSet<Integer> getArticles(final URI[] articles) {
-		final StringBuffer whereClause = new StringBuffer("?Y bibo:pmid ?X .");
-		return getDistinctSortedIntegers(whereClause.toString(), Bindings.bindings(articles, "Y"));
+		return getDistinctSortedIntegers("?Y bibo:pmid ?X .", articles);
 	}
 	
 	/**
