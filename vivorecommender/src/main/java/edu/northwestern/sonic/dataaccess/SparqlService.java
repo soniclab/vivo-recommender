@@ -116,7 +116,7 @@ public class SparqlService {
 	 * @return sorted set of results as Integers, empty set if not found
 	 */
 	public NavigableSet<Integer> getDistinctSortedIntegers(final String whereClause, final String bindings) {
-		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause, bindings));
+		QueryExecution queryExecution = getQueryExecution(distinctQuery(whereClause, bindings));
 		ResultSet resultSet = queryExecution.execSelect();
 		TreeSet<Integer> returnValue = new TreeSet<Integer>();
 		while(resultSet.hasNext()) {
@@ -125,6 +125,7 @@ public class SparqlService {
 			returnValue.add(new Integer(literal.getInt()));
 	    }
 		logNumberRows(resultSet);
+		queryExecution.close();
 		return returnValue;
 	}
 	
@@ -154,6 +155,7 @@ public class SparqlService {
 				returnValue.add(uri);
 	    }
 		logNumberRows(resultSet);
+		queryExecution.close();
 		return returnValue;
 	}
 
@@ -175,8 +177,10 @@ public class SparqlService {
 		StringBuffer queryStringBuffer = new StringBuffer("ASK {\n");
 		queryStringBuffer.append(askClause);
 		queryStringBuffer.append("\n}");
-		QueryExecution qe = getQueryExecution(queryStringBuffer.toString());
-		return qe.execAsk();
+		QueryExecution queryExecution = getQueryExecution(queryStringBuffer.toString());
+		boolean returnValue = queryExecution.execAsk();
+		queryExecution.close();
+		return returnValue;
 	}
 	
 	/*
@@ -202,20 +206,17 @@ public class SparqlService {
 		Set<String[]> returnValue = new HashSet<String[]>(); // no dups
 	    QueryExecution queryExecution = getQueryExecution(query);
 	    ResultSet resultSet = queryExecution.execSelect();
-	    try {
-			while (resultSet.hasNext()) {
-				QuerySolution querySolution = resultSet.nextSolution();
-				String[] result = new String[variables.length];
-				for(int i = 0; i < variables.length; i++) {
-					RDFNode rdfNode = querySolution.get("?" + variables[i]);
-					result[i] = (rdfNode==null ? null : rdfNode.toString());
-				} // end for
-				returnValue.add(result);
-			} // end while
-	    } finally { 
-	    	queryExecution.close();
-	    } // end try
+		while (resultSet.hasNext()) {
+			QuerySolution querySolution = resultSet.nextSolution();
+			String[] result = new String[variables.length];
+			for(int i = 0; i < variables.length; i++) {
+				RDFNode rdfNode = querySolution.get("?" + variables[i]);
+				result[i] = (rdfNode==null ? null : rdfNode.toString());
+			} // end for
+			returnValue.add(result);
+		} // end while
 		logNumberRows(resultSet);
+    	queryExecution.close();
 		return returnValue;
 	}
 	
