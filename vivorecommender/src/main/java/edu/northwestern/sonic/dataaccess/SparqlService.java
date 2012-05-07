@@ -24,6 +24,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 import edu.northwestern.sonic.util.ArraysUtil;
 import edu.northwestern.sonic.util.LogUtil;
+import edu.northwestern.sonic.util.StringUtil;
 import edu.northwestern.sonic.util.UriUtil;
 /**
  * Thin wrapper for Jena SPARQL endpoints;
@@ -106,6 +107,19 @@ public class SparqlService {
 		return returnValue.toString();
 	}
 	
+	private static String distinctQuery(final String whereClause, final URI[] bindings) {
+		String returnValue = null;
+		if(bindings.length == 1)
+			returnValue = distinctQuery(whereClause.replaceAll("\\?Y", StringUtil.wrap(bindings[0].toString())));
+		else
+			returnValue = distinctQuery(whereClause, Bindings.bindings(bindings, "Y"));			
+		return returnValue;
+	}
+	
+	private static String distinctQuery(final String whereClause, final String[] bindings) {
+		return distinctQuery(whereClause, Bindings.bindings(bindings, "Y"));
+	}
+	
 	/**
 	 * log the number of rows in a result set
 	 * @param resultSet
@@ -138,7 +152,7 @@ public class SparqlService {
 	 * @return sorted set of results as Integers, empty set if not found
 	 */
 	public NavigableSet<Integer> getDistinctSortedIntegers(final String whereClause, final URI[] bindings) {
-		QueryExecution queryExecution = getQueryExecution(distinctQuery(whereClause, Bindings.bindings(bindings, "Y")));
+		QueryExecution queryExecution = getQueryExecution(distinctQuery(whereClause, bindings));
 		return getDistinctSortedIntegers(queryExecution);
 	}
 	
@@ -178,7 +192,8 @@ public class SparqlService {
 	 * @return sorted set of results as URIs, empty set if not found
 	 */
 	public NavigableSet<URI> getDistinctSortedURIs(final String whereClause, int[] bindings) {
-		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause, Bindings.bindings(ArraysUtil.toString(bindings), "Y")));
+		// Strings are quoted
+		QueryExecution  queryExecution = getQueryExecution(distinctQuery(whereClause, ArraysUtil.toString(bindings)));
 		return getDistinctSortedURIs(queryExecution);
 	}
 

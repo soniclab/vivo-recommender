@@ -1,5 +1,5 @@
 /**
- * 
+ * URI factory from known valid URI strings 
  */
 package edu.northwestern.sonic.util;
 

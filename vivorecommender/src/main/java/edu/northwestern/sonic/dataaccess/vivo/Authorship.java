@@ -70,7 +70,6 @@ public class Authorship extends Article {
 		final StringBuffer whereClause = new StringBuffer("?X vivo:authorInAuthorship ?cn .\n");
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub bibo:pmid ?Y .");
-//		return getDistinctSortedURIs(whereClause.toString(), Bindings.bindings(ArraysUtil.toString(pubMedIds), "Y"));
 		return getDistinctSortedURIs(whereClause.toString(), pubMedIds);
 	}
 		
@@ -116,10 +115,9 @@ public class Authorship extends Article {
 		whereClause.append("?cn vivo:linkedInformationResource ?pub .\n");
 		whereClause.append("?pub vivo:informationResourceInAuthorship ?cn2 .\n");
 		whereClause.append("?cn2 vivo:linkedAuthor ?X .\n");
-		whereClause.append("FILTER (");
-		whereClause.append(StringUtil.wrap(author.toString()));
-		whereClause.append(" != ?X)");
-		return getDistinctSortedURIs(whereClause.toString());
+		NavigableSet<URI> returnValue = getDistinctSortedURIs(whereClause.toString());
+		returnValue.remove(author);
+		return returnValue;
 	}
 
 	// identification phase support

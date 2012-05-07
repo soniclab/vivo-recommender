@@ -1,7 +1,8 @@
 package edu.northwestern.sonic.dataaccess.test;
 
 import java.net.URI;
-import java.net.URISyntaxException;
+import edu.northwestern.sonic.util.UriUtil;
+
 /**
  * Test data;
  * The most prolific author at the University of Florida
@@ -12,18 +13,8 @@ import java.net.URISyntaxException;
 public class Katritzky {
 	
 	private final static String VIVO_URI_STRING = "http://vivo.ufl.edu/individual/n3622";
-	
+	public static URI VIVO_URI = UriUtil.safeUriFactory(VIVO_URI_STRING);
 	public final static String EMAIL_ID = "katritzky@chem.ufl.edu";
-	
-	public static URI VIVO_URI = null;
-	static {
-		try {
-			VIVO_URI = new URI(VIVO_URI_STRING);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
 	
 	// 160 pubs in UFL VIVO with PubMed identifiers
 	public final static int[] PMIDS = { 10655641, 10814343, 11073619, 11073623, 11112611, 11149870,

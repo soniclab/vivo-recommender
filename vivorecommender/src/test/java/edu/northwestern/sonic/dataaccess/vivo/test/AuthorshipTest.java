@@ -65,7 +65,7 @@ public class AuthorshipTest {
 	}
 
 	@Test
-	public void testGetCoAuthors() throws URISyntaxException {
+	public void testGetCoAuthors() {
 		final User user = researcher.getUser("stephen.grobmyer@surgery.ufl.edu");
 		assertEquals("Number of CoAuthors", 20, authorship.getCoAuthors(user.getUri()).size());
 	}

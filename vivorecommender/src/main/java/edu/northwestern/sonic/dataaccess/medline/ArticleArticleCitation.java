@@ -19,6 +19,16 @@ import edu.northwestern.sonic.util.SetUtil;
  *
  */
 public class ArticleArticleCitation extends MedlineSparqlService {
+	
+	private static String MEDLINE_REFERENCE_JOIN =
+			"?cc ml:comments_corrections_pmid ?a .\n" +
+			"?cc ml:comments_corrections_ref_type 'Cites' .\n";
+	
+	private String xsdInt(final int i) {
+		StringBuffer returnValue = new StringBuffer("'");
+		returnValue.append(Integer.toString(i)).append("'^^xsd:int");
+		return returnValue.toString();
+	}
 		
 	// Citation
 
@@ -32,13 +42,16 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @return sorted set of pubmed ids of papers cited by pubMedId
 	 */
 	private NavigableSet<Integer> getArticleArticleCitationFromSet(final int[] pubMedIds) {
-		final StringBuffer queryStringBuffer = new StringBuffer( 
-				"?a ml:article_pmid ?Y .\n" + // source
-				"?cc ml:comments_corrections_pmid ?a .\n" +
-				"?cc ml:comments_corrections_ref_type 'Cites' .\n" +
-				"?cc ml:comments_corrections_ref_pmid ?X .\n" //destination
+		final StringBuffer queryStringBuffer = new StringBuffer("?a ml:article_pmid "); // source
+		if(pubMedIds.length == 1)
+			queryStringBuffer.append(xsdInt(pubMedIds[0]));
+		else
+			queryStringBuffer.append("?Y");
+		queryStringBuffer.append(" .\n").append(MEDLINE_REFERENCE_JOIN +
+				"?cc ml:comments_corrections_ref_pmid ?X ." //destination
 				);
-		queryStringBuffer.append(ListFilter.filter(pubMedIds, "Y"));
+		if(pubMedIds.length > 1)
+			queryStringBuffer.append(ListFilter.filter(pubMedIds, "Y"));
 		return getDistinctSortedIntegers(queryStringBuffer.toString());
 	}
 		
@@ -96,13 +109,16 @@ public class ArticleArticleCitation extends MedlineSparqlService {
 	 * @return list of pubmed ids of papers that cite the papers in pubMedIds
 	 */
 	private NavigableSet<Integer> getArticleArticleCitationToSet(final int[] pubMedIds) {
-		final StringBuffer queryStringBuffer = new StringBuffer( 
-				"?cc ml:comments_corrections_ref_pmid ?Y .\n" + //destination
-				"?cc ml:comments_corrections_ref_type 'Cites' .\n" +
-				"?cc ml:comments_corrections_pmid ?a .\n" +
-				"?a ml:article_pmid ?X .\n" // source
+		final StringBuffer queryStringBuffer = new StringBuffer("?cc ml:comments_corrections_ref_pmid "); // destination
+		if(pubMedIds.length == 1)
+			queryStringBuffer.append(xsdInt(pubMedIds[0]));
+		else
+			queryStringBuffer.append("?Y");
+		queryStringBuffer.append(" .\n").append(MEDLINE_REFERENCE_JOIN +
+				"?a ml:article_pmid ?X ." // source
 				);
-		queryStringBuffer.append(ListFilter.filter(pubMedIds, "Y"));
+		if(pubMedIds.length > 1)
+			queryStringBuffer.append(ListFilter.filter(pubMedIds, "Y"));
 		return getDistinctSortedIntegers(queryStringBuffer.toString());
 	}
 	
