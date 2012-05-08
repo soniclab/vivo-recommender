@@ -2,6 +2,8 @@ package edu.northwestern.sonic.integration.test;
 
 import org.junit.BeforeClass;
 
+import edu.northwestern.sonic.integration.test.IntegrationTest.WEBAPPURL;
+
 /**
  * local IE test suite
  * 
@@ -9,11 +11,11 @@ import org.junit.BeforeClass;
  * 
  */
 	
-public class LocalIntegrationTests extends IntegrationTests {
+public class DeployedIntegrationTests extends IntegrationTests {
 	
 	@BeforeClass
 	public static void beforeClass() {
-		IntegrationTest.setDefaultWebAppUrl(LocalWebApp.getUrl());
+		IntegrationTest.setDefaultWebAppUrl(WEBAPPURL.DEPLOYED);
 	}
 	
 }

@@ -5,9 +5,12 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 /**
  * Holder for URL of web application under test
@@ -19,22 +22,43 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
  */
 public abstract class IntegrationTest {
 	private static WEBDRIVER defaultWebDriver = WEBDRIVER.INTERNET_EXPLORER;
-	private static URL defaultWebAppUrl = null;
-	static {
-		try {
-			defaultWebAppUrl = new URL("http://ciknow1.northwestern.edu/vivorecommender/");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-	}
 	public static enum WEBDRIVER { 
 		INTERNET_EXPLORER,
 		CHROME
 	}
+	
+	private static URL deployedWebAppUrl = null;
+	private static URL localWebAppUrl = null;
+	static {
+		try {
+			deployedWebAppUrl = new URL("http://ciknow1.northwestern.edu/vivorecommender/");
+			localWebAppUrl = new URL("http://localhost:8080/vivorecommender/");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+	}
+	public static enum WEBAPPURL { 
+		LOCAL(localWebAppUrl),
+		DEPLOYED(deployedWebAppUrl);
+		
+		private final URL url;
+		
+		WEBAPPURL(URL url) {
+			this.url = url;
+		}
+
+		/**
+		 * @return the url
+		 */
+		public URL getUrl() {
+			return url;
+		}
+	}
+	private static URL defaultWebAppUrl = WEBAPPURL.LOCAL.getUrl();
+	
 	private URL webAppUrl = null;
 	private WebDriver webDriver = null;
 	
-
 	/**
 	 * constructor
 	 * @param webAppUrl
@@ -104,8 +128,17 @@ public abstract class IntegrationTest {
 	 * @param webAppUrl as a String
 	 * @throws MalformedURLException
 	 */
-	public static void setDefaultWebAppUrl(final URL url) {
+	protected static void setDefaultWebAppUrl(final URL url) {
 		IntegrationTest.defaultWebAppUrl = url; 
+	}
+
+	/**
+	 * Set the default base application URL
+	 * @param webAppUrl as a String
+	 * @throws MalformedURLException
+	 */
+	public static void setDefaultWebAppUrl(WEBAPPURL url) {
+		setDefaultWebAppUrl(url.getUrl()); 
 	}
 
 	/**
@@ -144,5 +177,19 @@ public abstract class IntegrationTest {
 	public void after() {
 		getWebDriver().quit();
 	}
+
+	/**
+	 * for use with wait until
+	 * @param by
+	 * @return a new is visible condition
+	 */
+	protected ExpectedCondition<WebElement> isDisplayed(final By by) {
+        return new ExpectedCondition<WebElement>() {
+          public WebElement apply(WebDriver driver) {
+            WebElement element = driver.findElement(by);
+            return element.isDisplayed() ? element : null;
+          }
+        };
+      }
 
 }

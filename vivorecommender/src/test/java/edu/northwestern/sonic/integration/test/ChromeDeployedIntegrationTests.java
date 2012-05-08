@@ -2,6 +2,8 @@ package edu.northwestern.sonic.integration.test;
 
 import org.junit.BeforeClass;
 
+import edu.northwestern.sonic.integration.test.IntegrationTest.WEBAPPURL;
+
 /**
  * local Chrome test suite
  * run with path to chrome driver on system path or with parameter to jvm, for example
@@ -11,11 +13,11 @@ import org.junit.BeforeClass;
  * 
  */
 
-public class ChromeLocalIntegrationTests extends ChromeIntegrationTests {
+public class ChromeDeployedIntegrationTests extends ChromeIntegrationTests {
 	
 	@BeforeClass
 	public static void beforeClassLocal() {
-		IntegrationTest.setDefaultWebAppUrl(LocalWebApp.getUrl());
+		IntegrationTest.setDefaultWebAppUrl(WEBAPPURL.DEPLOYED);
 	}
 	
 }

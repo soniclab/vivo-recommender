@@ -3,19 +3,13 @@ package edu.northwestern.sonic.integration.test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
-public class LocalResultsPageOrganicKatritzkyIT extends IntegrationTest {
+public class ResultsPageOrganicKatritzkyIT extends IntegrationTest {
 
-	@BeforeClass
-	public static void beforeClass() {
-		IntegrationTest.setDefaultWebAppUrl(LocalWebApp.getUrl());
-	}
-	
 	@Before
 	public void before() {
 		getWebDriver().get(getWebAppUrl().toString());
