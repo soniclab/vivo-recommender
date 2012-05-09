@@ -40,7 +40,6 @@ d3.json('vis', function(json) {
         .attr("cy", function(d, i) { return 40 + i*20; } )
         .attr("stroke-width", ".5")
         .style("fill", function(d) { return color(d.type); })
-        //.style("fill", function(d, i) { switch(i){ case 0: return "DarkGreen"; case 1: return "GoldenRod"; default: return "Maroon"; } } ) // Bar fill color
         .attr("r", 5);
 
     nodelegend.append("svg:text")
@@ -59,20 +58,15 @@ d3.json('vis', function(json) {
         .attr("y1", function(d) { return d.source.y; })
         .attr("x2", function(d) { return d.target.x; })
         .attr("y2", function(d) { return d.target.y; });
-       // .on("click", function(d){jumpToInfo(d.source.uri + "/" + d.type + "/" +  d.target.uri)});
 
 
     var node = vis.selectAll("g.node")
         .data(json.nodes)
         .enter().append("svg:g")
         .attr("class", "node")
-    //  .call(rec.drag);
-
-
 
     node.append("circle")
         .attr("class", "circle")
-       // .attr("r", function(d) { return ((d.score*50) + 5);})
         .attr("r", function(d) { return 5})
         .style("fill", function(d) { return color(d.type); })
         .attr("cx", function(d) { return d.x; })
@@ -91,7 +85,6 @@ d3.json('vis', function(json) {
 
     node.append("svg:text")
         .attr("class", "nodetext")
-       // .attr("dx", function(d) { return d.x + + (d.score*50) + 5; })
         .attr("dx", function(d) { return d.x + 5; })
         .attr("dy",function(d) { return d.y; })
         .text(function(d) { return d.name });

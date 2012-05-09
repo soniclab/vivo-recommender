@@ -11,13 +11,18 @@ rec = function() {
         strengths,
         radius = 250;
 
-
+/*
+ * Set the size of the layout
+ */
     rec.size = function(x) {
         if (!arguments.length) return size;
         size = x;
         return rec;
     };
 
+    /*
+     * Push all the json nodes into nodes array
+     */
     rec.nodes = function(x) {
         if (!arguments.length) return nodes;
         nodes = x;
@@ -37,12 +42,8 @@ rec = function() {
     };
 
     /*
-     rec.nodeLegends = function() {
-     if (!arguments.length) return nodeLegends;
-     // nodes = x;
-     return rec;
-     }; */
-
+     * Push all the json links into links array
+     */
     rec.links = function(x) {
         if (!arguments.length) return links;
         links = x;
@@ -56,30 +57,28 @@ rec = function() {
         return false;
     }
 
-
+/*
+ * Fix the coordinates of ego at the center, coordinates of rest of the nodes 
+ * around ego in circle and fix source and target of all the links.
+ */
     rec.start = function() {
 
-        var i,
+        var i, // loop iterator
 
-            n = nodes.length,
-            m = links.length,
-            w = size[0],
-            h = size[1],
+            n = nodes.length, // number of nodes
+            m = links.length, // number of links
+            w = size[0], // width of layout
+            h = size[1], // height of layout
 
-            o;
-
-        function isEven(value){
-            return isFinite(+value) && !(+value % 2)
-        }
-
+            o; // current node
 
         for (i = 0; i < n; ++i) {
             o = nodes[i];
-            if (i==0) {
+            if (i==0) { // put the ego at the center
                 o.x =w/2;
                 o.y = h/2;
             }  else
-            {
+            { // arrange rest of the nodes in circle around the ego
 
                 var   angle = (2*Math.PI*i) /(n-1);
                 var x = Math.cos(angle)*radius +w/2;
@@ -88,35 +87,10 @@ rec = function() {
                 o.y =y;
 
             }
-            /*   } else if (isFinite(i) && !(i % 2))    // even
-             {
-             var   angle = (2*Math.PI*i) /(n-1);
-             var x = Math.cos(angle)*radius +w/2;
-             var y = Math.sin(angle)*radius + h/2;
-
-
-             o.x = x;
-             o.y =y;
-
-             //  alert("odd")   ;
-             }
-             else
-             {
-
-             var   angle = (2*Math.PI*i) /(n-1) + Math.PI ;
-             var x = Math.cos(angle)*radius +w/2;
-             var y = Math.sin(angle)*radius + h/2;
-
-
-             o.x = x;
-             o.y =y;
-             // alert("even")   ;
-             } */
-
         }
 
-
-        for (i = 0; i < m; ++i) {
+        // define source and target for the links
+        for (i = 0; i < m; ++i) { 
             o = links[i];
             if (typeof o.source == "number") o.source = nodes[o.source];
             if (typeof o.target == "number") o.target = nodes[o.target];
