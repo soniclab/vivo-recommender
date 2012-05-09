@@ -128,7 +128,10 @@ public class AuthorAuthorCitation extends Authorship {
 		int[] articles = getArticles(author);
 		if(articles.length==0) // no articles with PubMed identifiers?
 			return returnValue; // no citations
-		returnValue = getAuthorsSet(medline.getArticleArticleCoCitation(articles));	
+		int[] coCitedArticles = medline.getArticleArticleCoCitation(articles);
+		if(coCitedArticles.length==0) // no co-cited articles?
+			return returnValue; // no co-cited authors
+		returnValue = getAuthorsSet(coCitedArticles);	
 		return returnValue;	
 	}
 
