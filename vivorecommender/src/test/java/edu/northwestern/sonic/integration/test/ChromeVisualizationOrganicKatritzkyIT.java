@@ -36,7 +36,7 @@ public class ChromeVisualizationOrganicKatritzkyIT extends IntegrationTest {
 		getWebDriver().findElement(By.tagName("svg"));
         Wait<WebDriver> wait = new WebDriverWait(getWebDriver(), 60);
         wait.until(isDisplayed(By.tagName("g")));
-		assertEquals("nodes", 2318, getWebDriver().findElements(By.tagName("line")).size());
+		assertEquals("links", 2318, getWebDriver().findElements(By.tagName("line")).size());
 	}
 
 }
