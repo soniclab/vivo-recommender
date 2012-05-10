@@ -11,7 +11,7 @@ public class LoginPageIT extends IntegrationTest {
 
 	@Before
 	public void before() {
-		getWebDriver().get(getWebAppUrl().toString() + "/login");
+		getWebDriver().get(getWebAppUrl().toString() + "login");
 	}
 
 	@Test

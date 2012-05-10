@@ -45,9 +45,3 @@ Thumbs.db
 .project
 .settings/
 logs/
-
-# Maven artifacts #
-###################
-target/
-/.classpath
-/pom.gyao.xml
