@@ -6,5 +6,5 @@ service=http://ciknow1.northwestern.edu:3030/UF-VIVO/query
 # service=http://sparql.vivo.ufl.edu/sparql
 #
 # Directory path for TDB
-# This could be something like '/home/sw/tdb/data'
-directoryTDB=/home/sw/tdb/data
+# This could be something like '/home/account/tdb/data'
+directoryTDB=../../../tdb/data
