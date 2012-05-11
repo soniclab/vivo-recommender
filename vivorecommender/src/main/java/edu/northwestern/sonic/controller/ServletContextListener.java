@@ -46,7 +46,7 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
 	private void loadTDB(){
 		Properties properties = new Properties();
 		try{
-			properties.load(new FileReader("properties/vivorecommender.properties"));
+			properties.load(getClass().getResourceAsStream("/vivorecommender.properties"));
 			TDBAccessObject.setDataset(properties.getProperty("directoryTDB"));
 		}catch(Exception e){
 			log.error("Could not connect to dataset : Set directoryTDB path " +

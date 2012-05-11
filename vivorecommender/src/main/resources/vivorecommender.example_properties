@@ -7,4 +7,4 @@ service=http://ciknow1.northwestern.edu:3030/UF-VIVO/query
 #
 # Directory path for TDB
 # This could be something like '/home/sw/tdb/data'
-directoryTDB=/Users/Hugh/tdb/data
+directoryTDB=/home/sw/tdb/data
