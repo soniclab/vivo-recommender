@@ -126,10 +126,11 @@
 							Recommendations for
 							<%=egoDetails[1]%>
 						</h3>
-					 
-						<h5>
-							<a href="vis.html">Results as graph</a>
-						</h5>
+						
+<!-- 						Temporarily disable visualization HJD 2012-05-11 -->
+<!-- 						<h5> -->
+<!-- 							<a href="vis.html">Results as graph</a> -->
+<!-- 						</h5> -->
 						
 						</hgroup>
 
