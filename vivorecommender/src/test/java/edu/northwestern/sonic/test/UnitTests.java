@@ -10,6 +10,7 @@ import edu.northwestern.sonic.util.test.ArraysUtilTest;
 import edu.northwestern.sonic.util.test.SetUtilTest;
 import edu.northwestern.sonic.util.test.StringUtilTest;
 import edu.northwestern.sonic.util.test.UriUtilTest;
+import edu.northwestern.sonic.util.test.UrlUtilTest;
 
 /**
  * VIVO unit test suite
@@ -25,6 +26,7 @@ import edu.northwestern.sonic.util.test.UriUtilTest;
 	ArraysUtilTest.class,
 	SetUtilTest.class,
 	UriUtilTest.class,
+	UrlUtilTest.class,
 	NetworkTest.class,
 	ListFilterTest.class,
 	BindingsTest.class,

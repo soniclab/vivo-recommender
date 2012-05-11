@@ -1,5 +1,5 @@
 /**
- * UNit tests for safe (no exception) uri construction
+ * Unit tests for safe (no exception) uri construction
  */
 package edu.northwestern.sonic.util.test;
 

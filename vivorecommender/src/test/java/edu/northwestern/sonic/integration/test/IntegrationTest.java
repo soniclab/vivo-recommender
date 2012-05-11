@@ -12,6 +12,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
+import edu.northwestern.sonic.util.UrlUtil;
+
 /**
  * Holder for URL of web application under test
  * default to IE and the live server on ciknow1
@@ -27,24 +29,18 @@ public abstract class IntegrationTest {
 		CHROME
 	}
 	
-	private static URL deployedWebAppUrl = null;
-	private static URL localWebAppUrl = null;
-	static {
-		try {
-			deployedWebAppUrl = new URL("http://ciknow1.northwestern.edu/vivorecommender/");
-			localWebAppUrl = new URL("http://localhost:8080/vivorecommender/");
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-	}
 	public static enum WEBAPPURL { 
-		LOCAL(localWebAppUrl),
-		DEPLOYED(deployedWebAppUrl);
+		LOCAL("http://localhost:8080/vivorecommender/"),
+		DEPLOYED("http://ciknow1.northwestern.edu/vivorecommender/");
 		
 		private final URL url;
 		
 		WEBAPPURL(URL url) {
 			this.url = url;
+		}
+
+		WEBAPPURL(String url) {
+			this(UrlUtil.safeUrlFactory(url));
 		}
 
 		/**
