@@ -1,6 +1,8 @@
 package edu.northwestern.sonic.dataaccess.vivo.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.net.URISyntaxException;
 
 import org.junit.After;
@@ -40,6 +42,12 @@ public class ResearcherTest {
 		assertEquals("Name", name, user.getName());
 		assertEquals("Department", department, user.getDepartment());
 		assertEquals("DepartmentURI",departmentURI,user.getDepartmentURI().toString());
+	}
+
+	@Test
+	public void testGetUserNotFound() {
+		User user = researcher.getUser("foo@bar.com");
+		assertNull("Email not found", user);
 	}
 
 	@Test

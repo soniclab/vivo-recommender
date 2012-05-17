@@ -1,10 +1,8 @@
 package edu.northwestern.sonic.controller;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,9 +23,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import edu.northwestern.sonic.bean.PropertyBean;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
-import edu.northwestern.sonic.dataaccess.vivo.VivoSparqlService;
 import edu.northwestern.sonic.model.Identification;
 import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
@@ -44,13 +40,6 @@ public class RecommendServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		ServletContext context = config.getServletContext();
 		recommendJsp = context.getRequestDispatcher("/recommend.jsp");
-		try {
-			URL url = new URL(PropertyBean.getInstance().getService());
-			VivoSparqlService.setUrl(url);
-			logger.info("VIVO Sparql service configured for " + url);
-		} catch (MalformedURLException e) {
-			logger.fatal(e, e);
-		}
 	}
 	
 
