@@ -16,6 +16,7 @@ import java.util.TreeSet;
 import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 import edu.northwestern.sonic.dataaccess.vivo.Authorship;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
+import edu.northwestern.sonic.network.AuthorNetwork;
 import edu.northwestern.sonic.network.Network;
 import edu.northwestern.sonic.util.UriUtil;
 
@@ -60,58 +61,6 @@ public class Recommend {
 		returnValue.remove(ego); // should not be in expert list
 		return new Researcher().getUsers(returnValue);
 	}
-
-	/*
-	 * coauthorship network for a list of authors
-	 * @params uris a set of author URIs
-	 * @return combined ego networks (radius 1)
-	 */
-	public Network getCoAuthorship(Set<URI> uris) {
-		Network returnValue = new Network(false);
-		for(URI uri : uris) {
-			String uriString = uri.toString();
-			Set<URI> coauthors = authorAuthorCitation.getCoAuthors(uri);
-			for(URI coauthor : coauthors)
-				returnValue.add(uriString, coauthor.toString());
-		}
-		return returnValue;
-	}
-	
-	/*
-	 * coauthorship network for a list of authors
-	 * @params uris a set of author URIs
-	 * @return combined cocitation networks (radius 1)
-	 */
-	public Network getCoCitation(Set<URI> uris) {
-		Network returnValue = new Network(false);
-		for(URI uri : uris) {
-			String uriString = uri.toString();
-			Set<URI> coCitedAuthors = authorAuthorCitation.getAuthorAuthorCoCitationSet(uri);
-			for(URI coCitedAuthor : coCitedAuthors)
-				returnValue.add(uriString, coCitedAuthor.toString());
-		}
-		return returnValue;
-	}
-	
-	/*
-	 * citation network for a list of authors
-	 * @params uris a set of author URIs
-	 * @return combined citation networks (radius 1)
-	 */
-	public Network getCitation(Set<URI> uris) {
-		Network returnValue = new Network(false);
-		Set<URI> citedAuthors = new TreeSet<URI>();
-		for(URI uri : uris) {
-			String uriString = uri.toString();
-			citedAuthors = authorAuthorCitation.getAuthorAuthorCitationToSet(uri);
-			for(URI citedAuthor : citedAuthors)
-				returnValue.add(citedAuthor.toString(), uriString);
-			citedAuthors = authorAuthorCitation.getAuthorAuthorCitationFromSet(uri);
-			for(URI citedAuthor : citedAuthors)
-				returnValue.add(uriString, citedAuthor.toString());
-		}
-		return returnValue;
-	}
 	
 	/**
 	 * combine the indegree of citation network and coauthorship network;
@@ -123,8 +72,8 @@ public class Recommend {
 	 */
 	public List<User> followTheCrowd(Set<URI> experts, User ego) {
 		Set<URI> ftcList = new HashSet<URI>();
-		Network citationNet = getCitation(experts);
-		Network coauthorNet = getCoAuthorship(experts);
+		Network citationNet = AuthorNetwork.citationNetworkFactory(experts);
+		Network coauthorNet = AuthorNetwork.coAuthorshipNetworkFactory(experts);
 		experts.remove(ego.getUri());
 		Iterator<URI> itr = experts.iterator();
 		URI expert;
@@ -147,7 +96,7 @@ public class Recommend {
 	public List<User> friendOfFriend(Set<URI> experts, User ego) {
 		Set<URI> fOFList = new HashSet<URI>();
 		experts.add(ego.getUri());
-		Network coauthorshipNet = getCoAuthorship(experts); // putting experts and their coauthors in network.
+		Network coauthorshipNet = AuthorNetwork.coAuthorshipNetworkFactory(experts); // putting experts and their coauthors in network.
 		Iterator<URI> itr = experts.iterator();
 		while(itr.hasNext()){ // making a list of all experts linked to seeker through friends.
 			URI expertURI = itr.next();

@@ -12,6 +12,7 @@ import edu.northwestern.sonic.dataaccess.vivo.test.ResearcherTest;
 import edu.northwestern.sonic.dataaccess.vivo.test.VivoSparqlServiceTest;
 import edu.northwestern.sonic.model.test.IdentificationTest;
 import edu.northwestern.sonic.model.test.RecommendTest;
+import edu.northwestern.sonic.network.test.AuthorNetworkTest;
 
 /**
  * VIVO functional test suite
@@ -29,6 +30,7 @@ import edu.northwestern.sonic.model.test.RecommendTest;
 	ArticleTest.class,
 	AuthorAuthorCitationTest.class,
 	AuthorshipTest.class,
+	AuthorNetworkTest.class,
 	ResearcherTest.class,
 	IdentificationTest.class,
 	RecommendTest.class,

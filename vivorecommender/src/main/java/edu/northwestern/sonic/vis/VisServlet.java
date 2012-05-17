@@ -2,8 +2,8 @@ package edu.northwestern.sonic.vis;
 
 
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
-import edu.northwestern.sonic.model.Recommend;
 import edu.northwestern.sonic.model.User;
+import edu.northwestern.sonic.network.AuthorNetwork;
 import edu.northwestern.sonic.network.Network;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +27,6 @@ public class VisServlet extends HttpServlet {
     private Network citNet;
     private Network coAuthorNet;
     private Network coCitNet;
-    private Recommend recommend;
     private Researcher researcher;
     final static DecimalFormat df = new DecimalFormat("#0.0##");
     
@@ -36,7 +35,6 @@ public class VisServlet extends HttpServlet {
     	citNet = new Network(); // citation network
         coAuthorNet = new Network(); // coauthorship network
         coCitNet = new Network(); // cocitation network
-        recommend = new Recommend();
         researcher = new Researcher();
 	}
  
@@ -59,9 +57,9 @@ public class VisServlet extends HttpServlet {
 
         users.add(ego);
         
-        citNet = recommend.getCitation(expertsURI);
-        coAuthorNet = recommend.getCoAuthorship(expertsURI);
-        coCitNet = recommend.getCoCitation(expertsURI);
+        citNet = AuthorNetwork.citationNetworkFactory(expertsURI);
+        coAuthorNet = AuthorNetwork.coAuthorshipNetworkFactory(expertsURI);
+        coCitNet = AuthorNetwork.coCitationNetworkFactory(expertsURI);
         
         // add recommended experts
         for (URI uri : expertsURI) {
