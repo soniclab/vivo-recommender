@@ -3,8 +3,6 @@ package edu.northwestern.sonic.persistence.test;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
-import java.util.Properties;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +13,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 
+import edu.northwestern.sonic.bean.PropertyBean;
 import edu.northwestern.sonic.model.User;
 import edu.northwestern.sonic.persistence.JavatoRDF;
 import edu.northwestern.sonic.persistence.TDBAccessObject;
@@ -39,9 +38,8 @@ public class JavatoRDFTest {
 		ego.setUri(new URI(uri));
 		ego.setPassword(StringDigesterUtil.digest(password));
 		m = JavatoRDF.write(ego);
-		Properties properties = new Properties();
-		properties.load(getClass().getResourceAsStream("/vivorecommender.properties"));
-		directory = properties.getProperty("directoryTDB");
+		PropertyBean propertyBean = PropertyBean.getInstance();
+		directory = propertyBean.getTdbDirectory();
 		TDBAccessObject.setDataset(directory);
 		tdbTransaction = new TDBTransaction();
 	}
