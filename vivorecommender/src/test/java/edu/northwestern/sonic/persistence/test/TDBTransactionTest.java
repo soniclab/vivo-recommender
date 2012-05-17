@@ -2,7 +2,6 @@ package edu.northwestern.sonic.persistence.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
