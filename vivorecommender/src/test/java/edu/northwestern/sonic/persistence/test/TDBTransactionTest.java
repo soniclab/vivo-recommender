@@ -35,8 +35,7 @@ public class TDBTransactionTest {
 		ego.setUri(new URI("http://vivo.ufl.edu/individual/n25562"));
 		ego.setPassword(StringDigesterUtil.digest("wadapav"));
 		Properties properties = new Properties();
-		properties.load(new FileReader("properties/vivorecommender." +
-				"properties"));
+		properties.load(getClass().getResourceAsStream("/vivorecommender.properties"));
 		directory = properties.getProperty("directoryTDB");
 		TDBAccessObject.setDataset(directory);
 		m = JavatoRDF.write(ego);
