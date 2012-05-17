@@ -41,8 +41,7 @@ public class JavatoRDFTest {
 		ego.setPassword(StringDigesterUtil.digest(password));
 		m = JavatoRDF.write(ego);
 		Properties properties = new Properties();
-		properties.load(new FileReader("properties/vivorecommender." +
-				"properties"));
+		properties.load(getClass().getResourceAsStream("/vivorecommender.properties"));
 		directory = properties.getProperty("directoryTDB");
 		TDBAccessObject.setDataset(directory);
 		tdbTransaction = new TDBTransaction();
