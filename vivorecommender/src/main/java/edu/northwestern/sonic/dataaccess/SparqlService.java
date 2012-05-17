@@ -90,7 +90,7 @@ public class SparqlService {
 		return getQueryExecution(query);
 	}
 
-	private static String distinctQuery(final String whereClause) {
+	protected static String distinctQuery(final String whereClause) {
 		final String DISTINCT_PREFIX =
 				"SELECT DISTINCT ?X\n" +
 				"WHERE {\n";
