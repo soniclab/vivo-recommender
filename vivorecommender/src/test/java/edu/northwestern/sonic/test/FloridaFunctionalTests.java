@@ -13,7 +13,6 @@ import edu.northwestern.sonic.dataaccess.vivo.VivoSparqlService;
  * 
  */
 
-
 public class FloridaFunctionalTests extends FunctionalTests {
 	
 	@BeforeClass
