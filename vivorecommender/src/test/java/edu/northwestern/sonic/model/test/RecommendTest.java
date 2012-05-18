@@ -74,4 +74,13 @@ public class RecommendTest {
 		List<User> actual = recommend.mostQualified(experts, ego, keyword);
 		assertEquals("count", 54, actual.size());
 	}
+	
+	@Test
+	public void testFollowTheCrowd() throws URISyntaxException {
+		String keyword = "organic";
+		final Set<URI> experts = identification.identifyExpertsByKeyword(keyword);
+		User ego = researcher.getUser(Katritzky.VIVO_URI);
+		List<User> actual = recommend.followTheCrowd(experts, ego);
+		assertEquals("count", 96, actual.size());
+	}
 }
