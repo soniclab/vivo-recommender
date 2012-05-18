@@ -63,11 +63,11 @@ public class Recommend {
 	}
 	
 	/**
-	 * combine the indegree of citation network and coauthorship network;
-	 * return the experts with higher indegree in the combined network;
+	 * combine the in-degree of citation network and coauthorship network;
+	 * return the experts with higher in-degree in the combined network;
 	 * @param experts
 	 * @param ego
-	 * @return List of experts with higher indegree in combined network
+	 * @return List of experts with higher in-degree in combined network
 	 * @throws URISyntaxException
 	 */
 	public List<User> followTheCrowd(Set<URI> experts, User ego) {
@@ -79,7 +79,8 @@ public class Recommend {
 		URI expert;
 		while(itr.hasNext()){
 			expert = itr.next();
-			if((citationNet.getInDegree(expert.toString()) + coauthorNet.getInDegree(expert.toString())) > 0){
+			if((citationNet.getInDegree(expert.toString()) + coauthorNet.getInDegree
+					(expert.toString())) > 0){
 				ftcList.add(expert);
 			}
 		}
@@ -96,13 +97,16 @@ public class Recommend {
 	public List<User> friendOfFriend(Set<URI> experts, User ego) {
 		Set<URI> fOFList = new HashSet<URI>();
 		experts.add(ego.getUri());
-		Network coauthorshipNet = AuthorNetwork.coAuthorshipNetworkFactory(experts); // putting experts and their coauthors in network.
+		/* putting experts and their coauthors in network. */
+		Network coauthorshipNet = AuthorNetwork.coAuthorshipNetworkFactory(experts); 
 		Iterator<URI> itr = experts.iterator();
-		while(itr.hasNext()){ // making a list of all experts linked to seeker through friends.
+		/* making a list of all experts linked to seeker through friends. */
+		while(itr.hasNext()){ 
 			URI expertURI = itr.next();
 			if(expertURI.equals(ego.getUri()))
 				continue;
-			if(coauthorshipNet.getShortestPathLength(ego.getUri().toString(), expertURI.toString()) > 0){
+			if(coauthorshipNet.getShortestPathLength(ego.getUri().toString(),
+					expertURI.toString()) > 0){
 				fOFList.add(expertURI);
 			}
 		}

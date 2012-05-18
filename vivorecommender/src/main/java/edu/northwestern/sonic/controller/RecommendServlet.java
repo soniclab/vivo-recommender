@@ -115,9 +115,9 @@ public class RecommendServlet extends HttpServlet {
 		if(ego.isMostQualified())
 			mquaList = recommend.mostQualified(identifiedExperts, ego,researchTopic);
 		/*if(ego.isExchange())
-			exchangeList = recommend.exchange(identifiedExperts, ego);
+			exchangeList = recommend.exchange(identifiedExperts, ego);*/
 		if(ego.isFollowCrowd())
-			ftcList = recommend.followTheCrowd(identifiedExperts, ego);*/
+			ftcList = recommend.followTheCrowd(identifiedExperts, ego);
 		
 		List<String> heuristics = new ArrayList<String>();
 		if(affList !=null && affList.size() > 0){
