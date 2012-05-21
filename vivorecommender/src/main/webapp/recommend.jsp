@@ -208,18 +208,12 @@
 
 	<!-- /container -->
 
-	<div class="modal hide fade" id="waitModal"
-		style="position: relative; top: auto; left: auto; margin: 0 auto">
-		<div class="modal-body">
-			<center>
-				<p>
-				<h3>
-					<img src="img/wait.gif" /> Please wait while we process your
-					query...
-				</h3>
-				</p>
-			</center>
-		</div>
+	<div class="modal hide fade" id="waitModal" style="position: relative; top: auto; left: auto; margin: 0 auto">
+			<div class="modal-body">
+				<center><p>
+					<h3><img src="img/wait.gif" />  Please wait while we process your query...</h3>
+				</p></center>
+			</div>
 	</div>
 
 	<!-- Le javascript

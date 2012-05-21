@@ -51,6 +51,7 @@
 		<center>
 			<form class="well" method="POST" action="">
 				<h3>Identify Yourself</h3>
+				<br><br>
 				<input type="text" name="userEmail" class="span3"
 					placeholder="example@something.com...">
 				<p>

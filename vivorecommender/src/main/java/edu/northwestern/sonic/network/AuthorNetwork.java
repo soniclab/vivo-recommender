@@ -57,9 +57,10 @@ public class AuthorNetwork {
 	 * @return combined citation networks (radius 1)
 	 */
 	public static Network citationNetworkFactory(Set<URI> authors) {
-		Network returnValue = new Network(false);
+		//Network returnValue = new Network(false);
+		Network returnValue = new Network(true);
 		AuthorAuthorCitation authorAuthorCitation = new AuthorAuthorCitation();
-		Set<URI> citedAuthors = new TreeSet<URI>();
+        Set<URI> citedAuthors = new TreeSet<URI>();
 		for(URI author : authors) {
 			String authorUriString = author.toString();
 			// inbound

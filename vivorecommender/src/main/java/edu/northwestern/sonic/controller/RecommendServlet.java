@@ -114,8 +114,8 @@ public class RecommendServlet extends HttpServlet {
 			cocitList = recommend.cocitation(identifiedExperts, ego.getUri());
 		if(ego.isMostQualified())
 			mquaList = recommend.mostQualified(identifiedExperts, ego,researchTopic);
-		/*if(ego.isExchange())
-			exchangeList = recommend.exchange(identifiedExperts, ego);*/
+		if(ego.isExchange())
+			exchangeList = recommend.exchange(identifiedExperts, ego);
 		if(ego.isFollowCrowd())
 			ftcList = recommend.followTheCrowd(identifiedExperts, ego);
 		

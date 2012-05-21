@@ -97,7 +97,8 @@ public class AuthorAuthorCitation extends Authorship {
 		NavigableSet<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
 		if(returnValue.isEmpty()) // no articles that cite any articles in the articleTo list
 			return returnValue;
-		returnValue.retainAll(getArticlesSet(authorFrom));
+		//returnValue.retainAll(getArticlesSet(authorFrom));
+		returnValue.retainAll(authorFromArticles);
 		return returnValue;	
 	}
 

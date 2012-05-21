@@ -201,7 +201,8 @@ public class Recommend {
 		
 		Authorship authorship = new Authorship();
 		AuthorAuthorCitation autautCit = new AuthorAuthorCitation();
-		Set<Integer> pubmedIds = authorship.getArticlesSet(ego.getUri()); // get all the pubmedIds of ego
+		/* get all the pubmedIds of ego */
+		Set<Integer> pubmedIds = authorship.getArticlesSet(ego.getUri()); 
 		experts.remove(ego.getUri());
 		Iterator<URI> itr = experts.iterator();
 		Set<Integer> numCit;
@@ -209,7 +210,8 @@ public class Recommend {
 		if(pubmedIds.size() > 0){
 			while(itr.hasNext()){
 				expertURI = itr.next();
-				numCit =  autautCit.getAuthorAuthorCitation(expertURI,pubmedIds); // number of times ego cited by the expert
+				/* number of times ego cited by the expert */
+				numCit =  autautCit.getAuthorAuthorCitation(expertURI,pubmedIds);
 				if(numCit.size() > 0){
 					exchangeList.add(expertURI);
 				}
@@ -217,6 +219,14 @@ public class Recommend {
 		}
 		return new Researcher().getUsers(exchangeList);
 	}
+	
+	public List<User> mobilizing(Set<URI> experts, User ego) {
+		Set<URI> mobilizingList = new HashSet<URI>();
+		
+		return new Researcher().getUsers(mobilizingList);
+	}
+	
+	
 	
 	/**
 	 * @param experts
