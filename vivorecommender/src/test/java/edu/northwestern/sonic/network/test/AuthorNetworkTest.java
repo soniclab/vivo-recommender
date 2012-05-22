@@ -39,7 +39,7 @@ public class AuthorNetworkTest {
 	public void testGetCitation() {
 		Network actual = AuthorNetwork.citationNetworkFactory(authors);
 		assertEquals("citation network vertices count", 29, actual.getVertices().size());
-		assertEquals("citation network edge count", 57, actual.getEdges().size());
+		assertEquals("citation network edge count", 29, actual.getEdges().size());
 	}
 
 	/**
