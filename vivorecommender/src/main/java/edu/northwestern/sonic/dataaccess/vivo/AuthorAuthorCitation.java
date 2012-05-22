@@ -85,19 +85,21 @@ public class AuthorAuthorCitation extends Authorship {
 
 	/**
 	 * author-author citation;
-	 * get the articles by one author that cite another author
+	 * get the articles by one author (citing author) that cite another author (cited author)
 	 * @param authorFrom URI of an author, the citing author 
 	 * @param articlesTo set of PubMed ids of articles by the cited author 
 	 * @return set of PubMed ids of articles by authorFrom that cite articlesTo
 	 */
 	public NavigableSet<Integer> getAuthorAuthorCitation(final URI authorFrom, final Set<Integer> articlesTo) {
+		// get articles by citing author
 		NavigableSet<Integer> authorFromArticles = getArticlesSet(authorFrom);
-		if(authorFromArticles.isEmpty()) // no articles by authorFrom
-			return authorFromArticles;
+		if(authorFromArticles.isEmpty()) // no articles by citing author?
+			return authorFromArticles; // empty set
+		// get all articles that cite any of the articles in the articlesTo list
 		NavigableSet<Integer> returnValue = medline.getArticleArticleCitationToSet(articlesTo);
-		if(returnValue.isEmpty()) // no articles that cite any articles in the articleTo list
-			return returnValue;
-		returnValue.retainAll(getArticlesSet(authorFrom));
+		if(returnValue.isEmpty()) // no articles that cite any articles in the articleTo list?
+			return returnValue; // empty set
+		returnValue.retainAll(authorFromArticles); // set intersection
 		return returnValue;	
 	}
 
