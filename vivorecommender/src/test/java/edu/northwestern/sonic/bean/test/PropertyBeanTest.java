@@ -1,3 +1,4 @@
+/* This file is distributed under the terms of the license in /src/license/license.txt */
 package edu.northwestern.sonic.bean.test;
 
 import static org.junit.Assert.*;
