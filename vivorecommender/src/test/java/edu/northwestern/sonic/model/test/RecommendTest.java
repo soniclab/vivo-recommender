@@ -22,6 +22,8 @@ public class RecommendTest {
 	private Set<URI> experts = null;
 	private User ego = null;
 	private String keyword = "Entomology";
+	private Set<URI> katrizkyExperts = null;
+	private User katrizky = null;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -30,6 +32,8 @@ public class RecommendTest {
 		experts = identification.identifyExpertsByResearchArea(keyword);
 		ego = researcher.getUser("mahoy@ifas.ufl.edu");
 		recommend = new Recommend();
+		katrizkyExperts = identification.identifyExpertsByKeyword("Organic");
+		katrizky = researcher.getUser(Katritzky.VIVO_URI);
 	}
 
 	@Test
@@ -68,19 +72,19 @@ public class RecommendTest {
 	
 	@Test
 	public void testMostQualifiedOrganicKatritzky() throws URISyntaxException {
-		String keyword = "organic";
-		final Set<URI> experts = identification.identifyExpertsByKeyword(keyword);
-		User ego = researcher.getUser(Katritzky.VIVO_URI);
-		List<User> actual = recommend.mostQualified(experts, ego, keyword);
+		List<User> actual = recommend.mostQualified(katrizkyExperts, katrizky, "Organic");
 		assertEquals("count", 54, actual.size());
 	}
 	
 	@Test
 	public void testFollowTheCrowd() throws URISyntaxException {
-		String keyword = "organic";
-		final Set<URI> experts = identification.identifyExpertsByKeyword(keyword);
-		User ego = researcher.getUser(Katritzky.VIVO_URI);
-		List<User> actual = recommend.followTheCrowd(experts, ego);
+		List<User> actual = recommend.followTheCrowd(katrizkyExperts, katrizky);
 		assertEquals("count", 96, actual.size());
+	}
+	
+	@Test
+	public void testMobilizing() throws URISyntaxException {
+		List<User> actual = recommend.mobilizing(katrizkyExperts, katrizky);
+		assertEquals("count", 4, actual.size());
 	}
 }

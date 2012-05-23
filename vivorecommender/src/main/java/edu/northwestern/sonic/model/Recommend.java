@@ -17,6 +17,7 @@ import edu.northwestern.sonic.dataaccess.vivo.AuthorAuthorCitation;
 import edu.northwestern.sonic.dataaccess.vivo.Authorship;
 import edu.northwestern.sonic.dataaccess.vivo.Researcher;
 import edu.northwestern.sonic.network.AuthorNetwork;
+import edu.northwestern.sonic.network.Centrality;
 import edu.northwestern.sonic.network.Network;
 import edu.northwestern.sonic.util.UriUtil;
 
@@ -222,12 +223,39 @@ public class Recommend {
 	
 	public List<User> mobilizing(Set<URI> experts, User ego) {
 		Set<URI> mobilizingList = new HashSet<URI>();
+		Network unionNet = AuthorNetwork.unionNetwork(
+				AuthorNetwork.citationNetworkFactory(experts),
+				AuthorNetwork.coAuthorshipNetworkFactory(experts));
+		List<String> expertUris = new ArrayList<String>();
+		Iterator<URI> itr = experts.iterator();
+	    while(itr.hasNext()){
+	    		expertUris.add(itr.next().toString());
+	    }
+	    
+		int[] shortestPathLengths = unionNet.getShortestPathLength
+				(ego.getUri().toString(),expertUris);
+		double[] centralities = Centrality.BETWEENNESS.get(unionNet, expertUris);
+		double[] indegree = Centrality.IN_DEGREE.get(unionNet, expertUris);
+		double[] outdegree = Centrality.OUT_DEGREE.get(unionNet, expertUris);
 		
+		itr = experts.iterator();
+		int i = 0;
+		double score = 0;
+		while(itr.hasNext()){
+			score = (indegree[i]/outdegree[i])*
+					(centralities[i]/shortestPathLengths[i]);
+			if(score > 0){
+				mobilizingList.add(itr.next());
+			}else{
+				itr.next();
+			}
+			i++;
+		}
+	
 		return new Researcher().getUsers(mobilizingList);
 	}
 	
-	
-	
+
 	/**
 	 * @param experts
 	 * @param ego

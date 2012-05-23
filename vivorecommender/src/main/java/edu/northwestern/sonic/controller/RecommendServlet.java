@@ -103,6 +103,7 @@ public class RecommendServlet extends HttpServlet {
 		List<User> exchangeList = null;
 		List<User> mquaList = null;
 		List<User> ftcList = null;
+		List<User> mobilizingList = null;
 		
 		if(ego.isAffiliation())
 			affList = recommend.affiliation(identifiedExperts, ego);
@@ -118,6 +119,8 @@ public class RecommendServlet extends HttpServlet {
 			exchangeList = recommend.exchange(identifiedExperts, ego);
 		if(ego.isFollowCrowd())
 			ftcList = recommend.followTheCrowd(identifiedExperts, ego);
+		if(ego.isMobilizing())
+			mobilizingList = recommend.mobilizing(identifiedExperts, ego);
 		
 		List<String> heuristics = new ArrayList<String>();
 		if(affList !=null && affList.size() > 0){
@@ -147,6 +150,10 @@ public class RecommendServlet extends HttpServlet {
 		if(ftcList !=null && ftcList.size() > 0){
 			combinedList.add(ftcList);
 			heuristics.add("'Follow the Crowd'");
+		}
+		if(mobilizingList !=null && mobilizingList.size() > 0){
+			combinedList.add(mobilizingList);
+			heuristics.add("'Mobilizing'");
 		}
 		return makeFinalList(combinedList,heuristics);
 	}

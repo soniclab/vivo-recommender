@@ -1,6 +1,7 @@
 package edu.northwestern.sonic.network;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -73,6 +74,37 @@ public class AuthorNetwork {
 				returnValue.add(authorUriString, citedAuthor.toString());
 		}
 		return returnValue;
+	}
+	
+	/**
+	 * This method returns union of two networks. 
+	 * @param netA
+	 * @param netB
+	 * @return unionNet union of two networks. 
+	 */
+	public static Network unionNetwork(Network netA, Network netB){
+		Network unionNet = new Network(true);
+
+		/* Adding all the vertices to the union network */
+		
+		for(String vertex : netA.getVertices()){
+			unionNet.addVertex(vertex);
+		}
+		
+		for(String vertex : netB.getVertices()){
+			unionNet.addVertex(vertex);
+		}
+		/* Adding all the edges */
+		
+		for(String edge : netA.getEdges()){
+			unionNet.addEdge(edge,netA.getSource(edge), netA.getDest(edge));
+		}
+		
+		for(String edge : netB.getEdges()){
+			unionNet.addEdge(edge,netB.getSource(edge), netB.getDest(edge));
+		}
+
+		return unionNet;
 	}
 	
 }
