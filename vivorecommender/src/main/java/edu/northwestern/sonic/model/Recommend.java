@@ -221,6 +221,12 @@ public class Recommend {
 		return new Researcher().getUsers(exchangeList);
 	}
 	
+	/**
+	 * @param experts
+	 * @param ego
+	 * @return List of experts selected through Mobilizing heuristic
+	 * Objective function : (indegree/outdegree)*(betweenness/distance)
+	 */
 	public List<User> mobilizing(Set<URI> experts, User ego) {
 		Set<URI> mobilizingList = new HashSet<URI>();
 		Network unionNet = AuthorNetwork.unionNetwork(
