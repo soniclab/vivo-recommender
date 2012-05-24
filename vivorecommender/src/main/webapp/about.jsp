@@ -114,7 +114,12 @@
 		</ul>
 		</p>
 	</div>
-		<footer><p>NSF Grant no. : XXXXXXX</p> </footer>
+		<footer>
+		<p>The authors wish to acknowledge the following funding sources
+			that contributed to the development of this software: National
+			Science Foundation Grants: CNS-1010904, OCI-0904356, IIS-0838564,
+			UL1RR024146-06S2 and NIH CTSA award UL1RR025741, 5UL1RR025741-04S3</p>
+		</footer>
 
 	</div>
 	<!-- /container -->
