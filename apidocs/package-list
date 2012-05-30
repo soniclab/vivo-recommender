@@ -1,0 +1,10 @@
+edu.northwestern.sonic.bean
+edu.northwestern.sonic.controller
+edu.northwestern.sonic.dataaccess
+edu.northwestern.sonic.dataaccess.medline
+edu.northwestern.sonic.dataaccess.vivo
+edu.northwestern.sonic.model
+edu.northwestern.sonic.network
+edu.northwestern.sonic.persistence
+edu.northwestern.sonic.util
+edu.northwestern.sonic.vis
