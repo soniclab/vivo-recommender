@@ -9,9 +9,9 @@
 ## Project Links
 
 * [SONIC Laboratory][2]
-* [SONIC Laboratory on github][9]
+* [SONIC Laboratory on github][3]
 * [C-IKNOW VIVO Recommender Overview][8]
-* [C-IKNOW VIVO Recommender on GitHub][3]
+* [C-IKNOW VIVO Recommender on GitHub][9]
 * [C-IKNOW VIVO Recommender API Documentation][7] - application program interface documentation (javadoc)
 
 ## Build
@@ -21,12 +21,12 @@
 
 [1]: http:/www.northwestern.edu
 [2]: http://sonic.northwestern.edu
-[3]: http://soniclab.github.com/VIVO-Recommender/
+[3]: http://soniclab.github.com/
 [4]: http://sonic.northwestern.edu/wp-content/uploads/2011/06/RGB-SONICv3.png
 [5]: http://www.northwestern.edu/univ-relations/identity-system/logos/NU_Logo_purple.jpg
 [6]: http://vivoweb.org/
-[7]: http://soniclab.github.com/apidocs/VIVORecommender/index.html
+[7]: http://soniclab.github.com/vivo-recommender/apidocs/index.html
 [8]: http://sonic.northwestern.edu/software/c-iknow-vivo-recommender/
-[9]: http://soniclab.github.com/VIVO-Recommender/
+[9]: http://soniclab.github.com/vivo-recommender/
 
 
